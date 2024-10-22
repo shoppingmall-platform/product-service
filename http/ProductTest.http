@@ -1,0 +1,18 @@
+POST localhost:8090/product/v1
+Content-Type: application/json
+
+{
+  "name": "Product Name",
+  "description": "This is a product description.",
+  "isDeleted": false,
+  "productState": "NEW",
+  "isSelling": true,
+  "createdAt": "2024-10-18T15:30:00",
+  "price": 10000,
+  "summaryDescription": "This is a summary description.",
+  "simpleDescription": "This is a simple description."
+}
+
+###
+GET localhost:8090/product/v1/1
+Content-Type: application/json
