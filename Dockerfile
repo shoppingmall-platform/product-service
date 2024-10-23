@@ -13,7 +13,7 @@ COPY src ./src
 
 # Gradle 빌드 실행
 RUN chmod +x /app/gradlew
-RUN ./gradlew clean build
+RUN ./gradlew clean build --debug
 
 # 2단계: 실행 단계 (Runtime stage)
 FROM amd64/openjdk:17-jdk-alpine
