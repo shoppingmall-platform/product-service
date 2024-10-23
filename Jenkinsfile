@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
-        DOCKER_IMAGE = 'codethestudent/jle-product-service:latest'
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -35,7 +30,7 @@ pipeline {
             steps {
                 sshagent([SSH_CREDENTIALS]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no user@${DEPLOY_SERVER} '
+                    ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
                         docker pull ${DOCKER_IMAGE} &&
                         docker-compose down &&
                         docker-compose up -d
