@@ -4,7 +4,7 @@ FROM amd64/openjdk:17-jdk-alpine AS build
 WORKDIR /app
 
 # Gradle 파일 복사
-COPY build.gradle settings.gradle gradlew gradle/ ./
+COPY build.gradle settings.gradle gradlew gradle/wrapper/ ./
 
 # 소스 코드 복사
 COPY src ./src
