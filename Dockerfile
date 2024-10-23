@@ -1,16 +1,16 @@
 # 1단계: 빌드 단계 (Build stage)
-FROM amd64/openjdk:17-jdk-alpine AS build
+FROM gradle:jdk17 AS build
 
 WORKDIR /app
 
-# Gradle 파일 복사
-COPY build.gradle settings.gradle gradlew gradle/wrapper/ ./
+# Gradle Wrapper 관련 파일 복사
+COPY gradlew gradlew.bat gradle/wrapper/ ./
 
 # 소스 코드 복사
 COPY src ./src
 
 # Gradle 빌드 실행
-RUN chmod +x gradlew
+RUN chmod +x /app/gradlew
 RUN ./gradlew clean build
 
 # 2단계: 실행 단계 (Runtime stage)
