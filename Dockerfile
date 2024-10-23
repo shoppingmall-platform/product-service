@@ -4,9 +4,11 @@ FROM gradle:jdk17 AS build
 WORKDIR /app
 
 # Gradle Wrapper 관련 파일 복사
-COPY gradlew gradlew.bat gradle/wrapper/ ./
+COPY gradlew gradlew.bat ./
+COPY gradle/ ./gradle/
 
-# 소스 코드 복사
+# 소스 코드 및 Gradle 설정 파일 복사
+COPY build.gradle settings.gradle ./
 COPY src ./src
 
 # Gradle 빌드 실행
@@ -19,7 +21,7 @@ FROM amd64/openjdk:17-jdk-alpine
 WORKDIR /app
 
 # 빌드 스테이지에서 생성된 jar 파일 복사
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*SNAPSHOT.jar app.jar
 
 # 포트 8090 열기
 EXPOSE 8090
