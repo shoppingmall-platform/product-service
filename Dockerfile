@@ -16,7 +16,7 @@ RUN chmod +x /app/gradlew
 RUN ./gradlew clean build --no-daemon --debug
 
 # 2단계: 실행 단계 (Runtime stage)
-FROM amd64/openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
