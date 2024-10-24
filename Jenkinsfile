@@ -8,18 +8,25 @@ pipeline {
             }
         }
 
-        script {
-            docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
-                def image = docker.image(${DOCKER_IMAGE})
-                sh "docker buildx create --use --name multiarch"
-                sh """
-                docker buildx build \
-                --platform linux/amd64,linux/arm64 \
-                -t ${image.imageName()} \
-                --push .
-                """
+
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
+                        def image = docker.image(${DOCKER_IMAGE})
+                        sh "docker buildx create --use --name multiarch"
+                        sh """
+                        docker buildx build \
+                        --platform linux/amd64,linux/arm64 \
+                        -t ${image.imageName()} \
+                        --push .
+                        """
+                    }
+                }
             }
         }
+
 
         stage('Deploy to Server') {
             steps {
