@@ -1,22 +1,26 @@
 pipeline {
-    agent none
+    agent any
+
     stages {
         stage('Clone Repository') {
-            agent { label 'build-agent' }
             steps {
                 git branch: 'main', url: 'https://github.com/shoppingmall-platform/product-service.git'
             }
         }
 
-        stage('Build Docker Image & Push') {
-            agent { label 'build-agent' }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
-                        sh """
-                        docker buildx create --use
-                        docker buildx build --platform linux/arm64 -t ${DOCKER_IMAGE} --push .
-                        """
+                        dockerImage.push()
                     }
                 }
             }
