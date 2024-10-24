@@ -8,21 +8,16 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}", "--platform linux/amd64,linux/arm64 .")
-                }
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage.push()
-                    }
-                }
+        script {
+            docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
+                def image = docker.image(${DOCKER_IMAGE})
+                sh "docker buildx create --use --name multiarch"
+                sh """
+                docker buildx build \
+                --platform linux/amd64,linux/arm64 \
+                -t ${image.imageName()} \
+                --push .
+                """
             }
         }
 
