@@ -1,5 +1,5 @@
 # 1단계: 빌드 단계 (Build stage)
-FROM gradle:jdk17 AS build
+FROM openjdk:17-jdk-slim AS build
 
 WORKDIR /app
 
