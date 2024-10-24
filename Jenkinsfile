@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
-                        def image = docker.image(${DOCKER_IMAGE})
+                        def image = docker.image("${DOCKER_IMAGE}")
                         sh "docker buildx create --use --name multiarch"
                         sh """
                         docker buildx build \
