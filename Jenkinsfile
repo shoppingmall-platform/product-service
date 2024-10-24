@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                    dockerImage = docker.build("${DOCKER_IMAGE}", "--platform linux/arm64 .")
                 }
             }
         }
