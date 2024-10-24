@@ -28,7 +28,7 @@ pipeline {
 
         stage('Deploy to Server') {
             steps {
-                sshagent([SSH_CREDENTIALS]) {
+                sshagent(['SSH_CREDENTIALS']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
                         docker pull ${DOCKER_IMAGE} &&
