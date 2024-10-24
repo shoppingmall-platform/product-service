@@ -8,14 +8,18 @@ pipeline {
             }
         }
 
-
-
         stage('Build Docker Image') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
                         def image = docker.image("${DOCKER_IMAGE}")
-                        sh "docker buildx create --use --name multiarch"
+                        sh """
+                            if ! docker buildx ls | grep -q 'multiarch'; then
+                            docker buildx create --use --name multiarch
+                        else
+                            docker buildx use multiarch
+                        fi
+                        """
                         sh """
                         docker buildx build \
                         --platform linux/amd64,linux/arm64 \
@@ -26,7 +30,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy to Server') {
             steps {
@@ -41,6 +44,15 @@ pipeline {
                     """
                 }
             }
+        }
+    }
+    post {
+        always {
+            sh """
+            if docker buildx ls | grep -q 'multiarch'; then
+                docker buildx rm multiarch || true
+            fi
+            """
         }
     }
 }
