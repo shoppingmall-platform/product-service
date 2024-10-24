@@ -31,6 +31,7 @@ pipeline {
                 sshagent(['SSH_CREDENTIALS']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
+                        cd docker-compose &&
                         docker pull ${DOCKER_IMAGE} &&
                         docker compose down &&
                         docker compose up -d
