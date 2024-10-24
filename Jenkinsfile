@@ -11,7 +11,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                    sh """
+                    docker buildx create --use
+                    docker buildx build --platform linux/arm64 -t ${DOCKER_IMAGE} --push .
+                    """
                 }
             }
         }
