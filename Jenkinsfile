@@ -8,22 +8,14 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh """
-                    docker buildx create --use
-                    docker buildx build --platform linux/arm64 -t ${DOCKER_IMAGE} --push .
-                    """
-                }
-            }
-        }
-
-        stage('Push to Docker Hub') {
+        stage('Build Docker Image & Push') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage.push()
+                        sh """
+                        docker buildx create --use
+                        docker buildx build --platform linux/arm64 -t ${DOCKER_IMAGE} --push .
+                        """
                     }
                 }
             }
