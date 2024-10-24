@@ -13,7 +13,7 @@ pipeline {
                 script {
                     sh """
                     docker buildx create --use
-                    docker buildx build --platform linux/amd64,linux/arm64 -t ${DOCKER_IMAGE} --push .
+                    docker buildx build --platform linux/arm64 -t ${DOCKER_IMAGE} --push .
                     """
                 }
             }
