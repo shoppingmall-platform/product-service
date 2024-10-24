@@ -1,5 +1,5 @@
 # 1단계: 빌드 단계 (Build stage)
-FROM --platform=linux/arm64 openjdk:17 AS build
+FROM openjdk:17-jdk-slim AS build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN chmod +x /app/gradlew
 RUN ./gradlew clean build --no-daemon
 
 # 2단계: 실행 단계 (Runtime stage)
-FROM --platform=linux/arm64 openjdk:17
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
