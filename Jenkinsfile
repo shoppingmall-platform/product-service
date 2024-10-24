@@ -32,8 +32,8 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
                         docker pull ${DOCKER_IMAGE} &&
-                        docker-compose down &&
-                        docker-compose up -d
+                        docker compose down &&
+                        docker compose up -d
                     '
                     """
                 }
