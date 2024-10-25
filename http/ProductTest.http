@@ -13,6 +13,6 @@ Content-Type: application/json
   "simpleDescription": "This is a simple description."
 }
 
-###
+### 1번 제품 조회
 GET localhost:8090/product/v1/1
 Content-Type: application/json
