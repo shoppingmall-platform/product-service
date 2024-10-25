@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+            DOCKER_IMAGE = 'codethestudent/jle-product-service:latest'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
