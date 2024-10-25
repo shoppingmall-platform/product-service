@@ -32,14 +32,18 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 sshagent(['SSH_CREDENTIALS']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
-                        cd docker-compose &&
-                        docker pull ${DOCKER_IMAGE} &&
-                        docker compose down &&
-                        docker compose up -d
-                    '
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
+                            cd docker-compose &&
+                            git config credential.helper store &&
+                            git pull https://${GIT_USER}:${GIT_PASS}@github.com/shoppingmall-platform/docker-compose.git main &&
+                            docker pull ${DOCKER_IMAGE} &&
+                            docker compose down &&
+                            docker compose up -d
+                        '
+                        """
+                    }
                 }
             }
         }
