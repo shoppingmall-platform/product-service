@@ -1,7 +1,8 @@
-package com.smplatform.product_service.controller;
+package com.smplatform.product_service.domain.product.controller;
 
-import com.smplatform.product_service.dto.ProductDto;
-import com.smplatform.product_service.service.ProductService;
+import com.smplatform.product_service.annotation.AdminOnly;
+import com.smplatform.product_service.domain.product.dto.ProductDto;
+import com.smplatform.product_service.domain.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProduct(productId));
     }
 
+    @AdminOnly
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(productDto));

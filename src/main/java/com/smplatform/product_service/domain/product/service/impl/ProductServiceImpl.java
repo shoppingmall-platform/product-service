@@ -1,10 +1,10 @@
-package com.smplatform.product_service.service.impl;
+package com.smplatform.product_service.domain.product.service.impl;
 
-import com.smplatform.product_service.domain.Product;
-import com.smplatform.product_service.dto.ProductDto;
+import com.smplatform.product_service.domain.product.domain.Product;
+import com.smplatform.product_service.domain.product.dto.ProductDto;
 import com.smplatform.product_service.exception.ProductNotFoundException;
-import com.smplatform.product_service.repository.ProductRepository;
-import com.smplatform.product_service.service.ProductService;
+import com.smplatform.product_service.domain.product.repository.ProductRepository;
+import com.smplatform.product_service.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

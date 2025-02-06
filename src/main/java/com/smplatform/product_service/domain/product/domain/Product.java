@@ -1,12 +1,17 @@
-package com.smplatform.product_service.domain;
+package com.smplatform.product_service.domain.product.domain;
 
+import com.smplatform.product_service.domain.discount.domain.Discount;
+import com.smplatform.product_service.domain.ProductState;
+import com.smplatform.product_service.domain.category.domain.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Getter
 @Table(name = "products")
@@ -32,6 +37,7 @@ public class Product {
     private Category category;
 
     @Column(name = "product_state")
+    @Enumerated(EnumType.STRING)
     private ProductState productState;
 
     @Column(name = "is_selling")

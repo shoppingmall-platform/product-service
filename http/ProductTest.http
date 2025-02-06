@@ -1,4 +1,4 @@
-POST localhost:8090/product/v1
+POST localhost:8081/product/v1/product
 Content-Type: application/json
 
 {
@@ -14,5 +14,5 @@ Content-Type: application/json
 }
 
 ### 1번 제품 조회
-GET localhost:8090/product/v1/1
+GET localhost:8081/product/v1/product/1
 Content-Type: application/json

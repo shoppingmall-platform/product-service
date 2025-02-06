@@ -1,6 +1,6 @@
-package com.smplatform.product_service.service;
+package com.smplatform.product_service.domain.product.service;
 
-import com.smplatform.product_service.dto.ProductDto;
+import com.smplatform.product_service.domain.product.dto.ProductDto;
 
 public interface ProductService {
     ProductDto getProduct(int productId);
