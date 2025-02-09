@@ -1,6 +1,6 @@
 package com.smplatform.product_service.domain.product.domain;
 
-import com.smplatform.product_service.domain.discount.domain.Discount;
+import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.ProductState;
 import com.smplatform.product_service.domain.category.domain.Category;
 import jakarta.persistence.*;
