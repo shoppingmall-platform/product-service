@@ -20,6 +20,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
 
+    // 할인코드 목록 조회
     @Override
     public ArrayList<DiscountDto> getDiscountList(String startDate, String endDate, String discountName) {
 
@@ -44,6 +45,7 @@ public class DiscountServiceImpl implements DiscountService {
         return discountDtos;
     }
 
+    // 할인코드 등록
     @Override
     public DiscountDto createDiscount(DiscountDto discountDto) {
 
