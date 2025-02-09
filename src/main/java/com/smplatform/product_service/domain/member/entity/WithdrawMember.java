@@ -20,8 +20,11 @@ import java.time.LocalDateTime;
 public class WithdrawMember {
 
     @Id
-    @NotNull
+    @Column(name = "member_id")
+    private Long memberId;
+
     @OneToOne
+    @MapsId
     @JoinColumn(name = "member_id")
     private Member member;
 
