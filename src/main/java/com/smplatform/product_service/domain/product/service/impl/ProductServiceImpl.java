@@ -2,7 +2,7 @@ package com.smplatform.product_service.domain.product.service.impl;
 
 import com.smplatform.product_service.domain.product.domain.Product;
 import com.smplatform.product_service.domain.product.dto.ProductDto;
-import com.smplatform.product_service.exception.ProductNotFoundException;
+import com.smplatform.product_service.exception.DiscountNotFoundException;
 import com.smplatform.product_service.domain.product.repository.ProductRepository;
 import com.smplatform.product_service.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getProduct(int productId) {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new DiscountNotFoundException();
         }
         Product productEntity = product.get();
 
