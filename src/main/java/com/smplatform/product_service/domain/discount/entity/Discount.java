@@ -1,4 +1,4 @@
-package com.smplatform.product_service.domain.discount.domain;
+package com.smplatform.product_service.domain.discount.entity;
 
 import jakarta.persistence.*;
 
