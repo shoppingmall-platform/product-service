@@ -1,9 +1,13 @@
 package com.smplatform.product_service.domain.category.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "categories")
+@NoArgsConstructor(access= AccessLevel.PROTECTED)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +20,12 @@ public class Category {
     @JoinColumn(name = "parent_category_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
+
+    @Builder
+    public Category(int categoryId, String categoryName, int categoryLevel, Category parentCategory) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryLevel = categoryLevel;
+        this.parentCategory = parentCategory;
+    }
 }
