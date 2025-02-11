@@ -1,6 +1,7 @@
 package com.smplatform.product_service.domain.category.service.impl;
 
 import com.smplatform.product_service.domain.category.dto.CategoryCreateDto;
+import com.smplatform.product_service.domain.category.dto.CategoryInfo;
 import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.dto.CategoryUpdateDto;
 import com.smplatform.product_service.domain.category.entity.Category;
@@ -9,22 +10,29 @@ import com.smplatform.product_service.domain.category.repository.CategoryReposit
 import com.smplatform.product_service.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<Category> getCategoryList() {
         return categoryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Category getCategoryById(int id) {
-        return categoryRepository.findById(id).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 카테고리 ID 입니다 : "+id));
+    public CategoryInfo getCategoryById(int categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId));
+
+        return CategoryInfo.of(category);
     }
 
     @Override
@@ -35,12 +43,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(long categoryId, CategoryUpdateDto body) {
+    public void updateCategory(int categoryId, CategoryUpdateDto body) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
+        String newName = body.getCategoryName();
+        Integer newLevel = body.getCategoryLevel();
+        if (Objects.nonNull(newName) && !newName.isEmpty()) {
+            category.setCategoryName(body.getCategoryName());
+        }
+        if (Objects.nonNull(newLevel) && newLevel > 0) {
+            category.setCategoryLevel(body.getCategoryLevel());
+        }
     }
 
     @Override
-    public void deleteCategory(long categoryId) {
-
+    public void deleteCategory(int categoryId) {
+        categoryRepository.clearParentCategory(categoryId);
+        categoryRepository.deleteById(categoryId);
     }
 }

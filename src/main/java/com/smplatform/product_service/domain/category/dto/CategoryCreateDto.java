@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 public class CategoryCreateDto {
     private Integer categoryParent;
     @NotEmpty
-    private String name;
+    private String categoryName;
     @Positive
-    private int level;
+    private int categoryLevel;
 
     public Category toCategory() {
         return Category.builder()
-                .categoryName(this.name)
-                .categoryLevel(this.level)
+                .categoryName(this.categoryName)
+                .categoryLevel(this.categoryLevel)
                 .parentCategory(categoryParent == null ? null : Category.builder().categoryId(categoryParent).build())
                 .build();
     }
