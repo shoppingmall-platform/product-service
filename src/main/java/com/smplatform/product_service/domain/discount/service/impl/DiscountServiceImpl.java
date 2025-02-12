@@ -1,6 +1,7 @@
 package com.smplatform.product_service.domain.discount.service.impl;
 
-import com.smplatform.product_service.domain.discount.dto.DiscountDto;
+import com.smplatform.product_service.domain.discount.dto.DiscountRequestDto;
+import com.smplatform.product_service.domain.discount.dto.DiscountResponseDto;
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.discount.service.DiscountService;
@@ -23,7 +24,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     // 할인코드 목록 조회
     @Override
-    public ArrayList<DiscountDto> getDiscountList(LocalDateTime startDate, LocalDateTime endDate, String discountName) {
+    public ArrayList<DiscountResponseDto.DiscountInfo> getDiscountList(LocalDateTime startDate, LocalDateTime endDate, String discountName) {
 
         Optional<ArrayList<Discount>> discountList = Optional.of(new ArrayList<>());
 
@@ -37,23 +38,23 @@ public class DiscountServiceImpl implements DiscountService {
         }
         ArrayList<Discount> discountEntityList = discountList.get();
 
-        ArrayList<DiscountDto> discountDtos = new ArrayList<>();
+        ArrayList<DiscountResponseDto.DiscountInfo> discountInfos = new ArrayList<>();
 
         for(Discount entity : discountEntityList) {
-            discountDtos.add(DiscountDto.toDTO(entity));
+            discountInfos.add(DiscountResponseDto.DiscountInfo.of(entity));
         }
 
-        return discountDtos;
+        return discountInfos;
     }
 
     // 할인코드 등록
     @Override
-    public DiscountDto createDiscount(DiscountDto discountDto) {
+    public String createDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto) {
 
-        Discount entity = Discount.toEntity(discountDto);
+        Discount entity = discountRequestDto.toEntity();
 
         discountRepository.save(entity);
 
-        return DiscountDto.toDTO(entity);
+        return String.valueOf(entity.getDiscountId());
     }
 }
