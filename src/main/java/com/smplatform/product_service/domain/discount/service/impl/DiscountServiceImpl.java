@@ -57,4 +57,15 @@ public class DiscountServiceImpl implements DiscountService {
 
         return String.valueOf(entity.getDiscountId());
     }
+
+    // 할인코드 삭제
+    @Override
+    public String deleteDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto) {
+
+        int discountId = discountRequestDto.toEntity().getDiscountId();
+
+        discountRepository.deleteById(discountId);
+
+        return String.valueOf(discountId);
+    }
 }
