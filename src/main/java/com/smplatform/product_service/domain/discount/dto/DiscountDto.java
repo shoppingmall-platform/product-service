@@ -1,7 +1,5 @@
 package com.smplatform.product_service.domain.discount.dto;
 
-import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.category.domain.Category;
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import lombok.*;
 
