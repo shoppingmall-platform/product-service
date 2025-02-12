@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @RestController
@@ -19,10 +20,10 @@ import java.util.ArrayList;
 public class DiscountController {
     private final DiscountService discountService;
 
-    @GetMapping("/discountList")
+    @GetMapping("")
     @Operation(summary = "할인코드 조회", description = "해당 조건의 할인코드 조회")
-    public ResponseEntity<ArrayList<DiscountDto>> getDiscountList(@RequestParam String startDate
-                                                    , @RequestParam String endDate
+    public ResponseEntity<ArrayList<DiscountDto>> getDiscountList(@RequestParam LocalDateTime startDate
+                                                    , @RequestParam LocalDateTime endDate
                                                     , @RequestParam(required = false) String discountName) {
         ArrayList<DiscountDto> discountDto = discountService.getDiscountList(startDate, endDate, discountName);
 
@@ -30,7 +31,7 @@ public class DiscountController {
     }
 
     @AdminOnly
-    @PostMapping("/discount")
+    @PostMapping("")
     @Operation(summary = "할인코드 등록", description = "할인코드 등록")
     public ResponseEntity<DiscountDto> createDiscount(@RequestBody DiscountDto discountDto) {
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,14 +23,14 @@ public class DiscountServiceImpl implements DiscountService {
 
     // 할인코드 목록 조회
     @Override
-    public ArrayList<DiscountDto> getDiscountList(String startDate, String endDate, String discountName) {
+    public ArrayList<DiscountDto> getDiscountList(LocalDateTime startDate, LocalDateTime endDate, String discountName) {
 
         Optional<ArrayList<Discount>> discountList = Optional.of(new ArrayList<>());
 
         if (Objects.isNull(discountName)) {
-            discountList = discountRepository.findByStartDateBetweenAndEndDateBetween(startDate, endDate);
+            discountList = discountRepository.findByDiscountStartDateGreaterThanEqualAndDiscountEndDateLessThanEqual(startDate, endDate);
         } else {
-            discountList = discountRepository.findByStartDateBetweenAndEndDateBetweenAndDiscountName(startDate, endDate, discountName);
+            discountList = discountRepository.findByDiscountStartDateGreaterThanEqualAndDiscountEndDateLessThanEqualAndDiscountName(startDate, endDate, discountName);
         }
         if (discountList.isEmpty()) {
             throw new DiscountNotFoundException();
