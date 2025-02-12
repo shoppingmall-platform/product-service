@@ -65,4 +65,35 @@ public class DiscountRequestDto {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteDiscount {
+
+        private int discountId;
+
+        private String discountName;
+
+        private double discountPercentage;
+
+        private int discountPrice;
+
+        private LocalDateTime discountStartDate;
+
+        private LocalDateTime discountEndDate;
+
+        public Discount toEntity() {
+            return Discount.builder()
+                    .discountId(this.discountId)
+                    .discountName(this.discountName)
+                    .discountPercentage(this.discountPercentage)
+                    .discountPrice(this.discountPrice)
+                    .discountStartDate(this.discountStartDate)
+                    .discountEndDate(this.discountEndDate)
+                    .build();
+        }
+    }
 }

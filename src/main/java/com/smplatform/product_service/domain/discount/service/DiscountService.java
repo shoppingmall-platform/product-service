@@ -15,5 +15,5 @@ public interface DiscountService {
     String createDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto);
 
     // 할인코드 삭제
-    String deleteDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto);
+    String deleteDiscount(DiscountRequestDto.DeleteDiscount discountRequestDto);
 }
