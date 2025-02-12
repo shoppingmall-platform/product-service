@@ -1,8 +1,8 @@
 ### GET category list
-GET http://localhost:11111/v1/categories
+GET http://localhost:8090/v1/categories
 
 ### POST category
-POST http://localhost:11111/v1/categories
+POST http://localhost:8090/v1/categories
 Content-Type: application/json
 
 {
@@ -11,23 +11,23 @@ Content-Type: application/json
 }
 
 ### GET category
-GET http://localhost:11111/v1/categories/1
+GET http://localhost:8090/v1/categories/1
 
 ### POST category
-POST http://localhost:11111/v1/categories
+POST http://localhost:8090/v1/categories
 Content-Type: application/json
 
 {
-  "categoryParent" : 3,
-  "categoryName" : "test2",
+  "categoryParentId" : 1,
+  "categoryName" : "test4",
   "categoryLevel" : 2
 }
 
 ### GET category
-GET http://localhost:11111/v1/categories/2
+GET http://localhost:8090/v1/categories/2
 
 ### UPDATE category
-POST http://localhost:11111/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category/1
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 
 ### UPDATE category
-POST http://localhost:11111/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category/1
 Content-Type: application/json
 
 {
@@ -43,4 +43,4 @@ Content-Type: application/json
 }
 
 ### DELETE category
-POST http://localhost:11111/v1/categories/delete-category/2
+POST http://localhost:8090/v1/categories/delete-category/3

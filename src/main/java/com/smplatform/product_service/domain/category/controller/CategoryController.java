@@ -2,7 +2,6 @@ package com.smplatform.product_service.domain.category.controller;
 
 import com.smplatform.product_service.domain.category.dto.CategoryCreateDto;
 import com.smplatform.product_service.domain.category.dto.CategoryInfo;
-import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.dto.CategoryUpdateDto;
 import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.service.CategoryService;
@@ -31,7 +30,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDto> createCategory(@Valid @RequestBody CategoryCreateDto body) {
+    public ResponseEntity<Integer> createCategory(@Valid @RequestBody CategoryCreateDto body) {
         return ResponseEntity.status(201).body(categoryService.saveCategory(body));
     }
 

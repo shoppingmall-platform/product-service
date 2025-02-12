@@ -2,7 +2,6 @@ package com.smplatform.product_service.domain.category.service.impl;
 
 import com.smplatform.product_service.domain.category.dto.CategoryCreateDto;
 import com.smplatform.product_service.domain.category.dto.CategoryInfo;
-import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.dto.CategoryUpdateDto;
 import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
@@ -36,10 +35,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDto saveCategory(CategoryCreateDto body) {
-        Category category = body.toCategory();
+    public int saveCategory(CategoryCreateDto body) {
+        Category category = body.toEntity();
+        if (body.getCategoryParentId() != null) {
+            Category parentCategory = categoryRepository.findById(body.getCategoryParentId()).orElseThrow(()-> new CategoryNotFoundException(body.getCategoryParentId()));
+            category.setParentCategory(parentCategory);
+        }
         categoryRepository.save(category);
-        return CategoryResponseDto.of(category);
+        return category.getCategoryId();
     }
 
     @Override

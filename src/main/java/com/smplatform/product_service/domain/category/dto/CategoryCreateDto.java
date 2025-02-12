@@ -9,17 +9,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CategoryCreateDto {
-    private Integer categoryParent;
+    private Integer categoryParentId;
     @NotEmpty
     private String categoryName;
     @Positive
     private int categoryLevel;
 
-    public Category toCategory() {
+    public Category toEntity() {
         return Category.builder()
                 .categoryName(this.categoryName)
                 .categoryLevel(this.categoryLevel)
-                .parentCategory(categoryParent == null ? null : Category.builder().categoryId(categoryParent).build())
                 .build();
     }
 }
