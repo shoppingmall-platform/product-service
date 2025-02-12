@@ -31,7 +31,6 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.OK).body(discountDto);
     }
 
-    @AdminOnly
     @PostMapping("")
     @Operation(summary = "할인코드 등록", description = "할인코드 등록")
     public ResponseEntity<DiscountDto> createDiscount(@RequestBody DiscountDto discountDto) {
