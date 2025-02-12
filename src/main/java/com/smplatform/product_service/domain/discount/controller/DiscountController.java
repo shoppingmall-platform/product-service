@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/v1/discounts")
 @Tag(name = "Discount", description = "Discount management APIs")
 @RequiredArgsConstructor
