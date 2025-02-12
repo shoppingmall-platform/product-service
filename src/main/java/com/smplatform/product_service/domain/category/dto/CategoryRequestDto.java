@@ -35,13 +35,17 @@ public class CategoryRequestDto {
 
     @Getter
     public static class UpdateCategory {
+        private int categoryId;
+
         private Integer categoryParentId;
 
-        @NotEmpty
         private String categoryName;
 
-        @Min(value = 1, message = "level 범위 : 1~3 (1=대, 2=중, 3=소)")
-        @Max(value = 3, message = "level 범위 : 1~3 (1=대, 2=중, 3=소)")
-        private int categoryLevel;
+        private Integer categoryLevel;
+    }
+
+    @Getter
+    public static class DeleteCategory {
+        private int categoryId;
     }
 }

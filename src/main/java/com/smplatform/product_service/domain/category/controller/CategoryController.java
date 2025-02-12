@@ -37,17 +37,17 @@ public class CategoryController {
         return ResponseEntity.status(201).body(categoryService.saveCategory(body));
     }
 
-    @PostMapping("/update-category/{category-id}")
+    @PostMapping("/update-category")
     @Operation(summary = "카테도리 수정", description = "")
-    public ResponseEntity<String> updateCategory(@PathVariable("category-id") int categoryId,@Valid @RequestBody CategoryRequestDto.UpdateCategory body) {
-        categoryService.updateCategory(categoryId, body);
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody CategoryRequestDto.UpdateCategory body) {
+        categoryService.updateCategory(body);
         return ResponseEntity.ok("update successful");
     }
 
-    @PostMapping("/delete-category/{category-id}")
+    @PostMapping("/delete-category")
     @Operation(summary = "카테도리 삭제", description = "")
-    public ResponseEntity<String> deleteCategory(@PathVariable("category-id") int categoryId) {
-        categoryService.deleteCategory(categoryId);
+    public ResponseEntity<String> deleteCategory(@Valid @RequestBody CategoryRequestDto.DeleteCategory body) {
+        categoryService.deleteCategory(body.getCategoryId());
         return ResponseEntity.status(204).build();
     }
 

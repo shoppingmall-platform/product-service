@@ -3,7 +3,9 @@ package com.smplatform.product_service.domain.category.service.impl;
 import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
 import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.entity.Category;
+import com.smplatform.product_service.domain.category.exception.CategoryLevelOutOfRangeException;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
+import com.smplatform.product_service.domain.category.exception.InvalidCategoryNameException;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -46,16 +48,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(int categoryId, CategoryRequestDto.UpdateCategory body) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+    public void updateCategory(CategoryRequestDto.UpdateCategory body) {
+        Category category = categoryRepository.findById(body.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException(body.getCategoryId()));
 
         String newName = body.getCategoryName();
         Integer newLevel = body.getCategoryLevel();
-        if (Objects.nonNull(newName) && !newName.isEmpty()) {
-            category.setCategoryName(body.getCategoryName());
+
+        if (Objects.nonNull(newName)) {
+            if (!newName.trim().isEmpty()) {
+                category.setCategoryName(body.getCategoryName());
+            } else {
+                throw new InvalidCategoryNameException("Empty name");
+            };
         }
-        if (Objects.nonNull(newLevel) && newLevel > 0) {
-            category.setCategoryLevel(body.getCategoryLevel());
+
+        if (Objects.nonNull(newLevel)){
+            if (newLevel > 0 && newLevel < 4) {
+                category.setCategoryLevel(body.getCategoryLevel());
+            } else {
+                throw new CategoryLevelOutOfRangeException(newLevel);
+            }
         }
     }
 

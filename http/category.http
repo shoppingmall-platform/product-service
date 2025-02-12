@@ -67,34 +67,38 @@ GET http://localhost:8090/v1/categories/2
 GET http://localhost:8090/v1/categories/444
 
 ### UPDATE category
-POST http://localhost:8090/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category
 Content-Type: application/json
 
 {
+  "categoryId": 1,
   "categoryName" : "update1"
 }
 
 ### UPDATE category name 에러 테스트
-POST http://localhost:8090/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category
 Content-Type: application/json
 
 {
+  "categoryId": 1,
   "categoryName" : ""
 }
 
 ### UPDATE category
-POST http://localhost:8090/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category
 Content-Type: application/json
 
 {
+  "categoryId": 1,
   "categoryLevel" : 3
 }
 
 ### UPDATE category level 에러 테스트
-POST http://localhost:8090/v1/categories/update-category/1
+POST http://localhost:8090/v1/categories/update-category
 Content-Type: application/json
 
 {
+  "categoryId": 1,
   "categoryLevel" : 4
 }
 
