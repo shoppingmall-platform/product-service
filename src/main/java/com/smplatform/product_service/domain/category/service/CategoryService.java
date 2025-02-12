@@ -1,20 +1,18 @@
 package com.smplatform.product_service.domain.category.service;
 
-import com.smplatform.product_service.domain.category.dto.CategoryCreateDto;
-import com.smplatform.product_service.domain.category.dto.CategoryInfo;
-import com.smplatform.product_service.domain.category.dto.CategoryUpdateDto;
-import com.smplatform.product_service.domain.category.entity.Category;
+import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
+import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getCategoryList();
+    List<CategoryResponseDto.CategoryInfo> getCategoryList();
 
-    CategoryInfo getCategoryById(int categoryId);
+    CategoryResponseDto.CategoryInfo getCategoryById(int categoryId);
 
-    int saveCategory(CategoryCreateDto body);
+    int saveCategory(CategoryRequestDto.CreateCategory body);
 
-    void updateCategory(int categoryId, CategoryUpdateDto body);
+    void updateCategory(int categoryId, CategoryRequestDto.UpdateCategory body);
 
     void deleteCategory(int categoryId);
 

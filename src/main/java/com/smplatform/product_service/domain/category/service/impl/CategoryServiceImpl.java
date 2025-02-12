@@ -1,8 +1,7 @@
 package com.smplatform.product_service.domain.category.service.impl;
 
-import com.smplatform.product_service.domain.category.dto.CategoryCreateDto;
-import com.smplatform.product_service.domain.category.dto.CategoryInfo;
-import com.smplatform.product_service.domain.category.dto.CategoryUpdateDto;
+import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
+import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,23 +22,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Category> getCategoryList() {
-        return categoryRepository.findAll();
+    public List<CategoryResponseDto.CategoryInfo> getCategoryList() {
+        return categoryRepository.findAll().stream().map(c-> CategoryResponseDto.CategoryInfo.of(c)).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CategoryInfo getCategoryById(int categoryId) {
+    public CategoryResponseDto.CategoryInfo getCategoryById(int categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId));
 
-        return CategoryInfo.of(category);
+        return CategoryResponseDto.CategoryInfo.of(category);
     }
 
     @Override
-    public int saveCategory(CategoryCreateDto body) {
+    public int saveCategory(CategoryRequestDto.CreateCategory body) {
         Category category = body.toEntity();
         if (body.getCategoryParentId() != null) {
-            Category parentCategory = categoryRepository.findById(body.getCategoryParentId()).orElseThrow(()-> new CategoryNotFoundException(body.getCategoryParentId()));
+            Category parentCategory = categoryRepository.findById(body.getCategoryParentId()).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getCategoryParentId()));
             category.setParentCategory(parentCategory);
         }
         categoryRepository.save(category);
@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(int categoryId, CategoryUpdateDto body) {
+    public void updateCategory(int categoryId, CategoryRequestDto.UpdateCategory body) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         String newName = body.getCategoryName();
@@ -61,7 +61,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(int categoryId) {
-        categoryRepository.clearParentCategory(categoryId);
-        categoryRepository.deleteById(categoryId);
+        if (categoryRepository.existsById(categoryId)) {
+            categoryRepository.clearParentCategory(categoryId);
+            categoryRepository.deleteById(categoryId);
+        }
     }
 }
