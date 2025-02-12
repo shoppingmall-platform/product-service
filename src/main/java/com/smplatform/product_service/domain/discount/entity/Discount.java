@@ -1,6 +1,5 @@
 package com.smplatform.product_service.domain.discount.entity;
 
-import com.smplatform.product_service.domain.discount.dto.DiscountDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,14 +30,4 @@ public class Discount {
     @Column(name = "discount_end_date")
     private LocalDateTime discountEndDate;
 
-    public static Discount toEntity(DiscountDto DTO) {
-        return Discount.builder()
-                .discountId(DTO.getDiscountId())
-                .discountName(DTO.getDiscountName())
-                .discountPercentage(DTO.getDiscountPercentage())
-                .discountPrice(DTO.getDiscountPrice())
-                .discountStartDate(DTO.getDiscountStartDate())
-                .discountEndDate(DTO.getDiscountEndDate())
-                .build();
-    }
 }

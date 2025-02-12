@@ -1,11 +1,13 @@
 package com.smplatform.product_service.domain.discount.controller;
 
-import com.smplatform.product_service.annotation.AdminOnly;
-import com.smplatform.product_service.domain.discount.dto.DiscountDto;
+import com.smplatform.product_service.domain.discount.dto.DiscountRequestDto;
+import com.smplatform.product_service.domain.discount.dto.DiscountResponseDto;
 import com.smplatform.product_service.domain.discount.service.DiscountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +20,28 @@ import java.util.ArrayList;
 @RequestMapping("/v1/discounts")
 @Tag(name = "Discount", description = "Discount management APIs")
 @RequiredArgsConstructor
+@Slf4j
 public class DiscountController {
     private final DiscountService discountService;
 
     @GetMapping("")
     @Operation(summary = "할인코드 조회", description = "해당 조건의 할인코드 조회")
-    public ResponseEntity<ArrayList<DiscountDto>> getDiscountList(@RequestParam LocalDateTime startDate
-                                                    , @RequestParam LocalDateTime endDate
-                                                    , @RequestParam(required = false) String discountName) {
-        ArrayList<DiscountDto> discountDto = discountService.getDiscountList(startDate, endDate, discountName);
+    public ResponseEntity<ArrayList<DiscountResponseDto.DiscountInfo>> getDiscountList(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
+                                                                                     , @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+                                                                                     , @RequestParam(required = false) String discountName) {
+        log.info("{}", 123123);
+        ArrayList<DiscountResponseDto.DiscountInfo> discountInfo = discountService.getDiscountList(startDate, endDate, discountName);
 
-        return ResponseEntity.status(HttpStatus.OK).body(discountDto);
+        return ResponseEntity.status(HttpStatus.OK).body(discountInfo);
     }
 
     @PostMapping("")
     @Operation(summary = "할인코드 등록", description = "할인코드 등록")
-    public ResponseEntity<DiscountDto> createDiscount(@RequestBody DiscountDto discountDto) {
+    public ResponseEntity<String> createDiscount(@RequestBody DiscountRequestDto.RegisterDiscount discountRequestDto) {
 
-        DiscountDto dto = discountService.createDiscount(discountDto);
+        String id = discountService.createDiscount(discountRequestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 }
 
