@@ -12,7 +12,7 @@ public interface CategoryService {
 
     int saveCategory(CategoryRequestDto.CreateCategory body);
 
-    void updateCategory(int categoryId, CategoryRequestDto.UpdateCategory body);
+    void updateCategory(CategoryRequestDto.UpdateCategory body);
 
     void deleteCategory(int categoryId);
 
