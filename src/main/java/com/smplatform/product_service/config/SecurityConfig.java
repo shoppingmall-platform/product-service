@@ -27,8 +27,7 @@ public class SecurityConfig {
                                         "/swagger-ui/**",  // Swagger UI 페이지 접근 허용
                                         "/v3/api-docs/**", // Swagger API 문서 접근 허용
                                         "/h2-console/**", // H2 콘솔 접근 허용
-                                        "/v1/members/**",   // 기타 필요한 경로
-                                        "/v1/discounts/**"   // 기타 필요한 경로
+                                        "/v1/**"
                                 ).permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)

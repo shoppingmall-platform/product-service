@@ -4,15 +4,13 @@ import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.ProductState;
 import com.smplatform.product_service.domain.category.entity.Category;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Builder
 @Entity
+@Setter
 @Getter
 @Table(name = "products")
 @AllArgsConstructor

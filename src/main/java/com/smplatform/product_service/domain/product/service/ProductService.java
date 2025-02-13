@@ -1,9 +1,12 @@
 package com.smplatform.product_service.domain.product.service;
 
-import com.smplatform.product_service.domain.product.dto.ProductDto;
+import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 
 public interface ProductService {
-    ProductDto getProduct(int productId);
+    ProductRequestDto getProduct(int productId);
 
-    ProductDto saveProduct(ProductDto productDto);
+    String saveProduct(ProductRequestDto productDto);
+
+
+    String updateProduct(ProductRequestDto productRequestDto);
 }
