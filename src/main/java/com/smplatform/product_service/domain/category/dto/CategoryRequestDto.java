@@ -16,7 +16,7 @@ public class CategoryRequestDto {
     @Getter
     @NoArgsConstructor
     public static class CreateCategory {
-        private Integer categoryParentId;
+        private Integer parentCategoryId;
         @NotEmpty
         private String categoryName;
         @Min(value = 1, message = "level 범위 : 1~3 (1=대, 2=중, 3=소)")
@@ -37,7 +37,7 @@ public class CategoryRequestDto {
     public static class UpdateCategory {
         private int categoryId;
 
-        private Integer categoryParentId;
+        private Integer parentCategoryId;
 
         private String categoryName;
 
