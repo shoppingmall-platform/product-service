@@ -36,9 +36,9 @@ POST http://localhost:8090/v1/categories
 Content-Type: application/json
 
 {
-  "categoryParentId" : 1,
+  "parentCategoryId" : 2,
   "categoryName" : "test4",
-  "categoryLevel" : 2
+  "categoryLevel" : 3
 }
 
 ### POST category(부모 id 에러 테스트)
@@ -46,7 +46,7 @@ POST http://localhost:8090/v1/categories
 Content-Type: application/json
 
 {
-  "categoryParentId" : 1000,
+  "parentCategoryId" : 1000,
   "categoryName" : "test5",
   "categoryLevel" : 2
 }
@@ -61,7 +61,7 @@ Content-Type: application/json
 }
 
 ### GET category
-GET http://localhost:8090/v1/categories/2
+GET http://localhost:8090/v1/categories/4
 
 ### GET category (존재하지 않는 id 조회 테스트)
 GET http://localhost:8090/v1/categories/444
@@ -103,7 +103,9 @@ Content-Type: application/json
 }
 
 ### DELETE category
-POST http://localhost:8090/v1/categories/delete-category/4
+POST http://localhost:8090/v1/categories/delete-category
+Content-Type: application/json
 
-### DELETE category not found 테스트
-POST http://localhost:8090/v1/categories/delete-category/10000
+{
+  "categoryId": 4
+}

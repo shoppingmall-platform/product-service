@@ -39,8 +39,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int saveCategory(CategoryRequestDto.CreateCategory body) {
         Category category = body.toEntity();
-        if (body.getCategoryParentId() != null) {
-            Category parentCategory = categoryRepository.findById(body.getCategoryParentId()).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getCategoryParentId()));
+        if (body.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(body.getParentCategoryId()).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
             category.setParentCategory(parentCategory);
         }
         categoryRepository.save(category);
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
                 category.setCategoryName(body.getCategoryName());
             } else {
                 throw new InvalidCategoryNameException("Empty name");
-            };
+            }
         }
 
         if (Objects.nonNull(newLevel)){
@@ -69,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
                 throw new CategoryLevelOutOfRangeException(newLevel);
             }
         }
+
     }
 
     @Override
