@@ -1,0 +1,65 @@
+### 카테고리 생성
+POST localhost:8090/v1/category
+content-type:application/json
+
+{
+}
+
+
+### 제품 생성
+
+POST localhost:8090/v1/product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "id": 0,
+  "name": "product1",
+  "description": "product 1 description",
+  "category": {
+    "category_id": 1,
+    "category_name": "outer",
+    "category_level": 1,
+    "parent_category_id": null
+  },
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discount": null,
+  "summaryDescription": "string",
+  "simpleDescription": "string",
+  "deleted": false,
+  "selling": true
+}
+
+### 단일 제품 조회
+GET localhost:8090/v1/product/1
+X-MEMBER-ID: asdf
+
+
+### 제품 수정
+POST localhost:8090/v1/product/update-product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "id": 1,
+  "name": "updated product1",
+  "description": "product 1 description",
+  "category": {
+    "category_id": 1,
+    "category_name": "outer",
+    "category_level": 1,
+    "parent_category_id": null
+  },
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discount": null,
+  "summaryDescription": "string",
+  "simpleDescription": "string",
+  "deleted": false,
+  "selling": true
+}
