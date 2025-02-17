@@ -2,6 +2,7 @@ package com.smplatform.product_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,6 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -27,7 +29,7 @@ public class SecurityConfig {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
-            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             config.setAllowedOriginPatterns(Collections.singletonList("*"));
             config.setAllowCredentials(true);
 
@@ -41,6 +43,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 활성화 추가
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 🔹 OPTIONS 요청 허용
                                 .requestMatchers(
                                         "/swagger-ui/**",  // Swagger UI 페이지 접근 허용
                                         "/v3/api-docs/**", // Swagger API 문서 접근 허용
