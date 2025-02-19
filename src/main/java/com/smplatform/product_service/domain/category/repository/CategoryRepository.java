@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Modifying
-    @Query("UPDATE Category c SET c.parentCategory = null WHERE c.parentCategory.categoryId = :parentId")
-    void clearParentCategory(@Param("parentId") int parentId);
+    @Query("DELETE FROM Category c WHERE c.parentCategory.categoryId = :parentId")
+    void deleteByParentCategory(@Param("parentId") int parentId);
 }
