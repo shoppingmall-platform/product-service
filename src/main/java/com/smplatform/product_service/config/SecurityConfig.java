@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,12 +44,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 활성화 추가
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 🔹 OPTIONS 요청 허용
                                 .requestMatchers(
                                         "/swagger-ui/**",  // Swagger UI 페이지 접근 허용
                                         "/v3/api-docs/**", // Swagger API 문서 접근 허용
                                         "/h2-console/**", // H2 콘솔 접근 허용
-                                        "/v1/**"
+                                        "/product/v1/**"
                                 ).permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
