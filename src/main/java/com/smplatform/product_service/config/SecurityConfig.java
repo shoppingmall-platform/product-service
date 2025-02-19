@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
-import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -26,35 +26,31 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        return request -> {
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedHeaders(Collections.singletonList("*"));
-            config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("*"));
-            config.setAllowCredentials(true);
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Collections.singletonList("*")); // 🚀 모든 Origin 허용
+        config.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
+        config.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+        config.setMaxAge(3600L); // Preflight 요청 1시간 캐싱
 
-            return config;
-        };
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // 모든 엔드포인트 적용
+        return source;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 활성화 추가
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .requestMatchers(
-                                        "/swagger-ui/**",  // Swagger UI 페이지 접근 허용
-                                        "/v3/api-docs/**", // Swagger API 문서 접근 허용
-                                        "/h2-console/**", // H2 콘솔 접근 허용
-                                        "/v1/**"
-                                ).permitAll()
-                )
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(
-                        AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)); // Frame Options 비활성화
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔹 CORS 활성화
+            .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화 (POST 요청 가능)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // OPTIONS 요청 허용
+                .requestMatchers("/product/**", "/v1/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 특정 경로 허용
+                .anyRequest().authenticated()
+            )
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
         return http.build();
     }
 }
