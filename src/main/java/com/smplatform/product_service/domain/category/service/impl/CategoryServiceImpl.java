@@ -3,9 +3,8 @@ package com.smplatform.product_service.domain.category.service.impl;
 import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
 import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.entity.Category;
-import com.smplatform.product_service.domain.category.exception.CategoryLevelOutOfRangeException;
+import com.smplatform.product_service.domain.category.exception.InvalidCategoryLevelException;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
-import com.smplatform.product_service.domain.category.exception.InvalidCategoryNameException;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category parentCategory = categoryRepository.findById(body.getParentCategoryId()).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
             category.setParentCategory(parentCategory);
         }
+        checkCategoryValidity(category);
         categoryRepository.save(category);
         return category.getCategoryId();
     }
@@ -51,32 +51,42 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(CategoryRequestDto.UpdateCategory body) {
         Category category = categoryRepository.findById(body.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException(body.getCategoryId()));
 
-        String newName = body.getCategoryName();
-        Integer newLevel = body.getCategoryLevel();
+        Category parentCategory = body.getParentCategoryId() == null? null :
+                categoryRepository.findById(body.getParentCategoryId())
+                        .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
 
-        if (Objects.nonNull(newName)) {
-            if (!newName.trim().isEmpty()) {
-                category.setCategoryName(body.getCategoryName());
-            } else {
-                throw new InvalidCategoryNameException("Empty name");
-            }
-        }
-
-        if (Objects.nonNull(newLevel)){
-            if (newLevel > 0 && newLevel < 4) {
-                category.setCategoryLevel(body.getCategoryLevel());
-            } else {
-                throw new CategoryLevelOutOfRangeException(newLevel);
-            }
-        }
-
+        category.update(body.getCategoryName(), body.getCategoryLevel(), parentCategory);
+        checkCategoryValidity(category);
     }
 
     @Override
     public void deleteCategory(int categoryId) {
-        if (categoryRepository.existsById(categoryId)) {
-            categoryRepository.clearParentCategory(categoryId);
-            categoryRepository.deleteById(categoryId);
+        categoryRepository.deleteById(categoryId);
+
+    }
+
+    private void checkCategoryValidity(Category category) {
+        if (category == null) {
+            throw new IllegalArgumentException("category is null");
+        }
+
+        int level = category.getCategoryLevel();
+        Category parentCategory = category.getParentCategory();
+
+        if (level <0 || level > 3) {
+            throw new InvalidCategoryLevelException("level 범위 : 1~3 (1=대, 2=중, 3=소). level: " + level);
+        }
+
+        if (parentCategory != null) {
+            if (level < parentCategory.getCategoryLevel() || level - parentCategory.getCategoryLevel() != 1) {
+                throw new InvalidCategoryLevelException("부모 카테고리보다 한단계 아래만 가능합니다. level: " + level + ", parent-level: " + parentCategory.getCategoryLevel());
+            }
+
+        } else if (level > 1) {
+            throw new InvalidCategoryLevelException("부모 카테고리 값이 필요합니다.");
         }
     }
+
+
+
 }

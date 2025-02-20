@@ -2,8 +2,8 @@ package com.smplatform.product_service.domain.category.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidCategoryNameException extends AbstractCategoryException {
-    public InvalidCategoryNameException(String msg) {
+public class InvalidCategoryLevelException extends AbstractCategoryException {
+    public InvalidCategoryLevelException(String msg) {
         super(msg);
     }
 
