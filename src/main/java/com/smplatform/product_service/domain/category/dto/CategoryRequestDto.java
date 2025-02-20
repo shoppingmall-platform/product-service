@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 public class CategoryRequestDto {
 
@@ -14,7 +13,6 @@ public class CategoryRequestDto {
     }
 
     @Getter
-    @NoArgsConstructor
     public static class CreateCategory {
         private Integer parentCategoryId;
         @NotEmpty
@@ -39,8 +37,11 @@ public class CategoryRequestDto {
 
         private Integer parentCategoryId;
 
+        @NotEmpty
         private String categoryName;
 
+        @Min(value = 1, message = "level 범위 : 1~3 (1=대, 2=중, 3=소)")
+        @Max(value = 3, message = "level 범위 : 1~3 (1=대, 2=중, 3=소)")
         private Integer categoryLevel;
     }
 

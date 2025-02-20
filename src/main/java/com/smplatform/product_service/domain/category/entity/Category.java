@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -26,11 +28,21 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    private List<Category> children;
+
     @Builder
     public Category(int categoryId, String categoryName, int categoryLevel, Category parentCategory) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.categoryLevel = categoryLevel;
         this.parentCategory = parentCategory;
+    }
+
+    public Category update(String categoryName, int categoryLevel, Category parentCategory) {
+        this.categoryName = categoryName;
+        this.categoryLevel = categoryLevel;
+        this.parentCategory = parentCategory;
+        return this;
     }
 }

@@ -5,7 +5,6 @@ import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.exception.InvalidCategoryLevelException;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
-import com.smplatform.product_service.domain.category.exception.InvalidCategoryNameException;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -52,30 +51,18 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(CategoryRequestDto.UpdateCategory body) {
         Category category = categoryRepository.findById(body.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException(body.getCategoryId()));
 
-        String newName = body.getCategoryName();
-        Integer newLevel = body.getCategoryLevel();
+        Category parentCategory = body.getParentCategoryId() == null? null :
+                categoryRepository.findById(body.getParentCategoryId())
+                        .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
 
-        if (Objects.nonNull(newName)) {
-            if (!newName.trim().isEmpty()) {
-                category.setCategoryName(body.getCategoryName());
-            } else {
-                throw new InvalidCategoryNameException("Empty name");
-            }
-        }
-
-        if (Objects.nonNull(newLevel)){
-            checkCategoryValidity(category);
-            category.setCategoryLevel(body.getCategoryLevel());
-        }
-
+        category.update(body.getCategoryName(), body.getCategoryLevel(), parentCategory);
+        checkCategoryValidity(category);
     }
 
     @Override
     public void deleteCategory(int categoryId) {
-        if (categoryRepository.existsById(categoryId)) {
-            categoryRepository.deleteByParentCategory(categoryId);
-            categoryRepository.deleteById(categoryId);
-        }
+        categoryRepository.deleteById(categoryId);
+
     }
 
     private void checkCategoryValidity(Category category) {
@@ -91,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         if (parentCategory != null) {
-            if (level > parentCategory.getCategoryLevel() || parentCategory.getCategoryLevel() - level != 1) {
+            if (level < parentCategory.getCategoryLevel() || level - parentCategory.getCategoryLevel() != 1) {
                 throw new InvalidCategoryLevelException("부모 카테고리보다 한단계 아래만 가능합니다. level: " + level + ", parent-level: " + parentCategory.getCategoryLevel());
             }
 
