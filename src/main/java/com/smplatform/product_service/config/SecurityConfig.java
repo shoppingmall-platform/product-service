@@ -2,7 +2,6 @@ package com.smplatform.product_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,10 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
-import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -30,7 +27,7 @@ public class SecurityConfig {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
-            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(Collections.singletonList("*"));
             config.setAllowCredentials(true);
 
@@ -48,7 +45,7 @@ public class SecurityConfig {
                                         "/swagger-ui/**",  // Swagger UI 페이지 접근 허용
                                         "/v3/api-docs/**", // Swagger API 문서 접근 허용
                                         "/h2-console/**", // H2 콘솔 접근 허용
-                                        "/product/v1/**"
+                                        "/v1/**"
                                 ).permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)

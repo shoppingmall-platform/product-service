@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/product/v1/categories")
+@RequestMapping("/v1/categories")
 @Tag(name = "Category", description = "Category management APIs")
 public class CategoryController {
     private final CategoryService categoryService;
@@ -50,6 +50,5 @@ public class CategoryController {
         categoryService.deleteCategory(body.getCategoryId());
         return ResponseEntity.status(204).build();
     }
-
 
 }
