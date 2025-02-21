@@ -25,7 +25,7 @@ import java.util.List;
 public class DiscountController {
     private final DiscountService discountService;
 
-    @GetMapping("/getDiscountList")
+    @GetMapping
     @Operation(summary = "할인코드 조회", description = "해당 조건의 할인코드 조회")
     public ResponseEntity<List<DiscountResponseDto.DiscountInfo>> getDiscountList(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
                                                                                      , @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
@@ -36,7 +36,7 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.OK).body(discountInfo);
     }
 
-    @PostMapping("/registerDiscount")
+    @PostMapping
     @Operation(summary = "할인코드 등록", description = "해당 옵션의 할인코드 등록")
     public ResponseEntity<String> createDiscount(@RequestBody DiscountRequestDto.RegisterDiscount discountRequestDto) {
 
