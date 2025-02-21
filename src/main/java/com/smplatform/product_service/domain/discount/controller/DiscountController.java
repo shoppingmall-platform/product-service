@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -26,11 +27,11 @@ public class DiscountController {
 
     @GetMapping("/getDiscountList")
     @Operation(summary = "할인코드 조회", description = "해당 조건의 할인코드 조회")
-    public ResponseEntity<ArrayList<DiscountResponseDto.DiscountInfo>> getDiscountList(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
-                                                                                     , @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+    public ResponseEntity<List<DiscountResponseDto.DiscountInfo>> getDiscountList(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
+                                                                                     , @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
                                                                                      , @RequestParam(required = false) String discountName) {
         log.info("{}", 123123);
-        ArrayList<DiscountResponseDto.DiscountInfo> discountInfo = discountService.getDiscountList(startDate, endDate, discountName);
+        List<DiscountResponseDto.DiscountInfo> discountInfo = discountService.getDiscountList(startDate, endDate, discountName);
 
         return ResponseEntity.status(HttpStatus.OK).body(discountInfo);
     }

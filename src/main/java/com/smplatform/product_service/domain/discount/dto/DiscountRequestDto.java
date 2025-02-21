@@ -10,15 +10,13 @@ public class DiscountRequestDto {
     @Getter
     @Builder
     @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class RegisterDiscount {
 
         private String discountName;
 
-        private double discountPercentage;
+        private String discountType;
 
-        private int discountPrice;
+        private int discountValue;
 
         private LocalDateTime discountStartDate;
 
@@ -27,8 +25,8 @@ public class DiscountRequestDto {
         public Discount toEntity() {
             return Discount.builder()
                     .discountName(this.discountName)
-                    .discountPercentage(this.discountPercentage)
-                    .discountPrice(this.discountPrice)
+                    .discountType(Discount.Type.fromDescription(this.discountType)) // Enum 변환
+                    .discountValue(this.discountValue)
                     .discountStartDate(this.discountStartDate)
                     .discountEndDate(this.discountEndDate)
                     .build();
@@ -36,10 +34,6 @@ public class DiscountRequestDto {
     }
 
     @Getter
-    @Builder
-    @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class UpdateDiscount {
 
         private int discountId;
@@ -54,46 +48,12 @@ public class DiscountRequestDto {
 
         private LocalDateTime discountEndDate;
 
-        public Discount toEntity() {
-            return Discount.builder()
-                    .discountId(this.discountId)
-                    .discountName(this.discountName)
-                    .discountPercentage(this.discountPercentage)
-                    .discountPrice(this.discountPrice)
-                    .discountStartDate(this.discountStartDate)
-                    .discountEndDate(this.discountEndDate)
-                    .build();
-        }
     }
 
     @Getter
-    @Builder
-    @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class DeleteDiscount {
 
         private int discountId;
 
-        private String discountName;
-
-        private double discountPercentage;
-
-        private int discountPrice;
-
-        private LocalDateTime discountStartDate;
-
-        private LocalDateTime discountEndDate;
-
-        public Discount toEntity() {
-            return Discount.builder()
-                    .discountId(this.discountId)
-                    .discountName(this.discountName)
-                    .discountPercentage(this.discountPercentage)
-                    .discountPrice(this.discountPrice)
-                    .discountStartDate(this.discountStartDate)
-                    .discountEndDate(this.discountEndDate)
-                    .build();
-        }
     }
 }

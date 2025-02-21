@@ -18,9 +18,9 @@ public class DiscountResponseDto {
 
         private String discountName;
 
-        private double discountPercentage;
+        private String discountType;
 
-        private int discountPrice;
+        private int discountValue;
 
         private LocalDateTime discountStartDate;
 
@@ -30,8 +30,8 @@ public class DiscountResponseDto {
             return new DiscountResponseDto.DiscountInfo(
                     entity.getDiscountId(),
                     entity.getDiscountName(),
-                    entity.getDiscountPercentage(),
-                    entity.getDiscountPrice(),
+                    entity.getDiscountType().getDescription(),
+                    entity.getDiscountValue(),
                     entity.getDiscountStartDate(),
                     entity.getDiscountEndDate()
             );
