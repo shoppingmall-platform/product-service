@@ -22,13 +22,21 @@ public interface DiscountRepository extends JpaRepository<Discount, Integer> {
     );
 
     @Query("SELECT d FROM Discount d " +
-            "WHERE (:startDate IS NULL OR d.discountStartDate >= :startDate) " +
-            "AND (:endDate IS NULL OR d.discountEndDate <= :endDate) " +
+            "WHERE (:referenceDate IS NULL OR " + // referenceDate가 NULL이면 날짜 조건 무시
+            "      (:referenceDate = '시작일' AND " +
+            "          (:startDate IS NULL OR d.discountStartDate >= :startDate) AND " +
+            "          (:endDate IS NULL OR d.discountStartDate <= :endDate)) " +
+            "   OR (:referenceDate = '종료일' AND " +
+            "          (:startDate IS NULL OR d.discountEndDate >= :startDate) AND " +
+            "          (:endDate IS NULL OR d.discountEndDate <= :endDate))) " +
             "AND (:discountName IS NULL OR d.discountName = :discountName)")
     List<Discount> findDiscounts(
+            @Param("referenceDate") String referenceDate,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("discountName") String discountName
     );
+
+
 
 }

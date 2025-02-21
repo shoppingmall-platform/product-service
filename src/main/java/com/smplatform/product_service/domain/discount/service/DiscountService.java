@@ -10,7 +10,7 @@ import java.util.List;
 public interface DiscountService {
 
     // 할인코드 목록 조회
-    List<DiscountResponseDto.DiscountInfo> getDiscountList(LocalDateTime startDate, LocalDateTime endDate, String discountName);
+    List<DiscountResponseDto.DiscountInfo> getDiscountList(String referenceDate, LocalDateTime startDate, LocalDateTime endDate, String discountName);
 
     // 할인코드 등록
     String createDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto);
