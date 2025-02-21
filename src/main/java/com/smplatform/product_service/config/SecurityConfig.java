@@ -32,9 +32,8 @@ public class SecurityConfig {
             config.setAllowedOriginPatterns(Collections.singletonList("*"));
             config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config); // 모든 엔드포인트 적용
-        return source;
+            return config;
+        };
     }
 
     @Bean
