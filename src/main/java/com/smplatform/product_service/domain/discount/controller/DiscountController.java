@@ -45,7 +45,7 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 
-    @PostMapping("/deleteDiscount")
+    @PostMapping("/delete-discount")
     @Operation(summary = "할인코드 삭제", description = "전달된 할인코드 삭제")
     public ResponseEntity<String> deleteDiscount(@RequestBody DiscountRequestDto.DeleteDiscount discountRequestDto) {
 
