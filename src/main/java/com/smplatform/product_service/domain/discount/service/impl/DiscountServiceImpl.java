@@ -25,8 +25,8 @@ public class DiscountServiceImpl implements DiscountService {
 
     // 할인코드 목록 조회
     @Override
-    public List<DiscountResponseDto.DiscountInfo> getDiscountList(LocalDateTime startDate, LocalDateTime endDate, String discountName) {
-        List<Discount> discountEntityList = discountRepository.findDiscounts(startDate, endDate, discountName);
+    public List<DiscountResponseDto.DiscountInfo> getDiscountList(String referenceDate, LocalDateTime startDate, LocalDateTime endDate, String discountName) {
+        List<Discount> discountEntityList = discountRepository.findDiscounts(referenceDate, startDate, endDate, discountName);
 
         return discountEntityList.stream()
                 .map(DiscountResponseDto.DiscountInfo::of)
