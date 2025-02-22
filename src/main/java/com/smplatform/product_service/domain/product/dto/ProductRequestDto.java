@@ -51,6 +51,7 @@ public class ProductRequestDto {
     }
 
     @Getter
+    @ToString
     public static class UpdateProduct {
         private int id;
         private String name;

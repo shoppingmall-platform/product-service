@@ -47,6 +47,8 @@ public class ProductResponseDto {
         private String summaryDescription;
         @JsonProperty("simple_description")
         private String simpleDescription;
+        @JsonProperty("discounted_price")
+        private int discountedPrice;
 
         public Product toEntity() {
             return Product.builder()
@@ -72,6 +74,7 @@ public class ProductResponseDto {
                     .discountId(Objects.isNull(product.getDiscount()) ? null : product.getDiscount().getDiscountId())
                     .summaryDescription(product.getSummaryDescription())
                     .simpleDescription(product.getSimpleDescription())
+                    .discountedPrice(product.getDiscountedPrice())
                     .build();
         }
     }

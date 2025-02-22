@@ -44,24 +44,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException(String.format("product { %d } not found", productId));
         }
         Product productEntity = product.get();
-        applyDiscount(productEntity);
-
         return ProductResponseDto.GetProduct.of(productEntity);
-    }
-
-    private void applyDiscount(Product productEntity) {
-        Discount discount = productEntity.getDiscount();
-        LocalDateTime now = LocalDateTime.now();
-        if (Objects.nonNull(discount)
-                && now.isAfter(discount.getDiscountStartDate())
-                && now.isBefore(discount.getDiscountEndDate())
-        ) {
-            productEntity.setPrice(
-                    discount.getDiscountType().equals(Discount.Type.RATE) ?
-                            productEntity.getPrice() - productEntity.getPrice() * discount.getDiscountValue() :
-                            productEntity.getPrice() - discount.getDiscountValue()
-            );
-        }
     }
 
     @Override
@@ -113,7 +96,6 @@ public class ProductServiceImpl implements ProductService {
         List<ProductResponseDto.GetProduct> resultProducts = new ArrayList<>();
         // N+1 entitygraph 사용
         for (Product product : products) {
-            applyDiscount(product);
             resultProducts.add(ProductResponseDto.GetProduct.of(product));
         }
         return resultProducts;

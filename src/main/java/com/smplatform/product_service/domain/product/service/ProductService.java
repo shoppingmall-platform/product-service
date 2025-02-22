@@ -8,12 +8,7 @@ import java.util.List;
 
 public interface ProductService {
     ProductResponseDto.GetProduct getProduct(int productId);
-
     String saveProduct(ProductRequestDto.SaveProduct productDto);
-
-
     String updateProduct(ProductRequestDto.UpdateProduct productDto);
-
-
     List<ProductResponseDto.GetProduct> getProducts(Pageable pageable);
 }
