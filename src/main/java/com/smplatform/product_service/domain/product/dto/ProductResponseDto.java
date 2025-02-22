@@ -30,16 +30,22 @@ public class ProductResponseDto {
         int id;
         private String name;
         private String description;
+        @JsonProperty("is_deleted")
         private boolean isDeleted;
         @JsonProperty("category_id")
         private int categoryId;
+        @JsonProperty("product_state")
         private ProductState productState;
+        @JsonProperty("is_selling")
         private boolean isSelling;
+        @JsonProperty("created_at")
         private LocalDateTime createdAt;
         private int price;
         @JsonProperty("discount_id")
         private Integer discountId;
+        @JsonProperty("summary_description")
         private String summaryDescription;
+        @JsonProperty("simple_description")
         private String simpleDescription;
 
         public Product toEntity() {

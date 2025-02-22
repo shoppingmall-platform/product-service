@@ -54,6 +54,10 @@ ROLE: ADMIN
 }
 
 
+### 전체 제품 조회 (페이지네이션)
+GET http://localhost:8080/v1/product?page=1&size=3
+X-MEMBER-ID: asdf
+
 ### GET category list
 GET http://152.67.211.72:18080/product/v1/categories
 
