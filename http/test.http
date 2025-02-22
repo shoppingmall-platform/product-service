@@ -1,0 +1,167 @@
+### 카테고리 생성
+POST localhost:8090/v1/category
+content-type:application/json
+
+{
+}
+
+
+### 제품 생성
+
+POST localhost:8080/v1/product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "name": "product1",
+  "description": "product 1 description",
+  "category_id": 1,
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discount": null,
+  "summaryDescription": "string",
+  "simpleDescription": "string",
+  "deleted": false,
+  "selling": true
+}
+
+### 단일 제품 조회
+GET localhost:8080/v1/product/1
+X-MEMBER-ID: asdf
+
+
+### 제품 수정
+POST localhost:8080/v1/product/update-product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "id": 1,
+  "name": "updated product1",
+  "description": "product 1 description",
+  "category_id": 1,
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discount": null,
+  "summaryDescription": "string",
+  "simpleDescription": "string",
+  "deleted": false,
+  "selling": true
+}
+
+
+### GET category list
+GET http://152.67.211.72:18080/product/v1/categories
+
+### POST category
+POST http://152.67.211.72:18080/product/v1/categories
+Content-Type: application/json
+
+{
+  "categoryName" : "test1",
+  "categoryLevel" : 1
+}
+
+### POST category
+POST http://localhost:8090/v1/categories
+Content-Type: application/json
+
+{
+  "categoryName" : "test2",
+  "categoryLevel" : 2
+}
+
+### POST category
+POST http://localhost:8090/v1/categories
+Content-Type: application/json
+
+{
+  "categoryName" : "test3",
+  "categoryLevel" : 3
+}
+
+### GET category
+GET http://localhost:8090/v1/categories/1
+
+### POST category with parent
+POST http://localhost:8090/v1/categories
+Content-Type: application/json
+
+{
+  "parentCategoryId" : 2,
+  "categoryName" : "test4",
+  "categoryLevel" : 3
+}
+
+### POST category(부모 id 에러 테스트)
+POST http://localhost:8090/v1/categories
+Content-Type: application/json
+
+{
+  "parentCategoryId" : 1000,
+  "categoryName" : "test5",
+  "categoryLevel" : 2
+}
+
+### POST category(레벨 범위 벗어나는 요청 테스트)
+POST http://localhost:8090/v1/categories
+Content-Type: application/json
+
+{
+  "categoryName" : "test6",
+  "categoryLevel" : 4
+}
+
+### GET category
+GET http://localhost:8090/v1/categories/4
+
+### GET category (존재하지 않는 id 조회 테스트)
+GET http://localhost:8090/v1/categories/444
+
+### UPDATE category
+POST http://localhost:8090/v1/categories/update-category
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "categoryName" : "update1"
+}
+
+### UPDATE category name 에러 테스트
+POST http://localhost:8090/v1/categories/update-category
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "categoryName" : ""
+}
+
+### UPDATE category
+POST http://localhost:8090/v1/categories/update-category
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "categoryLevel" : 3
+}
+
+### UPDATE category level 에러 테스트
+POST http://localhost:8090/v1/categories/update-category
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "categoryLevel" : 4
+}
+
+### DELETE category
+POST http://localhost:8090/v1/categories/delete-category
+Content-Type: application/json
+
+{
+  "categoryId": 4
+}
