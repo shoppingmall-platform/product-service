@@ -1,7 +1,6 @@
 package com.smplatform.product_service.domain.product.service.impl;
 
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
-import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.product.domain.Product;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

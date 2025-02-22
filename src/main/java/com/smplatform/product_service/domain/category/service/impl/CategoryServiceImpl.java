@@ -3,8 +3,8 @@ package com.smplatform.product_service.domain.category.service.impl;
 import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
 import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.entity.Category;
-import com.smplatform.product_service.domain.category.exception.InvalidCategoryLevelException;
 import com.smplatform.product_service.domain.category.exception.CategoryNotFoundException;
+import com.smplatform.product_service.domain.category.exception.InvalidCategoryLevelException;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

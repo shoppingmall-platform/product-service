@@ -2,8 +2,6 @@ package com.smplatform.product_service.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.category.entity.Category;
-import com.smplatform.product_service.domain.discount.dto.DiscountResponseDto;
 import com.smplatform.product_service.domain.product.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
