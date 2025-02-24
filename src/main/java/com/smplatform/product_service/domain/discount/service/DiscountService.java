@@ -4,7 +4,6 @@ import com.smplatform.product_service.domain.discount.dto.DiscountRequestDto;
 import com.smplatform.product_service.domain.discount.dto.DiscountResponseDto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface DiscountService {

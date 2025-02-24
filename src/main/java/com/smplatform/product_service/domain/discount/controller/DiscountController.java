@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,7 +30,6 @@ public class DiscountController {
                                                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                                                                   @RequestParam(required = false) String discountName) {
-        log.info("{}", 123123);
         List<DiscountResponseDto.DiscountInfo> discountInfo = discountService.getDiscountList(referenceDate, startDate, endDate, discountName);
 
         return ResponseEntity.status(HttpStatus.OK).body(discountInfo);

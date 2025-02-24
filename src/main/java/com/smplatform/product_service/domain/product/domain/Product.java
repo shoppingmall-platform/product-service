@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Builder
 @Entity
@@ -56,4 +57,9 @@ public class Product {
 
     @Column(name = "simple_description")
     private String simpleDescription;
+
+    public int getDiscountedPrice() {
+        return Objects.nonNull(discount) && discount.isValidDiscount() ?
+                discount.calculateDiscountedPrice(price) : price;
+    }
 }

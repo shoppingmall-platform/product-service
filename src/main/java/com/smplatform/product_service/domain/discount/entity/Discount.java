@@ -45,5 +45,29 @@ public class Discount {
         }
     }
 
+    public boolean isValidDiscount() {
+        LocalDateTime now = LocalDateTime.now();
+        if (discountStartDate == null || discountEndDate == null) {
+            return false;
+        }
+        if (now.isBefore(discountStartDate) || now.isAfter(discountEndDate)) {
+            return false;
+        }
+        return true;
+    }
+
+    public int calculateDiscountedPrice(int originalPrice) {
+        if (originalPrice <= 0) {
+            throw new IllegalArgumentException("Original must not be smaller than 0");
+        }
+        int discountedPrice = 0;
+        switch (discountType) {
+            // 15 / 100 = 0.15 * 1000
+            case RATE -> discountedPrice = (int) (originalPrice - originalPrice * ((double) this.discountValue / 100));
+            case AMOUNT -> discountedPrice = originalPrice - this.discountValue;
+        }
+        return discountedPrice;
+    }
+
 }
 
