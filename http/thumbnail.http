@@ -1,0 +1,36 @@
+### GET thumbnails
+GET http://localhost:8080/v1/thumbnails
+Content-Type: application/json
+
+### 예상 응답
+#[
+#  {
+#    "thumbnailId" : 1,
+#    "path" : "http://host/images/img-1"
+#  },
+#  {
+#    "thumbnailId" : 2,
+#    "path" : "http://host/images/img-2"
+#  }
+#]
+
+### Save Thumbnails
+POST http://localhost:8080/v1/thumbnails
+Content-Type: application/json
+
+{
+  "productId" : 1,
+  "paths": [
+    "http://host/images/img-1",
+    "http://host/images/img-2"
+  ]
+}
+
+### DELETE Thumbnails
+POST http://localhost:8080/v1/thumbnails/delete-thumbnail
+Content-Type: application/json
+
+{
+  "thumbnailId" : 1
+}
+
