@@ -14,15 +14,62 @@ ROLE: ADMIN
 {
   "name": "product1",
   "description": "product 1 description",
-  "category_id": 1,
+  "categoryId": 1,
   "productState": "NEW",
   "createdAt": "2025-02-12T11:17:32.355Z",
   "price": 1000,
-  "discount_id": 2,
-  "summaryDescription": "string",
-  "simpleDescription": "string",
-  "deleted": false,
-  "selling": true
+  "discountId": 2,
+  "summaryDescription": "abc",
+  "simpleDescription": "abc",
+  "isDeleted": false,
+  "isSelling": true,
+  "productOptions": [
+    {
+      "productOptionName": "black/L",
+      "productOptionDetails": [
+        {
+          "optionType": "color",
+          "optionValue": "black"
+        },
+        {
+          "optionType": "size",
+          "optionValue": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "black/M",
+      "productOptionDetails": [
+        {
+          "optionType": "color",
+          "optionValue": "black"
+        },
+        {
+          "optionType": "size",
+          "optionValue": "M"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "white/L",
+      "productOptionDetails": [
+        {
+          "optionType": "color",
+          "optionValue": "white"
+        },
+        {
+          "optionType": "size",
+          "optionValue": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 1000
+    }
+  ]
 }
 
 ### 단일 제품 조회
@@ -40,15 +87,15 @@ ROLE: ADMIN
   "id": 1,
   "name": "updated product1",
   "description": "product 1 description",
-  "category_id": 1,
+  "categoryId": 1,
   "productState": "NEW",
   "createdAt": "2025-02-12T11:17:32.355Z",
   "price": 1000,
-  "discount_id": 1,
+  "discountId": 1,
   "summaryDescription": "string",
   "simpleDescription": "string",
-  "deleted": false,
-  "selling": true
+  "isDeleted": false,
+  "isSelling": true
 }
 
 

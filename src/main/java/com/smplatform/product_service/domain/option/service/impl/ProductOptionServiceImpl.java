@@ -6,7 +6,7 @@ import com.smplatform.product_service.domain.option.entity.ProductOption;
 import com.smplatform.product_service.domain.option.repository.OptionValueRepository;
 import com.smplatform.product_service.domain.option.repository.ProductOptionRepository;
 import com.smplatform.product_service.domain.option.service.ProductOptionService;
-import com.smplatform.product_service.domain.product.domain.Product;
+import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;
 import com.smplatform.product_service.domain.product.repository.ProductRepository;
 import com.smplatform.product_service.domain.option.exception.OptionValueNotFoundException;

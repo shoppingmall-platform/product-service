@@ -1,6 +1,6 @@
 package com.smplatform.product_service.domain.option.entity;
 
-import com.smplatform.product_service.domain.product.domain.Product;
+import com.smplatform.product_service.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +24,9 @@ public class ProductOption {
 
     @Column(name = "stock_quantity")
     private int stockQuantity;
+
+    @Column(name = "additional_price")
+    private int additionalPrice;
 
     @Setter
     @ManyToOne

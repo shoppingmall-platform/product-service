@@ -2,7 +2,7 @@ package com.smplatform.product_service.domain.product.service.impl;
 
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
-import com.smplatform.product_service.domain.product.domain.Product;
+import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;

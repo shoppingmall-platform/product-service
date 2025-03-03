@@ -2,6 +2,7 @@ package com.smplatform.product_service.domain.option.controller;
 
 import com.smplatform.product_service.domain.option.dto.ProductOptionRequestDto;
 import com.smplatform.product_service.domain.option.dto.ProductOptionResponseDto;
+import com.smplatform.product_service.domain.option.entity.ProductOption;
 import com.smplatform.product_service.domain.option.service.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
