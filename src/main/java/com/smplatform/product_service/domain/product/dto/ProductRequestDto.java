@@ -1,7 +1,8 @@
 package com.smplatform.product_service.domain.product.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smplatform.product_service.domain.ProductState;
+import com.smplatform.product_service.domain.option.entity.ProductOption;
+import com.smplatform.product_service.domain.option.entity.ProductOptionDetail;
 import com.smplatform.product_service.domain.product.entity.Product;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,7 +25,7 @@ public class ProductRequestDto {
         private Integer discountId;
         private String summaryDescription;
         private String simpleDescription;
-        private List<ProductOption> productOptions;
+        private List<SaveProductOption> productOptions;
 
         public Product toEntity() {
             return Product.builder()
@@ -43,17 +44,33 @@ public class ProductRequestDto {
     }
 
     @Getter
-    public static class ProductOption {
+    public static class SaveProductOption {
         private String productOptionName;
-        private List<ProductOptionDetail> productOptionDetails;
+        private List<SaveProductOptionDetail> productOptionDetails;
         private int stockQuantity;
         private int additionalPrice;
+
+        public ProductOption toEntity() {
+            return ProductOption.builder()
+                    .productOptionName(this.productOptionName)
+                    .createdAt(LocalDateTime.now())
+                    .stockQuantity(this.stockQuantity)
+                    .additionalPrice(this.additionalPrice)
+                    .build();
+        }
     }
 
     @Getter
-    public static class ProductOptionDetail {
-        private String optionType;
-        private String optionValue;
+    public static class SaveProductOptionDetail {
+        private String productOptionType;
+        private String productOptionDetailName;
+
+        public ProductOptionDetail toEntity() {
+            return ProductOptionDetail.builder()
+                    .productOptionDetailName(this.productOptionDetailName)
+                    .productOptionType(this.productOptionType)
+                    .build();
+        }
     }
 
     @Getter

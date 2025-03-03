@@ -17,7 +17,10 @@ public class ProductOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_option_id")
-    private int productOptionId;
+    private long productOptionId;
+
+    @Column(name = "product_option_name")
+    private String productOptionName;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -32,10 +35,5 @@ public class ProductOption {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "option_value_id")
-    private OptionValue optionValue;
 }
 
