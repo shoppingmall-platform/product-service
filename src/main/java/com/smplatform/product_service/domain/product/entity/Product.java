@@ -1,4 +1,4 @@
-package com.smplatform.product_service.domain.product.domain;
+package com.smplatform.product_service.domain.product.entity;
 
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.ProductState;

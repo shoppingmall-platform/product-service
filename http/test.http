@@ -14,19 +14,99 @@ ROLE: ADMIN
 {
   "name": "product1",
   "description": "product 1 description",
-  "category_id": 1,
+  "categoryId": 1,
   "productState": "NEW",
   "createdAt": "2025-02-12T11:17:32.355Z",
   "price": 1000,
-  "discount_id": 2,
-  "summaryDescription": "string",
-  "simpleDescription": "string",
-  "deleted": false,
-  "selling": true
+  "discountId": 2,
+  "summaryDescription": "abc",
+  "simpleDescription": "abc",
+  "isDeleted": false,
+  "isSelling": true,
+  "productOptions": [
+    {
+      "productOptionName": "black/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "black/M",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "white/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "white"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 1000
+    }
+  ]
+}
+
+### 제품 생성 with only 1 option
+POST localhost:8080/v1/product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "name": "hat",
+  "description": "cap description",
+  "categoryId": 1,
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discountId": 2,
+  "summaryDescription": "no cap",
+  "simpleDescription": "abc",
+  "isDeleted": false,
+  "isSelling": true,
+  "productOptions": [
+    {
+      "productOptionName": "Free",
+      "productOptionDetails": [
+        {
+          "productOptionType": "style",
+          "productOptionDetailName": "1"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    }
+  ]
 }
 
 ### 단일 제품 조회
-GET localhost:8080/v1/product/2
+GET localhost:8080/v1/product/1
 X-MEMBER-ID: asdf
 
 
@@ -40,15 +120,15 @@ ROLE: ADMIN
   "id": 1,
   "name": "updated product1",
   "description": "product 1 description",
-  "category_id": 1,
+  "categoryId": 1,
   "productState": "NEW",
   "createdAt": "2025-02-12T11:17:32.355Z",
   "price": 1000,
-  "discount_id": 1,
+  "discountId": 1,
   "summaryDescription": "string",
   "simpleDescription": "string",
-  "deleted": false,
-  "selling": true
+  "isDeleted": false,
+  "isSelling": true
 }
 
 

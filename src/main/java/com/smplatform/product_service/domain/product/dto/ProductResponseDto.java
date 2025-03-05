@@ -2,13 +2,13 @@ package com.smplatform.product_service.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.product.domain.Product;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.smplatform.product_service.domain.option.entity.ProductOption;
+import com.smplatform.product_service.domain.option.entity.ProductOptionDetail;
+import com.smplatform.product_service.domain.product.entity.Product;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class ProductResponseDto {
@@ -22,31 +22,24 @@ public class ProductResponseDto {
 
     @Builder
     @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class GetProduct {
         int id;
         private String name;
         private String description;
-        @JsonProperty("is_deleted")
         private boolean isDeleted;
-        @JsonProperty("category_id")
         private int categoryId;
-        @JsonProperty("product_state")
         private ProductState productState;
-        @JsonProperty("is_selling")
         private boolean isSelling;
-        @JsonProperty("created_at")
         private LocalDateTime createdAt;
         private int price;
-        @JsonProperty("discount_id")
         private Integer discountId;
-        @JsonProperty("summary_description")
         private String summaryDescription;
-        @JsonProperty("simple_description")
         private String simpleDescription;
-        @JsonProperty("discounted_price")
         private int discountedPrice;
+        private List<ProductResponseDto.GetProductOption> productOptions;
 
         public Product toEntity() {
             return Product.builder()
@@ -73,6 +66,38 @@ public class ProductResponseDto {
                     .summaryDescription(product.getSummaryDescription())
                     .simpleDescription(product.getSimpleDescription())
                     .discountedPrice(product.getDiscountedPrice())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class GetProductOption {
+        private String productOptionName;
+        private List<ProductResponseDto.GetProductOptionDetail> productOptionDetails;
+        private int stockQuantity;
+        private int additionalPrice;
+
+        public static ProductResponseDto.GetProductOption of(ProductOption productOption) {
+            return GetProductOption.builder()
+                    .productOptionName(productOption.getProductOptionName())
+                    .stockQuantity(productOption.getStockQuantity())
+                    .additionalPrice(productOption.getAdditionalPrice())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    public static class GetProductOptionDetail {
+        private String productOptionType;
+        private String productOptionDetailName;
+
+        public static ProductResponseDto.GetProductOptionDetail of(ProductOptionDetail productOptionDetail) {
+            return GetProductOptionDetail.builder()
+                    .productOptionType(productOptionDetail.getProductOptionType())
+                    .productOptionDetailName(productOptionDetail.getProductOptionDetailName())
                     .build();
         }
     }
