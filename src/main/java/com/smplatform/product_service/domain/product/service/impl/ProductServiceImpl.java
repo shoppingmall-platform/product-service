@@ -45,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductResponseDto.GetProduct getProduct(int productId) {
+        // todo: N+1 확인
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(String.format("product { %d } not found", productId)));
         List<ProductOption> productOptions = productOptionRepository.findAllByProduct_Id(productId);
@@ -124,6 +125,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public String updateProduct(ProductRequestDto.UpdateProduct productDto) {
+        // todo : Option 수정
         Product product = productRepository.findById(productDto.getId())
                 .orElseThrow(() -> new ProductNotFoundException(String.format("product id : %d not found", productDto.getId())));
 
@@ -153,7 +155,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto.GetProduct> getProducts(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
         List<ProductResponseDto.GetProduct> resultProducts = new ArrayList<>();
-        // N+1 entitygraph 사용
+        // N+1 entitygraph= 사용
         for (Product product : products) {
             resultProducts.add(ProductResponseDto.GetProduct.of(product));
         }
