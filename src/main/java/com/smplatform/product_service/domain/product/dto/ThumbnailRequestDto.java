@@ -1,7 +1,7 @@
-package com.smplatform.product_service.domain.thumbnail.dto;
+package com.smplatform.product_service.domain.product.dto;
 
-import com.smplatform.product_service.domain.product.domain.Product;
-import com.smplatform.product_service.domain.thumbnail.entity.Thumbnail;
+import com.smplatform.product_service.domain.product.entity.Product;
+import com.smplatform.product_service.domain.product.entity.Thumbnail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

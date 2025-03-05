@@ -1,7 +1,7 @@
 package com.smplatform.product_service.domain.thumbnail.controller;
 
-import com.smplatform.product_service.domain.thumbnail.dto.ThumbnailResponseDto;
-import com.smplatform.product_service.domain.thumbnail.service.ThumbnailService;
+import com.smplatform.product_service.domain.product.dto.ThumbnailResponseDto;
+import com.smplatform.product_service.domain.product.service.ThumbnailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

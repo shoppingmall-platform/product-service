@@ -1,4 +1,4 @@
-package com.smplatform.product_service.domain.option.entity;
+package com.smplatform.product_service.domain.product.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,5 @@
-package com.smplatform.product_service.domain.thumbnail.entity;
+package com.smplatform.product_service.domain.product.entity;
 
-import com.smplatform.product_service.domain.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

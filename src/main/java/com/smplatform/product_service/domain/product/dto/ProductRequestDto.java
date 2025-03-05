@@ -1,8 +1,8 @@
 package com.smplatform.product_service.domain.product.dto;
 
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.option.entity.ProductOption;
-import com.smplatform.product_service.domain.option.entity.ProductOptionDetail;
+import com.smplatform.product_service.domain.product.entity.ProductOption;
+import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
 import com.smplatform.product_service.domain.product.entity.Product;
 import lombok.Getter;
 import lombok.ToString;

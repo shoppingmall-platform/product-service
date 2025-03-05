@@ -1,6 +1,6 @@
 package com.smplatform.product_service.domain.option.dto;
 
-import com.smplatform.product_service.domain.option.entity.ProductOption;
+import com.smplatform.product_service.domain.product.entity.ProductOption;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

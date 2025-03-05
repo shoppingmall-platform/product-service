@@ -1,7 +1,7 @@
 package com.smplatform.product_service.advice;
 
 import com.smplatform.product_service.domain.category.exception.AbstractCategoryException;
-import com.smplatform.product_service.domain.thumbnail.exception.ThumbnailNotFoundException;
+import com.smplatform.product_service.domain.product.exception.ThumbnailNotFoundException;
 import com.smplatform.product_service.exception.DiscountNotFoundException;
 import com.smplatform.product_service.exception.ProductStateNotFoundException;
 import org.springframework.http.HttpStatus;

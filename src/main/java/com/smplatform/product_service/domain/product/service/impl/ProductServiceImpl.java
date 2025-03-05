@@ -2,10 +2,10 @@ package com.smplatform.product_service.domain.product.service.impl;
 
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
-import com.smplatform.product_service.domain.option.entity.ProductOption;
-import com.smplatform.product_service.domain.option.entity.ProductOptionDetail;
-import com.smplatform.product_service.domain.option.repository.ProductOptionDetailRepository;
-import com.smplatform.product_service.domain.option.repository.ProductOptionRepository;
+import com.smplatform.product_service.domain.product.entity.ProductOption;
+import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
+import com.smplatform.product_service.domain.product.repository.ProductOptionDetailRepository;
+import com.smplatform.product_service.domain.product.repository.ProductOptionRepository;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.Product;

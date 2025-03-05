@@ -1,19 +1,16 @@
 package com.smplatform.product_service.domain.thumbnail.service.impl;
 
-import com.smplatform.product_service.domain.thumbnail.dto.ThumbnailRequestDto;
-import com.smplatform.product_service.domain.thumbnail.entity.Thumbnail;
-import com.smplatform.product_service.domain.thumbnail.repository.ThumbnailRepository;
+import com.smplatform.product_service.domain.product.service.impl.ThumbnailServiceImpl;
+import com.smplatform.product_service.domain.product.dto.ThumbnailRequestDto;
+import com.smplatform.product_service.domain.product.repository.ThumbnailRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ThumbnailServiceImplTest {

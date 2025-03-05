@@ -1,6 +1,6 @@
-package com.smplatform.product_service.domain.thumbnail.repository;
+package com.smplatform.product_service.domain.product.repository;
 
-import com.smplatform.product_service.domain.thumbnail.entity.Thumbnail;
+import com.smplatform.product_service.domain.product.entity.Thumbnail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

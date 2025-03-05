@@ -1,7 +1,6 @@
-package com.smplatform.product_service.domain.thumbnail.service;
+package com.smplatform.product_service.domain.product.service;
 
-import com.smplatform.product_service.domain.thumbnail.dto.ThumbnailRequestDto;
-import com.smplatform.product_service.domain.thumbnail.dto.ThumbnailResponseDto;
+import com.smplatform.product_service.domain.product.dto.ThumbnailResponseDto;
 
 import java.util.List;
 

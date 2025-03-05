@@ -1,13 +1,13 @@
-package com.smplatform.product_service.domain.thumbnail.service.impl;
+package com.smplatform.product_service.domain.product.service.impl;
 
-import com.smplatform.product_service.domain.product.domain.Product;
+import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;
 import com.smplatform.product_service.domain.product.repository.ProductRepository;
-import com.smplatform.product_service.domain.thumbnail.dto.ThumbnailResponseDto;
-import com.smplatform.product_service.domain.thumbnail.entity.Thumbnail;
-import com.smplatform.product_service.domain.thumbnail.exception.ThumbnailNotFoundException;
-import com.smplatform.product_service.domain.thumbnail.repository.ThumbnailRepository;
-import com.smplatform.product_service.domain.thumbnail.service.ThumbnailService;
+import com.smplatform.product_service.domain.product.dto.ThumbnailResponseDto;
+import com.smplatform.product_service.domain.product.entity.Thumbnail;
+import com.smplatform.product_service.domain.product.exception.ThumbnailNotFoundException;
+import com.smplatform.product_service.domain.product.repository.ThumbnailRepository;
+import com.smplatform.product_service.domain.product.service.ThumbnailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
