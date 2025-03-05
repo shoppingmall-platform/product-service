@@ -22,9 +22,8 @@ class ThumbnailServiceImplTest {
 
     @Test
     @DisplayName("thumbnail 저장")
-    void saveThumbnail() {
+    void saveThumbnails() {
         ThumbnailRequestDto.SaveThumbnail saveThumbnail = new ThumbnailRequestDto.SaveThumbnail(
-                1,
                 List.of(
                         "/images.img-1",
                         "/images.img-1"

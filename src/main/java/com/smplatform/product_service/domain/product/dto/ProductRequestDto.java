@@ -1,9 +1,7 @@
 package com.smplatform.product_service.domain.product.dto;
 
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.product.entity.ProductOption;
-import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
-import com.smplatform.product_service.domain.product.entity.Product;
+import com.smplatform.product_service.domain.product.entity.*;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -16,26 +14,18 @@ public class ProductRequestDto {
     public static class SaveProduct {
         private String name;
         private String description;
-        private boolean isDeleted;
         private int categoryId;
-        private ProductState productState;
-        private boolean isSelling;
-        private LocalDateTime createdAt;
         private int price;
-        private Integer discountId;
         private String summaryDescription;
         private String simpleDescription;
         private List<SaveProductOption> productOptions;
+        private ThumbnailRequestDto.SaveThumbnail thumbnails;
 
         public Product toEntity() {
             return Product.builder()
                     .id(0)
                     .name(this.getName())
                     .description(this.getDescription())
-                    .isDeleted(this.isDeleted())
-                    .productState(this.getProductState())
-                    .isSelling(this.isSelling())
-                    .createdAt(this.getCreatedAt())
                     .price(this.getPrice())
                     .summaryDescription(this.getSummaryDescription())
                     .simpleDescription(this.getSimpleDescription())
@@ -76,17 +66,15 @@ public class ProductRequestDto {
     @Getter
     @ToString
     public static class UpdateProduct {
-        private int id;
+        private long id;
         private String name;
         private String description;
-        private boolean isDeleted;
         private int categoryId;
         private ProductState productState;
-        private boolean isSelling;
-        private LocalDateTime createdAt;
         private int price;
         private Integer discountId;
         private String summaryDescription;
         private String simpleDescription;
+        private ThumbnailRequestDto.SaveThumbnail thumbnails;
     }
 }

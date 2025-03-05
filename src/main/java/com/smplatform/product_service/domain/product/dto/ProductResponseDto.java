@@ -16,7 +16,7 @@ public class ProductResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RegisterProduct {
-        int productId;
+        long productId;
     }
 
     @Builder
@@ -25,7 +25,7 @@ public class ProductResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class GetProduct {
-        int id;
+        long id;
         private String name;
         private String description;
         private boolean isDeleted;
@@ -39,6 +39,7 @@ public class ProductResponseDto {
         private String simpleDescription;
         private int discountedPrice;
         private List<ProductResponseDto.GetProductOption> productOptions;
+        private List<ThumbnailResponseDto.ThumbnailInfo> thumbnails;
 
         public Product toEntity() {
             return Product.builder()

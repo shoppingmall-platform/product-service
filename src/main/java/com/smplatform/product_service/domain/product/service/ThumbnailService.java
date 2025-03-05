@@ -5,9 +5,9 @@ import com.smplatform.product_service.domain.product.dto.ThumbnailResponseDto;
 import java.util.List;
 
 public interface ThumbnailService {
-    List<ThumbnailResponseDto.ThumbnailInfo> getProductThumbnailList(Integer productId);
+    List<ThumbnailResponseDto.ThumbnailInfo> getProductThumbnailList(Long productId);
 
-    void saveThumbnail(int productId, List<String> paths);
+    void saveThumbnails(long productId, List<String> paths);
 
-    void deleteThumbnail(long thumbnailId);
+    void deleteThumbnail(List<Long> thumbnailIds);
 }

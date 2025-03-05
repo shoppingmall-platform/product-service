@@ -1,36 +1,48 @@
-### GET thumbnails
-GET http://localhost:8080/v1/thumbnails
-Content-Type: application/json
-
-### 예상 응답
-#[
-#  {
-#    "thumbnailId" : 1,
-#    "path" : "http://host/images/img-1"
-#  },
-#  {
-#    "thumbnailId" : 2,
-#    "path" : "http://host/images/img-2"
-#  }
-#]
-
-### Save Thumbnails
-POST http://localhost:8080/v1/thumbnails
+### Category
+POST http://localhost:8080/v1/categories
 Content-Type: application/json
 
 {
-  "productId" : 1,
-  "paths": [
-    "http://host/images/img-1",
-    "http://host/images/img-2"
-  ]
+  "categoryName" : "test2",
+  "categoryLevel" : 1
 }
 
-### DELETE Thumbnails
-POST http://localhost:8080/v1/thumbnails/delete-thumbnail
+### Save Product - Thumbnails Test
+POST http://localhost:8080/v1/product
 Content-Type: application/json
+X-USER-ID: test
+ROLE: ADMIN
 
 {
-  "thumbnailId" : 1
+  "name": "Product Name2",
+  "description": "description.",
+  "categoryId": 1,
+  "price": 22222,
+  "summaryDescription": "summary description.",
+  "simpleDescription": "simple description.",
+  "productOptions": [
+    {
+      "productOptionName": "PON",
+      "productOptionDetails": [
+        {
+          "productOptionType": "POT",
+          "productOptionDetailName": "OPDN"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 3333
+    }
+  ],
+  "thumbnails": {
+    "paths": [
+      "/path/1",
+      "/path/2",
+      "/path/3"
+    ]
+  }
+
 }
+
+### 확인 - 상품 조회
+GET http://localhost:8080/v1/product
 

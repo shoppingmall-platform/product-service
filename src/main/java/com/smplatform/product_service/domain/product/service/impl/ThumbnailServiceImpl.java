@@ -25,7 +25,7 @@ public class ThumbnailServiceImpl implements ThumbnailService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ThumbnailResponseDto.ThumbnailInfo> getProductThumbnailList(Integer productId) {
+    public List<ThumbnailResponseDto.ThumbnailInfo> getProductThumbnailList(Long productId) {
         List<Thumbnail> thumbnails;
         if (productId == null) {
             thumbnails = thumbnailRepository.findAll();
@@ -38,7 +38,7 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
 
     @Override
-    public void saveThumbnail(int productId, List<String> paths) {
+    public void saveThumbnails(long productId, List<String> paths) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("존재하지 않는 상품 Id 입니다 : " + productId));
         List<Thumbnail> thumbnails = paths.stream()
                 .map(path -> Thumbnail.builder()
@@ -50,8 +50,7 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
 
     @Override
-    public void deleteThumbnail(long thumbnailId) {
-        Thumbnail thumbnail = thumbnailRepository.findById(thumbnailId).orElseThrow(() -> new ThumbnailNotFoundException("존재하지 않는 썸네일 Id 입니다" + thumbnailId));
-        thumbnailRepository.delete(thumbnail);
+    public void deleteThumbnail(List<Long> thumbnailIds) {
+        thumbnailRepository.deleteAllById(thumbnailIds);
     }
 }

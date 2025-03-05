@@ -11,7 +11,7 @@ public class ProductOptionRequestDto {
 
     @Getter
     public static class SaveProductOption {
-        private int productId;
+        private long productId;
         private int optionValueId;
         private int stockQuantity;
 

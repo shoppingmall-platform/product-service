@@ -18,7 +18,7 @@ public class ThumbnailRequestDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class SaveThumbnail {
-        private int productId;
+//        private long productId;
         private List<String> paths;
 
         public Thumbnail toEntity(Product product, String path) {
