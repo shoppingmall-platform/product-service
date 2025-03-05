@@ -4,6 +4,7 @@ import com.smplatform.product_service.domain.option.dto.OptionRequestDto;
 import com.smplatform.product_service.domain.option.dto.OptionResponseDto;
 import com.smplatform.product_service.domain.option.entity.OptionType;
 import com.smplatform.product_service.domain.option.entity.OptionValue;
+import com.smplatform.product_service.domain.option.exception.OptionTypeNotFoundException;
 import com.smplatform.product_service.domain.option.repository.OptionTypeRepository;
 import com.smplatform.product_service.domain.option.repository.OptionValueRepository;
 import com.smplatform.product_service.domain.option.service.OptionService;
@@ -53,5 +54,10 @@ public class OptionServiceImpl implements OptionService {
                     optionDto.setOptionValues(optionValueDtos);
                     return optionDto;
                 }).toList();
+    }
+
+    @Override
+    public void deleteOptionType(long id) {
+        optionTypeRepository.delete(optionTypeRepository.findById(id).orElseThrow(OptionTypeNotFoundException::new));
     }
 }

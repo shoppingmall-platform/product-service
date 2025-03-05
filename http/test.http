@@ -49,8 +49,11 @@ ROLE: ADMIN
   ]
 }
 
-
-
+### 옵션 삭제
+POST localhost:8080/v1/option/remove-type/1
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
 
 
 ### 제품 생성

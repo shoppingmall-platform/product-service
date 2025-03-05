@@ -26,6 +26,6 @@ public class OptionType {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "optionType")
+    @OneToMany(mappedBy = "optionType", cascade = CascadeType.ALL)
     private List<OptionValue> optionValues;
 }

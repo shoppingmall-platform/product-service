@@ -13,4 +13,6 @@ public interface OptionService {
     long saveOption(OptionRequestDto.SaveOption optionRequestDto);
 
     List<OptionResponseDto.GetOption> getOptions(Pageable pageable);
+
+    void deleteOptionType(long id);
 }
