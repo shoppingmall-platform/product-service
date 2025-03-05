@@ -1,4 +1,4 @@
-package com.smplatform.product_service.domain.product.domain;
+package com.smplatform.product_service.domain.product.entity;
 
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.ProductState;
@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Builder
 @Entity
@@ -56,4 +57,9 @@ public class Product {
 
     @Column(name = "simple_description")
     private String simpleDescription;
+
+    public int getDiscountedPrice() {
+        return Objects.nonNull(discount) && discount.isValidDiscount() ?
+                discount.calculateDiscountedPrice(price) : price;
+    }
 }
