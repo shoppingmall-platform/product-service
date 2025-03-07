@@ -5,6 +5,57 @@ content-type:application/json
 {
 }
 
+### 전체 옵션 조회
+GET localhost:8080/v1/option?page=0&size=3
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+### 옵션 생성1
+POST localhost:8080/v1/option
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "optionTypeName": "size",
+  "optionValues": [
+    {
+      "optionValueName": "XL"
+    },
+    {
+      "optionValueName": "L"
+    },
+    {
+      "optionValueName": "S"
+    }
+  ]
+}
+### 옵션 생성2
+POST localhost:8080/v1/option
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "optionTypeName": "color",
+  "optionValues": [
+    {
+      "optionValueName": "black"
+    },
+    {
+      "optionValueName": "white"
+    }
+  ]
+}
+
+### 옵션 삭제
+POST localhost:8080/v1/option/remove-type/1
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+
 ### 제품 생성
 POST localhost:8080/v1/product
 content-type: application/json
@@ -133,7 +184,7 @@ ROLE: ADMIN
 
 
 ### 전체 제품 조회 (페이지네이션)
-GET http://localhost:8080/v1/product?page=1&size=3
+GET http://localhost:8080/v1/product?page=0&size=3
 X-MEMBER-ID: asdf
 
 ### 할인 추가
