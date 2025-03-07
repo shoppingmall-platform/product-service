@@ -20,19 +20,19 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    @Operation(summary = "카테도리 목록 조회", description = "전체 카테고리 조회")
+    @Operation(summary = "카테고리 목록 조회", description = "전체 카테고리 조회")
     public ResponseEntity<List<CategoryResponseDto.CategoryInfo>> getCategoryList() {
         return ResponseEntity.ok(categoryService.getCategoryList());
     }
 
     @GetMapping("/{category-id}")
-    @Operation(summary = "특정 카테도리 조회", description = "특정 category id의 카테고리 조회")
+    @Operation(summary = "특정 카테고리 조회", description = "특정 category id의 카테고리 조회")
     public ResponseEntity<CategoryResponseDto.CategoryInfo> getCategory(@PathVariable("category-id") int categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
     @PostMapping
-    @Operation(summary = "카테도리 등록", description = "level : positive number")
+    @Operation(summary = "카테고리 등록", description = "level : positive number")
     public ResponseEntity<Integer> createCategory(@Valid @RequestBody CategoryRequestDto.CreateCategory body) {
         return ResponseEntity.status(201).body(categoryService.saveCategory(body));
     }
