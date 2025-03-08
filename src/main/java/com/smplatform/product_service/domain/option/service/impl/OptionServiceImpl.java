@@ -26,7 +26,6 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public long saveOption(OptionRequestDto.SaveOption optionRequestDto) {
-        optionRequestDto.setCreatedAt(LocalDateTime.now());
         OptionType optionType = optionRequestDto.toEntity();
         optionType = optionTypeRepository.save(optionType);
         List<OptionRequestDto.SaveOptionValue> optionValueDtos = optionRequestDto.getOptionValues();

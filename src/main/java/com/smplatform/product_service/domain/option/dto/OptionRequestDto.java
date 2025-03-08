@@ -17,12 +17,11 @@ public class OptionRequestDto {
     public static class SaveOption {
         private String optionTypeName;
         private List<OptionRequestDto.SaveOptionValue> optionValues;
-        private LocalDateTime createdAt;
 
         public OptionType toEntity() {
             return OptionType.builder()
                     .optionTypeName(optionTypeName)
-                    .createdAt(createdAt)
+                    .createdAt(LocalDateTime.now())
                     .build();
         }
     }
