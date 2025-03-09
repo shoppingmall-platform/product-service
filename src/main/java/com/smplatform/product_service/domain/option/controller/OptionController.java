@@ -31,9 +31,9 @@ public class OptionController {
     }
 
     @AdminOnly
-    @PostMapping("/remove-type/{optiontype-id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable("optiontype-id") long id) {
-        optionService.deleteOptionType(id);
+    @PostMapping("/delete-option")
+    public ResponseEntity<Void> updateProduct(@RequestBody OptionRequestDto.DeleteOption deleteOptionDto) {
+        optionService.deleteOptionType(deleteOptionDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

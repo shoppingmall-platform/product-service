@@ -14,5 +14,5 @@ public interface OptionService {
 
     List<OptionResponseDto.GetOption> getOptions(Pageable pageable);
 
-    void deleteOptionType(long id);
+    void deleteOptionType(OptionRequestDto.DeleteOption deleteOptionDto);
 }

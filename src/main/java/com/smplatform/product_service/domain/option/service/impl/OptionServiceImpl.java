@@ -56,7 +56,10 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public void deleteOptionType(long id) {
-        optionTypeRepository.delete(optionTypeRepository.findById(id).orElseThrow(OptionTypeNotFoundException::new));
+    public void deleteOptionType(OptionRequestDto.DeleteOption deleteOptionDto) {
+        if (!optionTypeRepository.existsById(deleteOptionDto.getOptionTypeId())) {
+            throw new OptionTypeNotFoundException();
+        }
+        optionTypeRepository.deleteById(deleteOptionDto.getOptionTypeId());
     }
 }

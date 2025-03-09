@@ -13,7 +13,6 @@ public class OptionRequestDto {
     }
 
     @Getter
-    @Setter
     public static class SaveOption {
         private String optionTypeName;
         private List<OptionRequestDto.SaveOptionValue> optionValues;
@@ -36,4 +35,10 @@ public class OptionRequestDto {
                     .build();
         }
     }
+
+    @Getter
+    public static class DeleteOption {
+        private long optionTypeId;
+    }
+
 }
