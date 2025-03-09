@@ -20,7 +20,7 @@ public class Product {
     @Id
     @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "product_name")
     private String name;
@@ -57,6 +57,9 @@ public class Product {
 
     @Column(name = "simple_description")
     private String simpleDescription;
+
+    @Column
+    private String thumbnailPath;
 
     public int getDiscountedPrice() {
         return Objects.nonNull(discount) && discount.isValidDiscount() ?

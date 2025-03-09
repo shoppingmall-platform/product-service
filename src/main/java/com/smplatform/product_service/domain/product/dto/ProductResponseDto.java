@@ -1,9 +1,8 @@
 package com.smplatform.product_service.domain.product.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.option.entity.ProductOption;
-import com.smplatform.product_service.domain.option.entity.ProductOptionDetail;
+import com.smplatform.product_service.domain.product.entity.ProductOption;
+import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
 import com.smplatform.product_service.domain.product.entity.Product;
 import lombok.*;
 
@@ -17,7 +16,7 @@ public class ProductResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RegisterProduct {
-        int productId;
+        long productId;
     }
 
     @Builder
@@ -26,7 +25,7 @@ public class ProductResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class GetProduct {
-        int id;
+        long id;
         private String name;
         private String description;
         private boolean isDeleted;
@@ -40,6 +39,8 @@ public class ProductResponseDto {
         private String simpleDescription;
         private int discountedPrice;
         private List<ProductResponseDto.GetProductOption> productOptions;
+        private String thumbnailPath;
+        private List<ProductImageResponseDto.ProductImageInfo> productImagePaths;
 
         public Product toEntity() {
             return Product.builder()
@@ -48,6 +49,7 @@ public class ProductResponseDto {
                     .description(this.getDescription())
                     .isDeleted(this.isDeleted())
                     .productState(this.getProductState())
+                    .thumbnailPath(this.getThumbnailPath())
                     .build();
         }
 
@@ -66,6 +68,7 @@ public class ProductResponseDto {
                     .summaryDescription(product.getSummaryDescription())
                     .simpleDescription(product.getSimpleDescription())
                     .discountedPrice(product.getDiscountedPrice())
+                    .thumbnailPath(product.getThumbnailPath())
                     .build();
         }
     }
