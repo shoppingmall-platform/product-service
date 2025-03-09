@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/option")
+@RequestMapping("/v1/options")
 @RequiredArgsConstructor
 public class OptionController {
     private final OptionService optionService;
