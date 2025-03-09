@@ -19,7 +19,8 @@ public class ProductRequestDto {
         private String summaryDescription;
         private String simpleDescription;
         private List<SaveProductOption> productOptions;
-        private ThumbnailRequestDto.SaveThumbnail thumbnails;
+        private String thumbnail;
+        private ProductImageRequestDto.SaveProductImage productImages;
 
         public Product toEntity() {
             return Product.builder()
@@ -29,6 +30,7 @@ public class ProductRequestDto {
                     .price(this.getPrice())
                     .summaryDescription(this.getSummaryDescription())
                     .simpleDescription(this.getSimpleDescription())
+                    .thumbnailPath(this.thumbnail)
                     .build();
         }
     }
@@ -75,6 +77,7 @@ public class ProductRequestDto {
         private Integer discountId;
         private String summaryDescription;
         private String simpleDescription;
-        private ThumbnailRequestDto.SaveThumbnail thumbnails;
+        private String thumbnailPath;
+        private ProductImageRequestDto.SaveProductImage productImagePaths;
     }
 }

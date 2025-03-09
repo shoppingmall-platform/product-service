@@ -39,7 +39,8 @@ public class ProductResponseDto {
         private String simpleDescription;
         private int discountedPrice;
         private List<ProductResponseDto.GetProductOption> productOptions;
-        private List<ThumbnailResponseDto.ThumbnailInfo> thumbnails;
+        private String thumbnailPath;
+        private List<ProductImageResponseDto.ProductImageInfo> productImagePaths;
 
         public Product toEntity() {
             return Product.builder()
@@ -48,6 +49,7 @@ public class ProductResponseDto {
                     .description(this.getDescription())
                     .isDeleted(this.isDeleted())
                     .productState(this.getProductState())
+                    .thumbnailPath(this.getThumbnailPath())
                     .build();
         }
 
@@ -66,6 +68,7 @@ public class ProductResponseDto {
                     .summaryDescription(product.getSummaryDescription())
                     .simpleDescription(product.getSimpleDescription())
                     .discountedPrice(product.getDiscountedPrice())
+                    .thumbnailPath(product.getThumbnailPath())
                     .build();
         }
     }

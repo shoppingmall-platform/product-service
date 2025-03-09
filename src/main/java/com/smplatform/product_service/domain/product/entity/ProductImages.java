@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product_thumpnail")
-public class Thumbnail {
+@Table(name = "product_images")
+public class ProductImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "thumbnail_id")
-    private long thumbnailId;
+    @Column
+    private long productImageId;
 
     @JoinColumn(name = "product_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,11 +25,19 @@ public class Thumbnail {
     private String path;
 
     @CreationTimestamp
-    @Column(name = "create_at")
+    @Column
     private LocalDateTime createdAt;
 
-    @Column(name = "update_at")
+    @Column
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private ProductImageStatus status = ProductImageStatus.ACTIVE;
+
+    public enum ProductImageStatus {
+        ACTIVE, DELETED
+    }
 
     @PreUpdate
     public void preUpdate() {
@@ -37,13 +45,12 @@ public class Thumbnail {
     }
 
     @Builder
-    public Thumbnail(long thumbnailId, Product product, String path) {
-        this.thumbnailId = thumbnailId;
+    public ProductImages(Product product, String path) {
         this.product = product;
         this.path = path;
     }
 
-    public void update(String photoUrl) {
+    public void update(String path) {
         this.path = path;
     }
 

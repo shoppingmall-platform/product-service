@@ -2,8 +2,7 @@ package com.smplatform.product_service.domain.product.service.impl;
 
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
-import com.smplatform.product_service.domain.product.dto.ThumbnailRequestDto;
-import com.smplatform.product_service.domain.product.dto.ThumbnailResponseDto;
+import com.smplatform.product_service.domain.product.dto.ProductImageResponseDto;
 import com.smplatform.product_service.domain.product.entity.ProductOption;
 import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
 import com.smplatform.product_service.domain.product.repository.ProductOptionDetailRepository;
@@ -13,9 +12,8 @@ import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;
 import com.smplatform.product_service.domain.product.repository.ProductRepository;
-import com.smplatform.product_service.domain.product.repository.ThumbnailRepository;
 import com.smplatform.product_service.domain.product.service.ProductService;
-import com.smplatform.product_service.domain.product.service.ThumbnailService;
+import com.smplatform.product_service.domain.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private final DiscountRepository discountRepository;
     private final ProductOptionRepository productOptionRepository;
     private final ProductOptionDetailRepository productOptionDetailRepository;
-    private final ThumbnailService thumbnailService;
+    private final ProductImageService productImageService;
 
     /**
      * 단일 제품 조회
@@ -113,10 +111,10 @@ public class ProductServiceImpl implements ProductService {
                 }).toList();
         productOptionDetailRepository.saveAll(productOptionDetails);
 
-        // 썸네일 저장
-        thumbnailService.saveThumbnails(
+        // 상품이미지 저장
+        productImageService.saveProductImages(
                 product.getId(),
-                productDto.getThumbnails().getPaths());
+                productDto.getProductImages().getPaths());
 
         // 상품 태그 저장
 
@@ -151,30 +149,30 @@ public class ProductServiceImpl implements ProductService {
         BeanUtils.copyProperties(productDto, product, "id");
 
         // 썸네일 수정
-        updateThumbnail(
+        updateProductImage(
                 product,
-                productDto.getThumbnails().getPaths()
+                productDto.getProductImagePaths().getPaths()
         );
 
         return String.valueOf(productRepository.save(product).getId());
     }
 
-    private void updateThumbnail(Product product, List<String> paths) {
-        List<ThumbnailResponseDto.ThumbnailInfo> originalThumbnailInfoList = thumbnailService.getProductThumbnailList(product.getId());
+    private void updateProductImage(Product product, List<String> paths) {
+        List<ProductImageResponseDto.ProductImageInfo> originalProductImageInfoList = productImageService.getProductProductImageList(product.getId());
 
         // 삭제된 항목 제거
-        List<Long> toDeleteIds = originalThumbnailInfoList.stream()
+        List<Long> toDeleteIds = originalProductImageInfoList.stream()
                 .filter(original -> !paths.contains(original.getPath()))
-                .map(ThumbnailResponseDto.ThumbnailInfo::getThumbnailId)
+                .map(ProductImageResponseDto.ProductImageInfo::getProductImageId)
                 .collect(Collectors.toList());
 
         if (!toDeleteIds.isEmpty()) {
-            thumbnailService.deleteThumbnail(toDeleteIds);
+            productImageService.deleteProductImage(toDeleteIds);
         }
 
         // 추가된 항목 저장
-        List<String> originalPaths = originalThumbnailInfoList.stream()
-                .map(ThumbnailResponseDto.ThumbnailInfo::getPath)
+        List<String> originalPaths = originalProductImageInfoList.stream()
+                .map(ProductImageResponseDto.ProductImageInfo::getPath)
                 .collect(Collectors.toList());
 
         List<String> toAdd = paths.stream()
@@ -182,7 +180,7 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
 
         if (!toAdd.isEmpty()) {
-            thumbnailService.saveThumbnails(product.getId(), toAdd);
+            productImageService.saveProductImages(product.getId(), toAdd);
         }
     }
 
@@ -199,7 +197,7 @@ public class ProductServiceImpl implements ProductService {
         // N+1 entitygraph 사용
         for (Product product : products) {
             ProductResponseDto.GetProduct productDto = ProductResponseDto.GetProduct.of(product);
-            productDto.setThumbnails(thumbnailService.getProductThumbnailList(product.getId()));
+            productDto.setProductImagePaths(productImageService.getProductProductImageList(product.getId()));
             resultProducts.add(productDto);
         }
         return resultProducts;

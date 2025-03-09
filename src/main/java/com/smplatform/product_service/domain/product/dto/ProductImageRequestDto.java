@@ -1,7 +1,7 @@
 package com.smplatform.product_service.domain.product.dto;
 
 import com.smplatform.product_service.domain.product.entity.Product;
-import com.smplatform.product_service.domain.product.entity.Thumbnail;
+import com.smplatform.product_service.domain.product.entity.ProductImages;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,20 +9,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class ThumbnailRequestDto {
-    private ThumbnailRequestDto() {
+public class ProductImageRequestDto {
+    private ProductImageRequestDto() {
         throw new IllegalStateException("Utility class");
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class SaveThumbnail {
+    public static class SaveProductImage {
 //        private long productId;
         private List<String> paths;
 
-        public Thumbnail toEntity(Product product, String path) {
-            return Thumbnail.builder()
+        public ProductImages toEntity(Product product, String path) {
+            return ProductImages.builder()
                     .product(product)
                     .path(path)
                     .build();
@@ -32,7 +32,7 @@ public class ThumbnailRequestDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class DeleteThumbnail {
-        private long thumbnailId;
+    public static class DeleteProductImage {
+        private long productImageId;
     }
 }

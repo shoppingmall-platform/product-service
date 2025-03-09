@@ -58,6 +58,9 @@ public class Product {
     @Column(name = "simple_description")
     private String simpleDescription;
 
+    @Column
+    private String thumbnailPath;
+
     public int getDiscountedPrice() {
         return Objects.nonNull(discount) && discount.isValidDiscount() ?
                 discount.calculateDiscountedPrice(price) : price;
