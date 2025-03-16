@@ -126,7 +126,6 @@ public class ProductResponseDto {
             if (Objects.nonNull(product.getDiscount())) {
                 productDto.setDiscountInfo(DiscountResponseDto.DiscountInfo.of(product.getDiscount()));
             }
-            System.out.println("이거 실해외디ㅗ나?");
             productDto.setTag(ProductResponseDto.GetProductTag.of(product.getProductTags()));
             return productDto;
         }

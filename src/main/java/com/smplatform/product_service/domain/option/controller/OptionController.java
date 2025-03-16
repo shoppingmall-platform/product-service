@@ -32,7 +32,6 @@ public class OptionController {
     @AdminOnly
     @PostMapping("/delete-option")
     public ResponseEntity<Void> updateProduct(@RequestBody OptionRequestDto.DeleteOption deleteOptionDto) {
-        System.out.println("이거 실행되나?");
         optionService.deleteOptionType(deleteOptionDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
