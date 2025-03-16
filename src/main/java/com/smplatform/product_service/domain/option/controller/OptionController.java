@@ -4,7 +4,6 @@ import com.smplatform.product_service.annotation.AdminOnly;
 import com.smplatform.product_service.domain.option.dto.OptionRequestDto;
 import com.smplatform.product_service.domain.option.dto.OptionResponseDto;
 import com.smplatform.product_service.domain.option.service.OptionService;
-import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -33,6 +32,7 @@ public class OptionController {
     @AdminOnly
     @PostMapping("/delete-option")
     public ResponseEntity<Void> updateProduct(@RequestBody OptionRequestDto.DeleteOption deleteOptionDto) {
+        System.out.println("이거 실행되나?");
         optionService.deleteOptionType(deleteOptionDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
