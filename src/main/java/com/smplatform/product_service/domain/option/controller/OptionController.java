@@ -4,7 +4,6 @@ import com.smplatform.product_service.annotation.AdminOnly;
 import com.smplatform.product_service.domain.option.dto.OptionRequestDto;
 import com.smplatform.product_service.domain.option.dto.OptionResponseDto;
 import com.smplatform.product_service.domain.option.service.OptionService;
-import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

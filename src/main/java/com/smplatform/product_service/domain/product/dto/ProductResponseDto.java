@@ -1,9 +1,8 @@
 package com.smplatform.product_service.domain.product.dto;
 
 import com.smplatform.product_service.domain.ProductState;
-import com.smplatform.product_service.domain.product.entity.ProductOption;
-import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
-import com.smplatform.product_service.domain.product.entity.Product;
+import com.smplatform.product_service.domain.discount.dto.DiscountResponseDto;
+import com.smplatform.product_service.domain.product.entity.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -102,6 +101,59 @@ public class ProductResponseDto {
                     .productOptionType(productOptionDetail.getProductOptionType())
                     .productOptionDetailName(productOptionDetail.getProductOptionDetailName())
                     .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    public static class GetProductForUsers {
+        private long productId;
+        private String productName;
+        private int price;
+        private int discountedPrice;
+        @Setter
+        private DiscountResponseDto.DiscountInfo discountInfo;
+        @Setter
+        private List<ProductResponseDto.GetProductTag> tag;
+
+        public static ProductResponseDto.GetProductForUsers of(Product product) {
+            ProductResponseDto.GetProductForUsers productDto = GetProductForUsers.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .price(product.getPrice())
+                    .discountedPrice(product.getDiscountedPrice())
+                    .build();
+            if (Objects.nonNull(product.getDiscount())) {
+                productDto.setDiscountInfo(DiscountResponseDto.DiscountInfo.of(product.getDiscount()));
+            }
+            productDto.setTag(ProductResponseDto.GetProductTag.of(product.getProductTags()));
+            return productDto;
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class GetProductTag {
+        private Long productTagId;
+        private String productTagName;
+
+        public static List<GetProductTag> of(List<ProductTag> productTags) {
+            return productTags.stream()
+                    .map(productTag -> new GetProductTag(productTag.getId(), productTag.getTag().getTagName()))
+                    .toList();
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class GetTag {
+        private Long tagId;
+        private String tagName;
+
+        public static List<GetTag> of(List<Tag> tags) {
+            return tags.stream()
+                    .map(tag -> new GetTag(tag.getTagId(), tag.getTagName()))
+                    .toList();
         }
     }
 }

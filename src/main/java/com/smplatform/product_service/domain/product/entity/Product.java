@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Builder
@@ -58,8 +59,11 @@ public class Product {
     @Column(name = "simple_description")
     private String simpleDescription;
 
-    @Column
+    @Column(name = "thumbnail_path")
     private String thumbnailPath;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductTag> productTags;
 
     public int getDiscountedPrice() {
         return Objects.nonNull(discount) && discount.isValidDiscount() ?

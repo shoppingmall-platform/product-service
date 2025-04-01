@@ -3,15 +3,11 @@ package com.smplatform.product_service.domain.product.service.impl;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.product.dto.ProductImageResponseDto;
-import com.smplatform.product_service.domain.product.entity.ProductOption;
-import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
-import com.smplatform.product_service.domain.product.repository.ProductOptionDetailRepository;
-import com.smplatform.product_service.domain.product.repository.ProductOptionRepository;
+import com.smplatform.product_service.domain.product.entity.*;
+import com.smplatform.product_service.domain.product.repository.*;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
-import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;
-import com.smplatform.product_service.domain.product.repository.ProductRepository;
 import com.smplatform.product_service.domain.product.service.ProductService;
 import com.smplatform.product_service.domain.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Service
@@ -39,6 +35,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductOptionRepository productOptionRepository;
     private final ProductOptionDetailRepository productOptionDetailRepository;
     private final ProductImageService productImageService;
+    private final TagRepository tagRepository;
+    private final ProductTagRepository productTagRepository;
 
     /**
      * 단일 제품 조회
@@ -117,10 +115,20 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getProductImages().getPaths());
 
         // 상품 태그 저장
+        for (ProductRequestDto.SaveTag tagDto : productDto.getTags()) {
+            Optional<Tag> optionalTag = tagRepository.findByTagName(tagDto.getTagName());
 
+            if (optionalTag.isPresent()) {
+                productTagRepository.save(new ProductTag(0L, product, optionalTag.get()));
+            } else {
+                Tag tag = tagRepository.save(tagDto.toEntity());
+                productTagRepository.save(new ProductTag(0L, product, tag));
+            }
+        }
 
         return String.valueOf(product.getId());
     }
+
 
     /**
      * 단일 제품 수정
@@ -141,9 +149,8 @@ public class ProductServiceImpl implements ProductService {
 
         // 할인 수정
         if (!Objects.isNull(productDto.getDiscountId())) {
-            product.setDiscount(
-                    discountRepository.findById(productDto.getDiscountId())
-                            .orElseThrow(() -> new RuntimeException(String.format("discount id : %d not found", productDto.getDiscountId())))
+            product.setDiscount(discountRepository.findById(productDto.getDiscountId())
+                    .orElseThrow(() -> new RuntimeException(String.format("discount id : %d not found", productDto.getDiscountId())))
             );
         }
         BeanUtils.copyProperties(productDto, product, "id");
@@ -158,13 +165,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void updateProductImage(Product product, List<String> paths) {
-        List<ProductImageResponseDto.ProductImageInfo> originalProductImageInfoList = productImageService.getProductProductImageList(product.getId());
+        List<ProductImageResponseDto.ProductImageInfo> originalProductImageInfoList =
+                productImageService.getProductProductImageList(product.getId());
 
         // 삭제된 항목 제거
         List<Long> toDeleteIds = originalProductImageInfoList.stream()
                 .filter(original -> !paths.contains(original.getPath()))
                 .map(ProductImageResponseDto.ProductImageInfo::getProductImageId)
-                .collect(Collectors.toList());
+                .toList();
 
         if (!toDeleteIds.isEmpty()) {
             productImageService.deleteProductImage(toDeleteIds);
@@ -173,11 +181,11 @@ public class ProductServiceImpl implements ProductService {
         // 추가된 항목 저장
         List<String> originalPaths = originalProductImageInfoList.stream()
                 .map(ProductImageResponseDto.ProductImageInfo::getPath)
-                .collect(Collectors.toList());
+                .toList();
 
         List<String> toAdd = paths.stream()
                 .filter(path -> !originalPaths.contains(path))
-                .collect(Collectors.toList());
+                .toList();
 
         if (!toAdd.isEmpty()) {
             productImageService.saveProductImages(product.getId(), toAdd);
@@ -201,5 +209,26 @@ public class ProductServiceImpl implements ProductService {
             resultProducts.add(productDto);
         }
         return resultProducts;
+    }
+
+
+    /**
+     * 일반 사용자 용 전체 제품 조회
+     *
+     * @param categoryId
+     * @param pageable
+     * @return
+     */
+    @Override
+    public List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId, Pageable pageable) {
+
+        return productRepository.findAllByCategoryCategoryId(categoryId, pageable).stream()
+                .map(ProductResponseDto.GetProductForUsers::of)
+                .toList();
+    }
+
+    @Override
+    public List<ProductResponseDto.GetTag> getProductsTags() {
+        return ProductResponseDto.GetTag.of(tagRepository.findAll());
     }
 }
