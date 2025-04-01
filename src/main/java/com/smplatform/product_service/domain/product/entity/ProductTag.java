@@ -7,15 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "tags")
+@Table(name = "product_tags")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag {
+public class ProductTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
-    private long tagId;
+    private Long id;
 
-    @Column(name = "tag_name")
-    private String tagName;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 }

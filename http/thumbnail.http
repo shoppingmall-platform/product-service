@@ -3,12 +3,12 @@ POST http://localhost:8080/v1/categories
 Content-Type: application/json
 
 {
-  "categoryName" : "test2",
-  "categoryLevel" : 1
+  "categoryName": "test2",
+  "categoryLevel": 1
 }
 
 ### Save Product - Thumbnails Test
-POST http://localhost:8080/v1/product
+POST http://localhost:8080/v1/products
 Content-Type: application/json
 X-USER-ID: test
 ROLE: ADMIN
@@ -40,10 +40,16 @@ ROLE: ADMIN
       "/path/2",
       "/path/3"
     ]
-  }
-
+  },
+  "tags": [
+    {
+      "tagName": "진짜 멋진거"
+    }
+  ]
 }
 
 ### 확인 - 상품 조회
-GET http://localhost:8080/v1/product
+GET http://localhost:8080/v1/1/products
 
+### get all tags
+GET http://localhost:8080/v1/products/tags

@@ -21,6 +21,7 @@ public class ProductRequestDto {
         private List<SaveProductOption> productOptions;
         private String thumbnail;
         private ProductImageRequestDto.SaveProductImage productImages;
+        private List<ProductRequestDto.SaveTag> tags;
 
         public Product toEntity() {
             return Product.builder()
@@ -32,6 +33,15 @@ public class ProductRequestDto {
                     .simpleDescription(this.getSimpleDescription())
                     .thumbnailPath(this.thumbnail)
                     .build();
+        }
+    }
+
+    @Getter
+    public static class SaveTag {
+        private String tagName;
+
+        public Tag toEntity() {
+            return new Tag(0L, tagName);
         }
     }
 

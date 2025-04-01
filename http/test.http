@@ -1,18 +1,197 @@
-### 카테고리 생성
-POST localhost:8090/v1/category
+### 1. 카테고리 생성 (상품은 반드시 카테고리가 있어야 등록 가능)
+POST localhost:8080/v1/categories
 content-type:application/json
 
 {
+  "categoryName": "test1",
+  "categoryLevel": 1
 }
 
-### 전체 옵션 조회
-GET localhost:8080/v1/option?page=0&size=3
+### 2. 제품 등록 ({옵션-상품옵션 테이블 자동등록}, {태그-기존태그 존재시 only 상품태그 저장, 기존태그 부재시 태그 테이블 & 상품 태그 테이블 저장}, {썸네일-자동 등록})
+POST http://localhost:8080/v1/products
+Content-Type: application/json
+X-USER-ID: test
+ROLE: ADMIN
+
+{
+  "name": "Product Name1",
+  "description": "description.",
+  "categoryId": 1,
+  "price": 15000,
+  "summaryDescription": "summary description.",
+  "simpleDescription": "simple description.",
+  "productOptions": [
+    {
+      "productOptionName": "PON",
+      "productOptionDetails": [
+        {
+          "productOptionType": "POT",
+          "productOptionDetailName": "OPDN"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 3333
+    }
+  ],
+  "thumbnail": "/thm/path",
+  "productImages": {
+    "paths": [
+      "/path/1",
+      "/path/2",
+      "/path/3"
+    ]
+  },
+  "tags": [
+    {
+      "tagName": "진짜 멋진거"
+    }
+  ]
+}
+
+### 3. 할인 저장
+POST localhost:8080/v1/discounts
 content-type: application/json
 X-MEMBER-ID: asdf
 ROLE: ADMIN
 
-### 옵션 생성1
-POST localhost:8080/v1/option
+{
+  "discountName": "test discount 2",
+  "discountType": "할인율",
+  "discountValue": 20,
+  "discountStartDate": "2025-02-22T00:00:00.000Z",
+  "discountEndDate": "2025-02-23T00:00:00.000Z"
+}
+
+### 4. 할인 조회
+GET localhost:8080/v1/discounts
+
+
+### 5. (할인 포함) 제품 등록
+POST http://localhost:8080/v1/products
+Content-Type: application/json
+X-USER-ID: test
+ROLE: ADMIN
+
+{
+  "name": "Product Name2",
+  "description": "description.",
+  "categoryId": 1,
+  "price": 139900,
+  "discountId": 1,
+  "summaryDescription": "할인 포함된 제품입니다.",
+  "simpleDescription": "할인 포함",
+  "productOptions": [
+    {
+      "productOptionName": "black/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "black/M",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "white/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "white"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 1000
+    }
+  ],
+  "thumbnail": "/thm/path",
+  "productImages": {
+    "paths": [
+      "/path/1",
+      "/path/2",
+      "/path/3"
+    ]
+  },
+  "tags": [
+    {
+      "tagName": "진짜 멋진거"
+    },
+    {
+      "tagName": "진짜 chill한거"
+    }
+  ]
+}
+
+
+### 6. 관리자용 전체 제품 조회 (페이지네이션)
+GET http://localhost:8080/v1/products?page=0&size=3
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+
+### 7. 사용자용 전체 제품 조회 (페이지네이션)
+GET http://localhost:8080/v1/1/products?page=0&size=3
+X-MEMBER-ID: asdf
+
+
+### 7-1. 단일 제품 조회
+GET localhost:8080/v1/products/1
+X-MEMBER-ID: asdf
+
+
+### 7-2. 제품 수정
+POST localhost:8080/v1/products/update-product
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "id": 1,
+  "name": "updated product1",
+  "description": "product 1 description",
+  "categoryId": 1,
+  "productState": "NEW",
+  "createdAt": "2025-02-12T11:17:32.355Z",
+  "price": 1000,
+  "discountId": 1,
+  "summaryDescription": "string",
+  "simpleDescription": "string",
+  "isDeleted": false,
+  "isSelling": true,
+  "productImagePaths": {
+    "paths": [
+      "asdf",
+      "qwer"
+    ]
+  }
+}
+
+
+### 8-1. 옵션 생성1
+POST localhost:8080/v1/options
 content-type: application/json
 X-MEMBER-ID: asdf
 ROLE: ADMIN
@@ -31,8 +210,10 @@ ROLE: ADMIN
     }
   ]
 }
-### 옵션 생성2
-POST localhost:8080/v1/option
+
+
+### 8-2. 옵션 생성2
+POST localhost:8080/v1/options
 content-type: application/json
 X-MEMBER-ID: asdf
 ROLE: ADMIN
@@ -49,11 +230,23 @@ ROLE: ADMIN
   ]
 }
 
-### 옵션 삭제
-POST localhost:8080/v1/option/remove-type/1
+
+### 9. 전체 옵션 조회 (옵션 테이블에 저장된 것만 조회 가능, 상품 등록하면서 자동 저장된 옵션은 조회 x)
+GET localhost:8080/v1/options?page=0&size=3
 content-type: application/json
 X-MEMBER-ID: asdf
 ROLE: ADMIN
+
+
+### 10. 옵션 삭제
+POST localhost:8080/v1/options/delete-option
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "optionTypeId": 1
+}
 
 
 ### 제품 생성
@@ -67,12 +260,10 @@ ROLE: ADMIN
   "description": "product 1 description",
   "categoryId": 1,
   "productState": "NEW",
-  "createdAt": "2025-02-12T11:17:32.355Z",
   "price": 1000,
   "discountId": 2,
   "summaryDescription": "abc",
   "simpleDescription": "abc",
-  "isDeleted": false,
   "isSelling": true,
   "productOptions": [
     {
@@ -156,50 +347,13 @@ ROLE: ADMIN
   ]
 }
 
-### 단일 제품 조회
-GET localhost:8080/v1/product/1
-X-MEMBER-ID: asdf
 
 
-### 제품 수정
-POST localhost:8080/v1/product/update-product
-content-type: application/json
-X-MEMBER-ID: asdf
-ROLE: ADMIN
-
-{
-  "id": 1,
-  "name": "updated product1",
-  "description": "product 1 description",
-  "categoryId": 1,
-  "productState": "NEW",
-  "createdAt": "2025-02-12T11:17:32.355Z",
-  "price": 1000,
-  "discountId": 1,
-  "summaryDescription": "string",
-  "simpleDescription": "string",
-  "isDeleted": false,
-  "isSelling": true
-}
 
 
-### 전체 제품 조회 (페이지네이션)
-GET http://localhost:8080/v1/product?page=0&size=3
-X-MEMBER-ID: asdf
 
-### 할인 추가
-POST http://localhost:8080/v1/discounts
-Content-Type: application/json
-X-MEMBER-ID: asdf
-ROLE: ADMIN
 
-{
-  "discountName": "test discount 2",
-  "discountType": "할인율",
-  "discountValue": 20,
-  "discountStartDate": "2025-02-22T00:00:00.000Z",
-  "discountEndDate": "2025-02-23T00:00:00.000Z"
-}
+
 
 
 

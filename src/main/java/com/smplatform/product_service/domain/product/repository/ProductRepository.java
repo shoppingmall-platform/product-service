@@ -9,4 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"discount"})
     Page<Product> findAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"discount", "category", "productTags"})
+    Page<Product> findAllByCategoryCategoryId(int categoryId, Pageable pageable);
 }
