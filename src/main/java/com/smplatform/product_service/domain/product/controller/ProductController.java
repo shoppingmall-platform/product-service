@@ -6,6 +6,8 @@ import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -64,10 +66,12 @@ public class ProductController {
      * @param pageable
      * @return
      */
-    @GetMapping("/{categoryId}/products")
-    public ResponseEntity<List<ProductResponseDto.GetProductForUsers>> getProductsForUsers(@PathVariable int categoryId,
-                                                                                           @PageableDefault Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsForUsers(categoryId, pageable));
+    @GetMapping("/{category-id}/products")
+    public ResponseEntity<List<ProductResponseDto.GetProductForUsers>> getProductsForUsers(
+            @PathVariable(name = "category-id") int categoryId,
+            @RequestBody(required = false) ProductRequestDto.ProductSearchCondition condition,
+            @PageableDefault Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsForUsers(categoryId, condition, pageable));
     }
 
     /**
@@ -88,7 +92,8 @@ public class ProductController {
      */
     @AdminOnly
     @GetMapping("/products")
-    public ResponseEntity<List<ProductResponseDto.GetProduct>> getProducts(@PageableDefault Pageable pageable) {
+    public ResponseEntity<List<ProductResponseDto.GetProduct>> getProducts(@RequestParam String search,
+                                                                           @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable));
     }
 }

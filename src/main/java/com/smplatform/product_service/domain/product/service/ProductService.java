@@ -15,7 +15,9 @@ public interface ProductService {
 
     List<ProductResponseDto.GetProduct> getProducts(Pageable pageable);
 
-    List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId, Pageable pageable);
+    List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId,
+                                                                    ProductRequestDto.ProductSearchCondition condition,
+                                                                    Pageable pageable);
 
     List<ProductResponseDto.GetTag> getProductsTags();
 }

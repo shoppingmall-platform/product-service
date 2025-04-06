@@ -220,11 +220,19 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId, Pageable pageable) {
-
-        return productRepository.findAllByCategoryCategoryId(categoryId, pageable).stream()
-                .map(ProductResponseDto.GetProductForUsers::of)
-                .toList();
+    @Transactional(readOnly = true)
+    public List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId,
+                                                                           ProductRequestDto.ProductSearchCondition condition,
+                                                                           Pageable pageable) {
+        if (Objects.isNull(condition) || condition.isConditionEmpty()) {
+            return productRepository.findAllByCategoryCategoryId(categoryId, pageable).stream()
+                    .map(ProductResponseDto.GetProductForUsers::of)
+                    .toList();
+        } else {
+            return productRepository.searchProducts(categoryId, condition, pageable).stream()
+                    .map(ProductResponseDto.GetProductForUsers::of)
+                    .toList();
+        }
     }
 
     @Override
