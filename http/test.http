@@ -157,9 +157,6 @@ GET http://localhost:8080/v1/1/products?page=0&size=3
 Content-Type: application/json
 X-MEMBER-ID: asdf
 
-{
-  "tagName": "진짜 chill한거"
-}
 
 
 ### 7-1. 단일 제품 조회

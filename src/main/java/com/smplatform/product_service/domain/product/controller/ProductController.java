@@ -67,6 +67,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/{category-id}/products")
+    @Operation(summary = "사용자용 product 전체 조회 및 검색 조회", description = "사용자용 전체 제품 조회")
     public ResponseEntity<List<ProductResponseDto.GetProductForUsers>> getProductsForUsers(
             @PathVariable(name = "category-id") int categoryId,
             @RequestBody(required = false) ProductRequestDto.ProductSearchCondition condition,

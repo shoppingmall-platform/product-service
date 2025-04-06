@@ -115,6 +115,7 @@ public class ProductResponseDto {
         private DiscountResponseDto.DiscountInfo discountInfo;
         @Setter
         private List<ProductResponseDto.GetProductTag> tag;
+        private String thumbnailPath;
 
         public static ProductResponseDto.GetProductForUsers of(Product product) {
             ProductResponseDto.GetProductForUsers productDto = GetProductForUsers.builder()
@@ -122,6 +123,7 @@ public class ProductResponseDto {
                     .productName(product.getName())
                     .price(product.getPrice())
                     .discountedPrice(product.getDiscountedPrice())
+                    .thumbnailPath(product.getThumbnailPath())
                     .build();
             if (Objects.nonNull(product.getDiscount())) {
                 productDto.setDiscountInfo(DiscountResponseDto.DiscountInfo.of(product.getDiscount()));
