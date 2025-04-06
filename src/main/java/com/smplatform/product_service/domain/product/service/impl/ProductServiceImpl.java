@@ -1,5 +1,6 @@
 package com.smplatform.product_service.domain.product.service.impl;
 
+import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.product.dto.ProductImageResponseDto;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -66,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductResponseDto.GetProduct productDto = ProductResponseDto.GetProduct.of(product);
         productDto.setProductOptions(productOptionDtos);
+        productDto.setProductImagePaths(productImageService.getProductProductImageList(productId));
         return productDto;
     }
 
@@ -224,6 +227,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId,
                                                                            ProductRequestDto.ProductSearchCondition condition,
                                                                            Pageable pageable) {
+        List<Category> categoryIds = categoryRepository.findAllByParentCategoryCategoryId(categoryId);
         if (Objects.isNull(condition) || condition.isConditionEmpty()) {
             return productRepository.findAllByCategoryCategoryId(categoryId, pageable).stream()
                     .map(ProductResponseDto.GetProductForUsers::of)
@@ -233,6 +237,20 @@ public class ProductServiceImpl implements ProductService {
                     .map(ProductResponseDto.GetProductForUsers::of)
                     .toList();
         }
+    }
+
+    // 여기... 쿼리가 여러번 나가는 부분.. 좀 찾아 봐야할 듯..
+    private List<Integer> findAllChildCategories(int categoryId) {
+        List<Integer> result = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAllByParentCategoryCategoryId(categoryId)
+                .stream()
+                .peek(category -> result.add(category.getCategoryId()))
+                .toList();
+
+        for (Category category : categories) {
+            categoryRepository.findAllByParentCategoryCategoryId(category.getCategoryId());
+        }
+        return result;
     }
 
     @Override

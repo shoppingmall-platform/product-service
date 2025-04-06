@@ -7,6 +7,16 @@ content-type:application/json
   "categoryLevel": 1
 }
 
+### 1-1. 하위 카테고리 생성
+POST localhost:8080/v1/categories
+content-type:application/json
+
+{
+  "parentCategoryId": 1,
+  "categoryName": "child category1",
+  "categoryLevel": 2
+}
+
 ### 2. 제품 등록 ({옵션-상품옵션 테이블 자동등록}, {태그-기존태그 존재시 only 상품태그 저장, 기존태그 부재시 태그 테이블 & 상품 태그 테이블 저장}, {썸네일-자동 등록})
 POST http://localhost:8080/v1/products
 Content-Type: application/json
@@ -16,7 +26,7 @@ ROLE: ADMIN
 {
   "name": "Product Name1",
   "description": "description.",
-  "categoryId": 1,
+  "categoryId": 2,
   "price": 15000,
   "summaryDescription": "summary description.",
   "simpleDescription": "simple description.",
@@ -153,7 +163,7 @@ ROLE: ADMIN
 
 
 ### 7. 사용자용 전체 제품 조회 (페이지네이션)
-GET http://localhost:8080/v1/1/products?page=0&size=3
+GET http://localhost:8080/v1/2/products?page=0&size=3
 Content-Type: application/json
 X-MEMBER-ID: asdf
 
