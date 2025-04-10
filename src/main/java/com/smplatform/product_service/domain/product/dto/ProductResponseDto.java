@@ -24,7 +24,7 @@ public class ProductResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ProductGet {
-        long id;
+        long productId;
         private String name;
         private String description;
         private boolean isDeleted;
@@ -53,7 +53,7 @@ public class ProductResponseDto {
 
         public static ProductGet of(Product product) {
             return ProductGet.builder()
-                    .id(product.getId())
+                    .productId(product.getId())
                     .name(product.getName())
                     .description(product.getDescription())
                     .isDeleted(product.isDeleted())

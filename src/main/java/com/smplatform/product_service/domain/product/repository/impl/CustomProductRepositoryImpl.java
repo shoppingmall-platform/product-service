@@ -1,6 +1,7 @@
 package com.smplatform.product_service.domain.product.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -85,8 +86,8 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
         return null;
     }
 
-    private BooleanExpression buildCondition(QProduct product, QTag tag, QDiscount discount,
-                                             ProductRequestDto.ProductSearchConditions condition) {
+    private Predicate buildCondition(QProduct product, QTag tag, QDiscount discount,
+                                     ProductRequestDto.ProductSearchConditions condition) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (!Strings.isBlank(condition.getKeyword())) {
@@ -102,10 +103,12 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
         if (condition.getStartDate() != null && condition.getEndDate() != null) {
             builder.and(product.createdAt.between(condition.getStartDate(), condition.getEndDate()));
         }
-        if (condition.getMinimumPrice() > 0) {
+        if (condition.getMinimumPrice() != null) {
             builder.and(product.price.goe(condition.getMinimumPrice()));
         }
-        if (condition.getMaximumPrice() > 0 && condition.getMaximumPrice() >= condition.getMinimumPrice()) {
+        if (condition.getMinimumPrice() != null &&
+                condition.getMaximumPrice() != null &&
+                condition.getMaximumPrice() >= condition.getMinimumPrice()) {
             builder.and(product.price.loe(condition.getMaximumPrice()));
         }
 
@@ -118,7 +121,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
             }
         }
 
-        return builder.hasValue() ? (BooleanExpression) builder.getValue() : null;
+        return builder;
     }
 
 }

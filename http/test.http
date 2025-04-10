@@ -30,7 +30,7 @@ ROLE: ADMIN
 {
   "name": "Product Name1",
   "description": "description.",
-  "categoryId": 2,
+  "categoryId": 3,
   "price": 15000,
   "summaryDescription": "summary description.",
   "simpleDescription": "simple description.",
@@ -170,8 +170,17 @@ X-MEMBER-ID: asdf
 ROLE: ADMIN
 
 
-### 7. 사용자용 전체 제품 조회 (페이지네이션)
-GET http://localhost:8080/v1/2/products?page=0&size=3
+### 6-1. 관리자용 제품 검색 (페이지네이션)
+GET http://localhost:8080/v1/products
+Content-Type: application/json
+ROLE: ADMIN
+
+{
+  "categoryId": 3
+}
+
+### 7. 사용자용 카테고리별 제품 조회 (페이지네이션) 사용자용 api는 반드시 카테고리 아이디가 pathVariable로 들어가야함
+GET http://localhost:8080/v1/1/products?page=0&size=3
 Content-Type: application/json
 X-MEMBER-ID: asdf
 
@@ -180,6 +189,17 @@ X-MEMBER-ID: asdf
 ### 7-1. 단일 제품 조회
 GET localhost:8080/v1/products/1
 X-MEMBER-ID: asdf
+
+
+### 7-2. 사용자용 제품 검색 (페이지네이션)
+GET http://localhost:8080/v1/1/products
+Content-Type: application/json
+
+{
+  "minimumPrice": 1000,
+  "maximumPrice": 16000
+}
+
 
 
 ### 7-2. 제품 수정

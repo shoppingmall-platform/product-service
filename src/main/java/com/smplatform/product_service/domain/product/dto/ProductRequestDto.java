@@ -101,18 +101,18 @@ public class ProductRequestDto {
         protected LocalDateTime endDate;
         protected String tagName;
         protected String discountName;
-        protected int minimumPrice;
-        protected int maximumPrice;
+        protected Integer minimumPrice;
+        protected Integer maximumPrice;
 
         public boolean isConditionEmpty() {
             try {
-                Field[] fields = this.getClass().getDeclaredFields();
-
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    if (field.get(this) != null) {
-                        return false;
+                Class<?> currentClass = this.getClass();
+                while (currentClass != null && ProductSearchConditions.class.isAssignableFrom(currentClass)) {
+                    for (Field field : currentClass.getDeclaredFields()) {
+                        field.setAccessible(true);
+                        if (field.get(this) != null) return false;
                     }
+                    currentClass = currentClass.getSuperclass();
                 }
                 return true;
             } catch (IllegalAccessException e) {
