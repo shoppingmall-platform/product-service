@@ -6,8 +6,6 @@ import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,7 +30,7 @@ public class ProductController {
      */
     @GetMapping("/products/{productId}")
     @Operation(summary = "product 조회", description = "해당 아이디의 제품 조회")
-    public ResponseEntity<ProductResponseDto.GetProduct> getProduct(@PathVariable int productId) {
+    public ResponseEntity<ProductResponseDto.ProductGet> getProduct(@PathVariable int productId) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProduct(productId));
     }
 
@@ -44,7 +42,7 @@ public class ProductController {
      */
     @AdminOnly
     @PostMapping("/products")
-    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDto.SaveProduct productDto) {
+    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDto.ProductSave productDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(productDto));
     }
 
@@ -56,7 +54,7 @@ public class ProductController {
      */
     @AdminOnly
     @PostMapping("/products/update-product")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductRequestDto.UpdateProduct productDto) {
+    public ResponseEntity<String> updateProduct(@RequestBody ProductRequestDto.ProductUpdate productDto) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(productDto));
     }
 
@@ -68,9 +66,9 @@ public class ProductController {
      */
     @GetMapping("/{category-id}/products")
     @Operation(summary = "사용자용 product 전체 조회 및 검색 조회", description = "사용자용 전체 제품 조회")
-    public ResponseEntity<List<ProductResponseDto.GetProductForUsers>> getProductsForUsers(
+    public ResponseEntity<List<ProductResponseDto.ProductGetForUsers>> getProductsForUsers(
             @PathVariable(name = "category-id") int categoryId,
-            @RequestBody(required = false) ProductRequestDto.ProductSearchCondition condition,
+            @RequestBody(required = false) ProductRequestDto.UserProductSearchCondition condition,
             @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsForUsers(categoryId, condition, pageable));
     }
@@ -93,8 +91,16 @@ public class ProductController {
      */
     @AdminOnly
     @GetMapping("/products")
-    public ResponseEntity<List<ProductResponseDto.GetProduct>> getProducts(@RequestParam String search,
-                                                                           @PageableDefault Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable));
+    @Operation(summary = "관리자용 product 전체 조회 및 검색 조회", description = "관리자용 전체 제품 조회")
+    public ResponseEntity<List<ProductResponseDto.ProductGet>> getProducts(
+            @RequestBody(required = false) ProductRequestDto.AdminProductSearchCondition condition,
+            @PageableDefault Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(condition, pageable));
+    }
+
+    @AdminOnly
+    @GetMapping("/product-category")
+    public ResponseEntity<List<ProductResponseDto.ProductCategoryMappingGet>> getProductCategoryMappings() {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductCategoryMappings());
     }
 }

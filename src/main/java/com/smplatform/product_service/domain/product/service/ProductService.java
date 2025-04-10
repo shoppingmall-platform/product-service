@@ -7,17 +7,20 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProductService {
-    ProductResponseDto.GetProduct getProduct(long productId);
+    ProductResponseDto.ProductGet getProduct(long productId);
 
-    String saveProduct(ProductRequestDto.SaveProduct productDto);
+    String saveProduct(ProductRequestDto.ProductSave productDto);
 
-    String updateProduct(ProductRequestDto.UpdateProduct productDto);
+    String updateProduct(ProductRequestDto.ProductUpdate productDto);
 
-    List<ProductResponseDto.GetProduct> getProducts(Pageable pageable);
 
-    List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId,
-                                                                    ProductRequestDto.ProductSearchCondition condition,
+    List<ProductResponseDto.ProductGet> getProducts(ProductRequestDto.AdminProductSearchCondition condition, Pageable pageable);
+
+    List<ProductResponseDto.ProductGetForUsers> getProductsForUsers(int categoryId,
+                                                                    ProductRequestDto.UserProductSearchCondition condition,
                                                                     Pageable pageable);
 
     List<ProductResponseDto.GetTag> getProductsTags();
+
+    List<ProductResponseDto.ProductCategoryMappingGet> getProductCategoryMappings();
 }

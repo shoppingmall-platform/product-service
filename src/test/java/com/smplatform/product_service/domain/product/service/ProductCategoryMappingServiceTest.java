@@ -39,7 +39,7 @@ class ProductCategoryMappingServiceTest {
         // given
         Category topCategory = Category.builder().categoryName("의류").categoryLevel(1).build();
         Category midCategory = Category.builder().categoryName("상의").categoryLevel(2).parentCategory(topCategory).build();
-        Category btmCategory =  Category.builder().categoryName("민소매").categoryLevel(3).parentCategory(midCategory).build();
+        Category btmCategory = Category.builder().categoryName("민소매").categoryLevel(3).parentCategory(midCategory).build();
         categoryRepository.saveAll(List.of(topCategory, midCategory, btmCategory));
 
         Product topCategoryProduct = Product.builder().name("청바지").price(30000).build();
@@ -52,9 +52,9 @@ class ProductCategoryMappingServiceTest {
         productCategoryMappingService.save(btmCategory.getCategoryId(), btmCategoryProduct.getId());
 
         // when
-        List<ProductResponseDto.GetProduct> resultTop = productCategoryMappingService.getProductsByCategoryId(topCategory.getCategoryId());    // 모든 상품
-        List<ProductResponseDto.GetProduct> resultMid = productCategoryMappingService.getProductsByCategoryId(midCategory.getCategoryId());    // 중분류 이하 상품
-        List<ProductResponseDto.GetProduct> resultBtm = productCategoryMappingService.getProductsByCategoryId(btmCategory.getCategoryId());    // 하위 상품
+        List<ProductResponseDto.ProductGet> resultTop = productCategoryMappingService.getProductsByCategoryId(topCategory.getCategoryId());    // 모든 상품
+        List<ProductResponseDto.ProductGet> resultMid = productCategoryMappingService.getProductsByCategoryId(midCategory.getCategoryId());    // 중분류 이하 상품
+        List<ProductResponseDto.ProductGet> resultBtm = productCategoryMappingService.getProductsByCategoryId(btmCategory.getCategoryId());    // 하위 상품
 
         // then
         assertEquals(3, resultTop.size());

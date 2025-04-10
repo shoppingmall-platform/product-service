@@ -6,10 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smplatform.product_service.domain.discount.entity.QDiscount;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
-import com.smplatform.product_service.domain.product.entity.Product;
-import com.smplatform.product_service.domain.product.entity.QProduct;
-import com.smplatform.product_service.domain.product.entity.QProductTag;
-import com.smplatform.product_service.domain.product.entity.QTag;
+import com.smplatform.product_service.domain.product.entity.*;
 import com.smplatform.product_service.domain.product.repository.CustomProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -25,20 +22,21 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Product> searchProducts(int categoryId, ProductRequestDto.ProductSearchCondition condition, Pageable pageable) {
+    public Page<Product> searchProducts(ProductRequestDto.AdminProductSearchCondition condition, Pageable pageable) {
         QProduct product = QProduct.product;
         QProductTag productTag = QProductTag.productTag;
         QTag tag = QTag.tag;
         QDiscount discount = QDiscount.discount;
+        QProductCategoryMapping productCategoryMapping = QProductCategoryMapping.productCategoryMapping;
 
         JPAQuery<Product> query = jpaQueryFactory
                 .selectFrom(product)
                 .leftJoin(product.discount).fetchJoin()
-                .leftJoin(product.category).fetchJoin()
                 .leftJoin(product.productTags, productTag)
                 .leftJoin(productTag.tag, tag)
+                .leftJoin(productCategoryMapping).on(productCategoryMapping.product.eq(product))
                 .where(
-                        product.category.categoryId.eq(categoryId),
+                        condition.getCategoryId() != null ? productCategoryMapping.category.categoryId.eq(condition.getCategoryId()) : null,
                         buildCondition(product, tag, discount, condition)
                 )
                 .distinct();
@@ -52,19 +50,49 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
+    public Page<Product> searchUserProducts(int categoryId, ProductRequestDto.UserProductSearchCondition condition, Pageable pageable) {
+        QProduct product = QProduct.product;
+        QProductTag productTag = QProductTag.productTag;
+        QTag tag = QTag.tag;
+        QDiscount discount = QDiscount.discount;
+        QProductCategoryMapping productCategoryMapping = QProductCategoryMapping.productCategoryMapping;
+
+        JPAQuery<Product> query = jpaQueryFactory
+                .selectFrom(product)
+                .leftJoin(product.discount).fetchJoin()
+                .leftJoin(product.productTags, productTag)
+                .leftJoin(productTag.tag, tag)
+                .leftJoin(productCategoryMapping).on(productCategoryMapping.product.eq(product))
+                .where(
+                        productCategoryMapping.category.categoryId.eq(categoryId),
+                        buildCondition(product, tag, discount, condition)
+                )
+                .distinct();
+
+        List<Product> content = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = query.stream().count();
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<Product> findAllByCategoryIds(List<ProductCategoryMapping> productCategoryMappings) {
+
+        return null;
+    }
+
     private BooleanExpression buildCondition(QProduct product, QTag tag, QDiscount discount,
-                                             ProductRequestDto.ProductSearchCondition condition) {
+                                             ProductRequestDto.ProductSearchConditions condition) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (!Strings.isBlank(condition.getKeyword())) {
             builder.and(product.name.containsIgnoreCase(condition.getKeyword()));
         }
-        if (condition.getIsSelling() != null) {
-            builder.and(product.isSelling.eq(condition.getIsSelling()));
-        }
-        if (condition.getIsDeleted() != null) {
-            builder.and(product.isDeleted.eq(condition.getIsDeleted()));
-        }
+
         if (!Strings.isBlank(condition.getTagName())) {
             builder.and(tag.tagName.eq(condition.getTagName()));
         }
@@ -73,6 +101,21 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
         }
         if (condition.getStartDate() != null && condition.getEndDate() != null) {
             builder.and(product.createdAt.between(condition.getStartDate(), condition.getEndDate()));
+        }
+        if (condition.getMinimumPrice() > 0) {
+            builder.and(product.price.goe(condition.getMinimumPrice()));
+        }
+        if (condition.getMaximumPrice() > 0 && condition.getMaximumPrice() >= condition.getMinimumPrice()) {
+            builder.and(product.price.loe(condition.getMaximumPrice()));
+        }
+
+        if (condition instanceof ProductRequestDto.AdminProductSearchCondition adminProductSearchCondition) {
+            if (adminProductSearchCondition.getIsSelling() != null) {
+                builder.and(product.isSelling.eq(adminProductSearchCondition.getIsSelling()));
+            }
+            if (adminProductSearchCondition.getIsDeleted() != null) {
+                builder.and(product.isDeleted.eq(adminProductSearchCondition.getIsDeleted()));
+            }
         }
 
         return builder.hasValue() ? (BooleanExpression) builder.getValue() : null;

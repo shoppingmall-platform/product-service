@@ -25,17 +25,17 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
     public void save(int categoryId, long productId) {
         List<Category> categories = categoryService.getCategoryListWithAllParent(categoryId);
         List<ProductCategoryMapping> productCategoryMappings = categories.stream()
-                .map(c-> new ProductCategoryMapping(c.getCategoryId(), productId))
+                .map(c -> new ProductCategoryMapping(c.getCategoryId(), productId))
                 .collect(Collectors.toList());
         productCategoryMappingRepository.saveAll(productCategoryMappings);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductResponseDto.GetProduct> getProductsByCategoryId(int categoryId) {
+    public List<ProductResponseDto.ProductGet> getProductsByCategoryId(int categoryId) {
         List<Product> products = productCategoryMappingRepository.findAllByCategoryId(categoryId);
         return products.stream()
-                .map(p->ProductResponseDto.GetProduct.of(p))
+                .map(p -> ProductResponseDto.ProductGet.of(p))
                 .collect(Collectors.toList());
     }
 

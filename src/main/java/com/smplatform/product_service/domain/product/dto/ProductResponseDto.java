@@ -23,7 +23,7 @@ public class ProductResponseDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class GetProduct {
+    public static class ProductGet {
         long id;
         private String name;
         private String description;
@@ -51,8 +51,8 @@ public class ProductResponseDto {
                     .build();
         }
 
-        public static ProductResponseDto.GetProduct of(Product product) {
-            return GetProduct.builder()
+        public static ProductGet of(Product product) {
+            return ProductGet.builder()
                     .id(product.getId())
                     .name(product.getName())
                     .description(product.getDescription())
@@ -104,7 +104,7 @@ public class ProductResponseDto {
 
     @Getter
     @Builder
-    public static class GetProductForUsers {
+    public static class ProductGetForUsers {
         private long productId;
         private String productName;
         private int price;
@@ -115,8 +115,8 @@ public class ProductResponseDto {
         private List<ProductResponseDto.GetProductTag> tag;
         private String thumbnailPath;
 
-        public static ProductResponseDto.GetProductForUsers of(Product product) {
-            ProductResponseDto.GetProductForUsers productDto = GetProductForUsers.builder()
+        public static ProductGetForUsers of(Product product) {
+            ProductGetForUsers productDto = ProductGetForUsers.builder()
                     .productId(product.getId())
                     .productName(product.getName())
                     .price(product.getPrice())
@@ -154,6 +154,22 @@ public class ProductResponseDto {
             return tags.stream()
                     .map(tag -> new GetTag(tag.getTagId(), tag.getTagName()))
                     .toList();
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ProductCategoryMappingGet {
+        private int productCategoryMappingId;
+        private int categoryId;
+        private long productId;
+
+        public static ProductResponseDto.ProductCategoryMappingGet of(ProductCategoryMapping productCategoryMapping) {
+            return new ProductResponseDto.ProductCategoryMappingGet(
+                    productCategoryMapping.getProductCategoryMappingId(),
+                    productCategoryMapping.getCategory().getCategoryId(),
+                    productCategoryMapping.getProduct().getId()
+            );
         }
     }
 }
