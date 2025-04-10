@@ -28,7 +28,6 @@ public class ProductResponseDto {
         private String name;
         private String description;
         private boolean isDeleted;
-        private int categoryId;
         private ProductState productState;
         private boolean isSelling;
         private LocalDateTime createdAt;
@@ -58,7 +57,6 @@ public class ProductResponseDto {
                     .name(product.getName())
                     .description(product.getDescription())
                     .isDeleted(product.isDeleted())
-                    .categoryId(product.getCategory().getCategoryId())
                     .productState(product.getProductState())
                     .isSelling(product.isSelling())
                     .createdAt(product.getCreatedAt())
