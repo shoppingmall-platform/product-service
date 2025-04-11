@@ -165,13 +165,13 @@ ROLE: ADMIN
 
 
 ### 6. 관리자용 전체 제품 조회 (페이지네이션)
-GET http://localhost:8080/v1/products?page=0&size=3
+POST http://localhost:8080/v1/products?page=0&size=3
 X-MEMBER-ID: asdf
 ROLE: ADMIN
 
 
 ### 6-1. 관리자용 제품 검색 (페이지네이션)
-GET http://localhost:8080/v1/products
+POST http://localhost:8080/v1/products
 Content-Type: application/json
 ROLE: ADMIN
 
@@ -180,19 +180,19 @@ ROLE: ADMIN
 }
 
 ### 7. 사용자용 카테고리별 제품 조회 (페이지네이션) 사용자용 api는 반드시 카테고리 아이디가 pathVariable로 들어가야함
-GET http://localhost:8080/v1/0/products?page=0&size=3
+POST http://localhost:8080/v1/0/products?page=0&size=3
 Content-Type: application/json
 X-MEMBER-ID: asdf
 
 
 
 ### 7-1. 단일 제품 조회
-GET localhost:8080/v1/products/1
+POST localhost:8080/v1/products/1
 X-MEMBER-ID: asdf
 
 
 ### 7-2. 사용자용 제품 검색 (페이지네이션)
-GET http://localhost:8080/v1/1/products
+POST http://localhost:8080/v1/0/products
 Content-Type: application/json
 
 {

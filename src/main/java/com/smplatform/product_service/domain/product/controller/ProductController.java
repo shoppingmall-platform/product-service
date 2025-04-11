@@ -64,7 +64,7 @@ public class ProductController {
      * @param pageable
      * @return
      */
-    @GetMapping("/{category-id}/products")
+    @PostMapping("/{category-id}/products")
     @Operation(summary = "사용자용 product 전체 조회 및 검색 조회", description = "사용자용 전체 제품 조회")
     public ResponseEntity<List<ProductResponseDto.ProductGetForUsers>> getProductsForUsers(
             @PathVariable(name = "category-id") int categoryId,
@@ -90,7 +90,7 @@ public class ProductController {
      * @return
      */
     @AdminOnly
-    @GetMapping("/products")
+    @PostMapping("/products")
     @Operation(summary = "관리자용 product 전체 조회 및 검색 조회", description = "관리자용 전체 제품 조회")
     public ResponseEntity<List<ProductResponseDto.ProductGet>> getProducts(
             @RequestBody(required = false) ProductRequestDto.AdminProductSearchCondition condition,
