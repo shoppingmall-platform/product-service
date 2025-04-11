@@ -66,7 +66,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
                 .leftJoin(productTag.tag, tag)
                 .leftJoin(productCategoryMapping).on(productCategoryMapping.product.eq(product))
                 .where(
-                        productCategoryMapping.category.categoryId.eq(categoryId),
+                        categoryId == 0 ? null : productCategoryMapping.category.categoryId.eq(categoryId),
                         buildCondition(product, tag, discount, condition)
                 )
                 .distinct();
