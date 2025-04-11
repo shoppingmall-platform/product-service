@@ -229,9 +229,13 @@ public class ProductServiceImpl implements ProductService {
                                                                            Pageable pageable) {
 
         if (Objects.isNull(condition) || condition.isConditionEmpty()) {
-            return productCategoryMappingRepository.findAllByCategoryId(categoryId).stream()
-                    .map(ProductResponseDto.ProductGetForUsers::of)
-                    .toList();
+            if (categoryId == 0) {
+                return productRepository.findAll(pageable).map(ProductResponseDto.ProductGetForUsers::of).toList();
+            } else {
+                return productCategoryMappingRepository.findAllByCategoryId(categoryId).stream()
+                        .map(ProductResponseDto.ProductGetForUsers::of)
+                        .toList();
+            }
         } else {
             return productRepository.searchUserProducts(categoryId, condition, pageable).stream()
                     .map(ProductResponseDto.ProductGetForUsers::of)
