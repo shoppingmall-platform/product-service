@@ -15,7 +15,7 @@ public class ProductImageResponseDto {
         private long productImageId;
         private String path;
 
-        public static ProductImageInfo from(ProductImages productImages) {
+        public static ProductImageInfo of(ProductImages productImages) {
             return new ProductImageInfo(
                     productImages.getProductImageId(),
                     productImages.getPath()
