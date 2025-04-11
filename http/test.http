@@ -180,7 +180,7 @@ ROLE: ADMIN
 }
 
 ### 7. 사용자용 카테고리별 제품 조회 (페이지네이션) 사용자용 api는 반드시 카테고리 아이디가 pathVariable로 들어가야함
-GET http://localhost:8080/v1/1/products?page=0&size=3
+GET http://localhost:8080/v1/0/products?page=0&size=3
 Content-Type: application/json
 X-MEMBER-ID: asdf
 
