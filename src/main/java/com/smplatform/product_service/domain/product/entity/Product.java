@@ -32,7 +32,7 @@ public class Product {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 

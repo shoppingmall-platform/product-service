@@ -17,8 +17,7 @@ public class ProductImageRequestDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class SaveProductImage {
-//        private long productId;
+    public static class ProductImageSave {
         private List<String> paths;
 
         public ProductImages toEntity(Product product, String path) {

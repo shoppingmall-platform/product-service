@@ -23,12 +23,11 @@ public class ProductResponseDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class GetProduct {
-        long id;
+    public static class ProductGet {
+        long productId;
         private String name;
         private String description;
         private boolean isDeleted;
-        private int categoryId;
         private ProductState productState;
         private boolean isSelling;
         private LocalDateTime createdAt;
@@ -52,13 +51,12 @@ public class ProductResponseDto {
                     .build();
         }
 
-        public static ProductResponseDto.GetProduct of(Product product) {
-            return GetProduct.builder()
-                    .id(product.getId())
+        public static ProductGet of(Product product) {
+            return ProductGet.builder()
+                    .productId(product.getId())
                     .name(product.getName())
                     .description(product.getDescription())
                     .isDeleted(product.isDeleted())
-                    .categoryId(product.getCategory().getCategoryId())
                     .productState(product.getProductState())
                     .isSelling(product.isSelling())
                     .createdAt(product.getCreatedAt())
@@ -106,7 +104,7 @@ public class ProductResponseDto {
 
     @Getter
     @Builder
-    public static class GetProductForUsers {
+    public static class ProductGetForUsers {
         private long productId;
         private String productName;
         private int price;
@@ -115,13 +113,15 @@ public class ProductResponseDto {
         private DiscountResponseDto.DiscountInfo discountInfo;
         @Setter
         private List<ProductResponseDto.GetProductTag> tag;
+        private String thumbnailPath;
 
-        public static ProductResponseDto.GetProductForUsers of(Product product) {
-            ProductResponseDto.GetProductForUsers productDto = GetProductForUsers.builder()
+        public static ProductGetForUsers of(Product product) {
+            ProductGetForUsers productDto = ProductGetForUsers.builder()
                     .productId(product.getId())
                     .productName(product.getName())
                     .price(product.getPrice())
                     .discountedPrice(product.getDiscountedPrice())
+                    .thumbnailPath(product.getThumbnailPath())
                     .build();
             if (Objects.nonNull(product.getDiscount())) {
                 productDto.setDiscountInfo(DiscountResponseDto.DiscountInfo.of(product.getDiscount()));
@@ -154,6 +154,22 @@ public class ProductResponseDto {
             return tags.stream()
                     .map(tag -> new GetTag(tag.getTagId(), tag.getTagName()))
                     .toList();
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ProductCategoryMappingGet {
+        private int productCategoryMappingId;
+        private int categoryId;
+        private long productId;
+
+        public static ProductResponseDto.ProductCategoryMappingGet of(ProductCategoryMapping productCategoryMapping) {
+            return new ProductResponseDto.ProductCategoryMappingGet(
+                    productCategoryMapping.getProductCategoryMappingId(),
+                    productCategoryMapping.getCategory().getCategoryId(),
+                    productCategoryMapping.getProduct().getId()
+            );
         }
     }
 }

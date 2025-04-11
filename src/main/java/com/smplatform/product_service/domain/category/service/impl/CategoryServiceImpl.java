@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryResponseDto.CategoryInfo> getCategoryList() {
         return categoryRepository.findAll().stream().map(c-> CategoryResponseDto.CategoryInfo.of(c)).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Category> getCategoryListWithAllParent(int categoryId) {
+        List<Category> result = new ArrayList<>();
+        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        result.add(category);
+        if (category.getCategoryLevel() > 1) {
+            Category parentCategory = category.getParentCategory();
+            while (parentCategory != null) {
+                result.add(parentCategory);
+                parentCategory = parentCategory.getParentCategory();
+            }
+        }
+
+        return result;
     }
 
     @Transactional(readOnly = true)

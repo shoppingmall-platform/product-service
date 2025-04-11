@@ -1,15 +1,15 @@
 package com.smplatform.product_service.domain.product.service.impl;
 
-import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.product.dto.ProductImageResponseDto;
-import com.smplatform.product_service.domain.product.entity.*;
-import com.smplatform.product_service.domain.product.repository.*;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
+import com.smplatform.product_service.domain.product.entity.*;
 import com.smplatform.product_service.domain.product.exception.ProductNotFoundException;
-import com.smplatform.product_service.domain.product.service.ProductService;
+import com.smplatform.product_service.domain.product.repository.*;
+import com.smplatform.product_service.domain.product.service.ProductCategoryMappingService;
 import com.smplatform.product_service.domain.product.service.ProductImageService;
+import com.smplatform.product_service.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -30,13 +30,15 @@ import java.util.stream.IntStream;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
     private final ProductOptionRepository productOptionRepository;
     private final ProductOptionDetailRepository productOptionDetailRepository;
     private final ProductImageService productImageService;
     private final TagRepository tagRepository;
     private final ProductTagRepository productTagRepository;
+    private final ProductCategoryMappingRepository productCategoryMappingRepository;
+
+    private final ProductCategoryMappingService productCategoryMappingService;
 
     /**
      * 단일 제품 조회
@@ -46,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ProductResponseDto.GetProduct getProduct(long productId) {
+    public ProductResponseDto.ProductGet getProduct(long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(String.format("product { %d } not found", productId)));
 
@@ -64,8 +66,9 @@ public class ProductServiceImpl implements ProductService {
                     return productOptionDto;
                 }).toList();
 
-        ProductResponseDto.GetProduct productDto = ProductResponseDto.GetProduct.of(product);
+        ProductResponseDto.ProductGet productDto = ProductResponseDto.ProductGet.of(product);
         productDto.setProductOptions(productOptionDtos);
+        productDto.setProductImagePaths(productImageService.getProductProductImageList(productId));
         return productDto;
     }
 
@@ -77,17 +80,13 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public String saveProduct(ProductRequestDto.SaveProduct productDto) {
+    public String saveProduct(ProductRequestDto.ProductSave productDto) {
         // 상품 저장
-        Product product = productDto.toEntity();
-        product.setCategory(
-                categoryRepository.findById(productDto.getCategoryId())
-                        .orElseThrow(() -> new RuntimeException("category not found"))
-        );
-        productRepository.save(product);
+        Product product = productRepository.save(productDto.toEntity());
+        productCategoryMappingService.save(productDto.getCategoryId(), product.getId());
 
         // 상품옵션 저장
-        List<ProductRequestDto.SaveProductOption> productOptionDtos = productDto.getProductOptions();
+        List<ProductRequestDto.ProductOptionSave> productOptionDtos = productDto.getProductOptions();
         List<ProductOption> productOptions = productOptionDtos.stream()
                 .map(productOptionDto -> {
                     ProductOption productOption = productOptionDto.toEntity();
@@ -112,10 +111,11 @@ public class ProductServiceImpl implements ProductService {
         // 상품이미지 저장
         productImageService.saveProductImages(
                 product.getId(),
-                productDto.getProductImages().getPaths());
+                productDto.getProductImages().getPaths()
+        );
 
         // 상품 태그 저장
-        for (ProductRequestDto.SaveTag tagDto : productDto.getTags()) {
+        for (ProductRequestDto.TagSave tagDto : productDto.getTags()) {
             Optional<Tag> optionalTag = tagRepository.findByTagName(tagDto.getTagName());
 
             if (optionalTag.isPresent()) {
@@ -137,15 +137,11 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public String updateProduct(ProductRequestDto.UpdateProduct productDto) {
+    public String updateProduct(ProductRequestDto.ProductUpdate productDto) {
         Product product = productRepository.findById(productDto.getId())
                 .orElseThrow(() -> new ProductNotFoundException(String.format("product id : %d not found", productDto.getId())));
 
-        // 카테고리 수정
-        product.setCategory(
-                categoryRepository.findById(productDto.getCategoryId())
-                        .orElseThrow(() -> new RuntimeException(String.format("category id : %d not found", productDto.getCategoryId())))
-        );
+        // TODO: 카테고리 수정
 
         // 할인 수정
         if (!Objects.isNull(productDto.getDiscountId())) {
@@ -199,16 +195,23 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public List<ProductResponseDto.GetProduct> getProducts(Pageable pageable) {
-        Page<Product> products = productRepository.findAll(pageable);
-        List<ProductResponseDto.GetProduct> resultProducts = new ArrayList<>();
-        // N+1 entitygraph 사용
-        for (Product product : products) {
-            ProductResponseDto.GetProduct productDto = ProductResponseDto.GetProduct.of(product);
-            productDto.setProductImagePaths(productImageService.getProductProductImageList(product.getId()));
-            resultProducts.add(productDto);
+    public List<ProductResponseDto.ProductGet> getProducts(ProductRequestDto.AdminProductSearchCondition condition,
+                                                           Pageable pageable) {
+        if (Objects.isNull(condition) || condition.isConditionEmpty() || Objects.isNull(condition.getCategoryId())) {
+            return productRepository.findAll(pageable).stream()
+                    .map(ProductResponseDto.ProductGet::of)
+                    .toList();
+        } else {
+            List<ProductResponseDto.ProductGet> resultProducts = new ArrayList<>();
+            Page<Product> products = productRepository.searchProducts(condition, pageable);
+
+            for (Product product : products) {
+                ProductResponseDto.ProductGet productDto = ProductResponseDto.ProductGet.of(product);
+                productDto.setProductImagePaths(productImageService.getProductProductImageList(product.getId()));
+                resultProducts.add(productDto);
+            }
+            return resultProducts;
         }
-        return resultProducts;
     }
 
 
@@ -220,15 +223,31 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public List<ProductResponseDto.GetProductForUsers> getProductsForUsers(int categoryId, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public List<ProductResponseDto.ProductGetForUsers> getProductsForUsers(int categoryId,
+                                                                           ProductRequestDto.UserProductSearchCondition condition,
+                                                                           Pageable pageable) {
 
-        return productRepository.findAllByCategoryCategoryId(categoryId, pageable).stream()
-                .map(ProductResponseDto.GetProductForUsers::of)
-                .toList();
+        if (Objects.isNull(condition) || condition.isConditionEmpty()) {
+            return productCategoryMappingRepository.findAllByCategoryId(categoryId).stream()
+                    .map(ProductResponseDto.ProductGetForUsers::of)
+                    .toList();
+        } else {
+            return productRepository.searchUserProducts(categoryId, condition, pageable).stream()
+                    .map(ProductResponseDto.ProductGetForUsers::of)
+                    .toList();
+        }
     }
 
     @Override
     public List<ProductResponseDto.GetTag> getProductsTags() {
         return ProductResponseDto.GetTag.of(tagRepository.findAll());
+    }
+
+    @Override
+    public List<ProductResponseDto.ProductCategoryMappingGet> getProductCategoryMappings() {
+        return productCategoryMappingRepository.findAll().stream()
+                .map(ProductResponseDto.ProductCategoryMappingGet::of)
+                .toList();
     }
 }

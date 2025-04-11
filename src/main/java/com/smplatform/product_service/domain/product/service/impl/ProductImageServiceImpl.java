@@ -32,7 +32,7 @@ public class ProductImageServiceImpl implements ProductImageService {
             productImages = productImageRepository.findAllByProduct_Id(productId);
         }
         return productImages.stream()
-                .map(ProductImageResponseDto.ProductImageInfo::from)
+                .map(ProductImageResponseDto.ProductImageInfo::of)
                 .collect(Collectors.toList());
     }
 
