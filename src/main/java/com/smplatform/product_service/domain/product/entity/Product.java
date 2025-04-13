@@ -26,7 +26,7 @@ public class Product {
     @Column(name = "product_name")
     private String name;
 
-    @Column(name = "product_description")
+    @Column(name = "product_description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "is_deleted")
