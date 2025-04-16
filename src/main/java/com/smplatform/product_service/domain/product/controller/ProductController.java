@@ -90,7 +90,7 @@ public class ProductController {
      * @return
      */
     @AdminOnly
-    @PostMapping("/products")
+    @PostMapping("/products/read")
     @Operation(summary = "관리자용 product 전체 조회 및 검색 조회", description = "관리자용 전체 제품 조회")
     public ResponseEntity<List<ProductResponseDto.ProductGet>> getProducts(
             @RequestBody(required = false) ProductRequestDto.AdminProductSearchCondition condition,

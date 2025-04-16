@@ -165,13 +165,13 @@ ROLE: ADMIN
 
 
 ### 6. 관리자용 전체 제품 조회 (페이지네이션)
-POST http://localhost:8080/v1/products?page=0&size=3
+POST http://localhost:8080/v1/products/read?page=0&size=3
 X-MEMBER-ID: asdf
 ROLE: ADMIN
 
 
 ### 6-1. 관리자용 제품 검색 (페이지네이션)
-POST http://localhost:8080/v1/products
+POST http://localhost:8080/v1/products/read
 Content-Type: application/json
 ROLE: ADMIN
 
