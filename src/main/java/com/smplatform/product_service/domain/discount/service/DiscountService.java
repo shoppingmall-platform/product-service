@@ -12,7 +12,7 @@ public interface DiscountService {
     List<DiscountResponseDto.DiscountInfo> getDiscountList(String referenceDate, LocalDateTime startDate, LocalDateTime endDate, String discountName);
 
     // 할인코드 등록
-    String createDiscount(DiscountRequestDto.RegisterDiscount discountRequestDto);
+    String createDiscount(DiscountRequestDto.DiscountRegister discountRequestDto);
 
     // 할인코드 삭제
     String deleteDiscount(DiscountRequestDto.DeleteDiscount discountRequestDto);

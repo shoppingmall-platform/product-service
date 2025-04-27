@@ -45,6 +45,26 @@ public class Discount {
         }
     }
 
+    @Getter
+    public enum ApplyType {
+        ALL(0),
+        SPECIFIC_PRODUCT(1),
+        SPECIFIC_CATEGORY(2);
+
+        private final int typeNum;
+
+        ApplyType(int typeNum) {
+            this.typeNum = typeNum;
+        }
+
+        public static ApplyType fromTypeNum(int typeNum) {
+            return Arrays.stream(ApplyType.values())
+                    .filter(type -> typeNum == type.getTypeNum())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 할인 적용 구분"));
+        }
+    }
+
     public boolean isValidDiscount() {
         LocalDateTime now = LocalDateTime.now();
         if (discountStartDate == null || discountEndDate == null) {

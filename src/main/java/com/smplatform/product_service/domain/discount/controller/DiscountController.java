@@ -37,7 +37,7 @@ public class DiscountController {
 
     @PostMapping
     @Operation(summary = "할인코드 등록", description = "해당 옵션의 할인코드 등록")
-    public ResponseEntity<String> createDiscount(@RequestBody DiscountRequestDto.RegisterDiscount discountRequestDto) {
+    public ResponseEntity<String> createDiscount(@RequestBody DiscountRequestDto.DiscountRegister discountRequestDto) {
 
         String id = discountService.createDiscount(discountRequestDto);
 
