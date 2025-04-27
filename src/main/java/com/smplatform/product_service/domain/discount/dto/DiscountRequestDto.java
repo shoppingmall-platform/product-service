@@ -4,23 +4,22 @@ import com.smplatform.product_service.domain.discount.entity.Discount;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class DiscountRequestDto {
 
     @Getter
     @Builder
     @ToString
-    public static class RegisterDiscount {
+    public static class DiscountRegister {
 
         private String discountName;
-
         private String discountType;
-
         private int discountValue;
-
         private LocalDateTime discountStartDate;
-
         private LocalDateTime discountEndDate;
+        private int applyType;
+        private List<Long> ids;
 
         public Discount toEntity() {
             return Discount.builder()
