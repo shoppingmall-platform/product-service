@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * 전체 제품을 조회
+     * 관리자용 제품 조회
      *
      * @param pageable
      * @return
