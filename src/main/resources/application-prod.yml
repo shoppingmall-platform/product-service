@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/productdb?characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
-    password: root
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     database: mysql
@@ -12,5 +12,5 @@ spring:
       ddl-auto: update
 
 server:
-  port: 8080
+  port: ${BACKEND_SERVER_PORT}
   shutdown: graceful
