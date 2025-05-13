@@ -54,14 +54,14 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductOption> productOptions = productOptionRepository.findAllByProduct_Id(productId);
 
-        List<ProductResponseDto.GetProductOption> productOptionDtos = productOptions.stream()
+        List<ProductResponseDto.ProductOptionGet> productOptionDtos = productOptions.stream()
                 .map(productOption -> {
                     List<ProductOptionDetail> productOptionDetails = productOptionDetailRepository
                             .findAllByProductOption_ProductOptionId(productOption.getProductOptionId());
                     List<ProductResponseDto.GetProductOptionDetail> productOptionDetailDtos = productOptionDetails.stream()
                             .map(ProductResponseDto.GetProductOptionDetail::of)
                             .toList();
-                    ProductResponseDto.GetProductOption productOptionDto = ProductResponseDto.GetProductOption.of(productOption);
+                    ProductResponseDto.ProductOptionGet productOptionDto = ProductResponseDto.ProductOptionGet.of(productOption);
                     productOptionDto.setProductOptionDetails(productOptionDetailDtos);
                     return productOptionDto;
                 }).toList();

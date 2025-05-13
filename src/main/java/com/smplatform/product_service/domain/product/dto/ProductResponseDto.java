@@ -36,7 +36,7 @@ public class ProductResponseDto {
         private String summaryDescription;
         private String simpleDescription;
         private int discountedPrice;
-        private List<ProductResponseDto.GetProductOption> productOptions;
+        private List<ProductOptionGet> productOptions;
         private String thumbnailPath;
         private List<ProductImageResponseDto.ProductImageInfo> productImagePaths;
 
@@ -73,14 +73,14 @@ public class ProductResponseDto {
     @Getter
     @Setter
     @Builder
-    public static class GetProductOption {
+    public static class ProductOptionGet {
         private String productOptionName;
         private List<ProductResponseDto.GetProductOptionDetail> productOptionDetails;
         private int stockQuantity;
         private int additionalPrice;
 
-        public static ProductResponseDto.GetProductOption of(ProductOption productOption) {
-            return GetProductOption.builder()
+        public static ProductOptionGet of(ProductOption productOption) {
+            return ProductOptionGet.builder()
                     .productOptionName(productOption.getProductOptionName())
                     .stockQuantity(productOption.getStockQuantity())
                     .additionalPrice(productOption.getAdditionalPrice())
