@@ -12,6 +12,7 @@ public class CartRequestDto {
 
     @Getter
     public static class CartUpdate {
+        private Integer cartId;
         private Integer quantity;
     }
 }

@@ -27,10 +27,9 @@ public class CartController {
         return null;
     }
 
-    @PostMapping("/{cart-id}")
+    @PostMapping("/update")
     @Operation(summary = "장바구니 수정", description = "장바구니 제품 ")
     public ResponseEntity<String> updateCart(@RequestHeader(name = "X-MEMBER-ID") String memberId,
-                                             @PathVariable(name = "cart-id") Long cartId,
                                              @RequestBody CartRequestDto.CartUpdate requestDto) {
         return null;
     }
