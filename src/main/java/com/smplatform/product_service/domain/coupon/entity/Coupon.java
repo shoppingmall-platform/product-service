@@ -3,12 +3,15 @@ package com.smplatform.product_service.domain.coupon.entity;
 import com.smplatform.product_service.domain.coupon.dto.CouponRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "coupons", indexes = @Index(name="uk_coupon_code", columnList = "coupon_code", unique = true))
@@ -36,10 +39,10 @@ public class Coupon {
     private int discountAmount;
 
     @Column(name = "coupon_start_at")
-    private LocalDateTime couponStartAt;
+    private LocalDate couponStartAt;
 
     @Column(name = "coupon_end_at")
-    private LocalDateTime couponEndAt;
+    private LocalDate couponEndAt;
 
     @Column(name = "min_order_price")
     private int minOrderPrice;
@@ -70,13 +73,13 @@ public class Coupon {
         this.comment = couponCreateDto.getComment();
     }
 
-    public Coupon createCoupon(CouponRequestDto.CouponCreate couponCreateDto) {
+    public static Coupon createCoupon(CouponRequestDto.CouponCreate couponCreateDto) {
         return new Coupon(couponCreateDto);
     }
 
     public boolean isAvailable() {
-        return (couponStartAt == null || !LocalDateTime.now().isBefore(couponStartAt))
-                && (couponEndAt   == null || !LocalDateTime.now().isAfter(couponEndAt));
+        return (couponStartAt == null || !LocalDate.now().isBefore(couponStartAt))
+                && (couponEndAt   == null || !LocalDate.now().isAfter(couponEndAt));
     }
 
 }
