@@ -4,6 +4,7 @@ import com.smplatform.product_service.domain.member.dto.*;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.entity.WithdrawMember;
 import com.smplatform.product_service.domain.member.exception.IdDuplicateException;
+import com.smplatform.product_service.domain.member.exception.InvalidPasswordException;
 import com.smplatform.product_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
 import com.smplatform.product_service.domain.member.repository.WithdrawMemberRepository;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
@@ -27,11 +29,10 @@ public class MemberServiceImpl implements MemberService {
     private final WithdrawMemberRepository withdrawMemberRepository;
 
     @Override
-    @Transactional(readOnly = false)
-    public String createMember(MemberCreateDto memberCreateDto) {
+    public String createMember(MemberRequestDto.MemberCreate memberCreateDto) {
         // 아이디 중복 검사
-        if (memberRepository.findById(memberCreateDto.getId()).isPresent()) {
-            throw new IdDuplicateException(memberCreateDto.getId());
+        if (memberRepository.findById(memberCreateDto.getMemberId()).isPresent()) {
+            throw new IdDuplicateException(memberCreateDto.getMemberId());
         }
 
         // password 해시 처리
@@ -40,62 +41,73 @@ public class MemberServiceImpl implements MemberService {
         // 저장할 멤버 엔티티 생성
         Member newMember = memberCreateDto.toEntity(hashedPassword);
 
-        return memberRepository.save(newMember).getId();
+        return memberRepository.save(newMember).getMemberId();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public MemberResponseDto getMember(String id) {
+    public MemberResponseDto.MemberInfo getMember(String id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException(id));
 
-        return new MemberResponseDto(member);
+        return new MemberResponseDto.MemberInfo(member);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<MemberResponseDto> getMembers() {
+    public List<MemberResponseDto.MemberInfo> getMembers() {
         List<Member> members = memberRepository.findAll();
 
         return members.stream()
-                .map(MemberResponseDto::new)
+                .map(MemberResponseDto.MemberInfo::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto) {
+    public List<MemberResponseDto.MemberInfo> searchMembers(MemberRequestDto.MemberSearchRequestParam searchRequestParamDto) {
         // OrderSearch, OrderDateSearch, ProductId가 null이 아니면 필요 데이터 Rest API 요청
 
 
         List<Member> members = memberRepository.searchMember(searchRequestParamDto);
 
         return members.stream()
-                .map(MemberResponseDto::new)
+                .map(MemberResponseDto.MemberInfo::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public String updateMember(String id, MemberUpdateDto memberUpdateDto) {
+    public String updateMember(String id, MemberRequestDto.MemberUpdate memberUpdateDto) {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException(id));
         member.update(memberUpdateDto);
 
-        return memberRepository.save(member).getId();
+        return memberRepository.save(member).getMemberId();
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public Void deleteMember(String id, String memo) {
+    public String updatePassword(String id, MemberRequestDto.PasswordUpdate passwordUpdateDto) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
+
+        if (!passwordEncoder.matches(passwordUpdateDto.getOldPassword(), member.getPassword())) {
+            throw new InvalidPasswordException("기존 비밀번호가 일치하지 않음");
+        }
+
+        member.updatePassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
+
+        return memberRepository.save(member).getMemberId();
+    }
+
+    @Override
+    public Void deleteMember(String id, MemberRequestDto.Withdraw withdrawDto) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException(id));
 
         member.delete();
-        memberRepository.save(member);
 
-        WithdrawMember withdrawMember = new WithdrawMember(member, memo);
+        WithdrawMember withdrawMember = new WithdrawMember(member, withdrawDto.getMemo());
         withdrawMemberRepository.save(withdrawMember);
 
         return null;
@@ -103,10 +115,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public MemberCredentialDto getMemberCredential(String id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException(id));
+    public MemberResponseDto.MemberCredential getMemberCredential(String id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException(id));
 
-        return new MemberCredentialDto(member);
+        return new MemberResponseDto.MemberCredential(member);
     }
 }

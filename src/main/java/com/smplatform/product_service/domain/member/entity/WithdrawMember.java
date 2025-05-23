@@ -21,7 +21,7 @@ public class WithdrawMember {
 
     @Id
     @Column(name = "member_id")
-    private Long memberId;
+    private String memberId;
 
     @OneToOne
     @MapsId

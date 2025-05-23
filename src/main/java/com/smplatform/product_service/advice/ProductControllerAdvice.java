@@ -1,6 +1,7 @@
 package com.smplatform.product_service.advice;
 
 import com.smplatform.product_service.domain.category.exception.AbstractCategoryException;
+import com.smplatform.product_service.domain.member.exception.AbstractMemberException;
 import com.smplatform.product_service.domain.product.exception.ThumbnailNotFoundException;
 import com.smplatform.product_service.exception.DiscountNotFoundException;
 import com.smplatform.product_service.exception.ProductStateNotFoundException;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ProductControllerAdvice {
+
+    // 도메인별 예외처리
 
     @ExceptionHandler(ProductStateNotFoundException.class)
     public ResponseEntity<String> handleProductStateNotFoundException(DiscountNotFoundException e) {
@@ -32,6 +35,15 @@ public class ProductControllerAdvice {
     public ResponseEntity<String> handleThumbnailNotFoundException(ThumbnailNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(AbstractMemberException.class)
+    public ResponseEntity<String> handleAbstractMemberException(AbstractMemberException e) {
+        return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+    }
+
+    /**
+     * // 도메인 이외의 서버 예외처리
+     */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
