@@ -91,8 +91,6 @@ public class MemberRequestDto {
         private Gender gender;
         private MemberStatus status;
         private MemberLevel level;
-        private Boolean tosAgreement;
-        private Boolean privacyAgreement;
         private Boolean marketingAgreement;
     }
 

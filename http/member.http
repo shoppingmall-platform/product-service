@@ -31,8 +31,6 @@ X-USER-ID: test@test.com
   "birthday": "2025-04-06",
   "phoneNumber": "010-1111-2222",
   "gender": "F",
-  "tosAgreement": true,
-  "privacyAgreement": true,
   "marketingAgreement": true
 }
 
