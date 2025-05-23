@@ -11,7 +11,7 @@ ROLE: ADMIN
   "minOrderPrice": 50000 ,
   "maxDiscountPrice": 1000,
   "couponStartDate": "2025-04-02",
-  "couponEndDate": "2025-05-05",
+  "couponEndDate": "2025-04-05",
   "issueType": "AUTO",
   "couponIssueCode": "",
   "comment": ""
@@ -29,7 +29,7 @@ ROLE: ADMIN
   "amount": 5000,
   "minOrderPrice": 0 ,
   "maxDiscountPrice": 0,
-  "couponStartDate": "2025-04-02",
+  "couponStartDate": "2025-05-02",
   "couponEndDate": "2025-05-05",
   "issueType": "CODE",
   "couponIssueCode": "TESTCOUPON",
@@ -46,4 +46,38 @@ ROLE: ADMIN
   "couponName": null,
   "couponStartDate": null,
   "couponEndDate": null
+}
+
+### 쿠폰검색(이름으로 조회)
+POST http://localhost:8080/v1/coupons/search
+Content-Type: application/json
+X-USER-ID: jle
+ROLE: ADMIN
+
+{
+  "couponName": "50%",
+  "couponStartDate": null,
+  "couponEndDate": null
+}
+
+### 쿠폰검색(기간 조회)
+POST http://localhost:8080/v1/coupons/search
+Content-Type: application/json
+X-USER-ID: jle
+ROLE: ADMIN
+
+{
+  "couponName": null,
+  "couponStartDate": "2025-05-01",
+  "couponEndDate": "2025-05-07"
+}
+
+### 쿠폰 삭제
+POST http://localhost:8080/v1/coupons/delete
+Content-Type: application/json
+X-USER-ID: jle
+ROLE: ADMIN
+
+{
+  "couponId": 1
 }
