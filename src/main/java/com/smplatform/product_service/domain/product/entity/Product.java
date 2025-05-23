@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", unique = true)
     private String name;
 
     @Column(name = "product_description", columnDefinition = "TEXT")
