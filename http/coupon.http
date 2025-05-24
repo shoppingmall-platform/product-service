@@ -81,3 +81,16 @@ ROLE: ADMIN
 {
   "couponId": 1
 }
+
+### 쿠폰발급
+POST http://localhost:8080/v1/coupons/issue
+X-USER-ID: jle
+Content-Type: application/json
+
+{
+  "couponIssueCode": "TESTCOUPON"
+}
+
+### 보유 쿠폰 조회
+GET http://localhost:8080/v1/members/me/coupons
+X-USER-ID: jle

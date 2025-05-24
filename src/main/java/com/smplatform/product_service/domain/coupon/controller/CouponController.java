@@ -26,6 +26,7 @@ public class CouponController {
         return ResponseEntity.status(201).body(couponService.createCoupon(couponCreateDto));
     }
 
+    @AdminOnly
     @PostMapping("/search")
     public ResponseEntity<List<CouponResponseDto.CouponInfo>> getCouponList(@RequestBody @Valid CouponRequestDto.CouponSearch couponSearchDto) {
         return ResponseEntity.ok(couponService.getCouponList(couponSearchDto));
