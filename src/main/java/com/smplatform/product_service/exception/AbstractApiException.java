@@ -1,9 +1,9 @@
-package com.smplatform.product_service.domain.member.exception;
+package com.smplatform.product_service.exception;
 
 import org.springframework.http.HttpStatus;
 
 public abstract class AbstractApiException extends RuntimeException {
-    protected AbstractApiException(String message) {
+    public AbstractApiException(String message) {
         super(message);
     }
 

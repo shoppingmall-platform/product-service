@@ -1,13 +1,11 @@
 package com.smplatform.product_service.domain.member.entity;
 
-import com.smplatform.product_service.domain.member.dto.MemberUpdateDto;
+import com.smplatform.product_service.domain.member.dto.MemberRequestDto;
 import com.smplatform.product_service.domain.member.enums.Gender;
 import com.smplatform.product_service.domain.member.enums.MemberAuthority;
 import com.smplatform.product_service.domain.member.enums.MemberLevel;
 import com.smplatform.product_service.domain.member.enums.MemberStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,27 +26,21 @@ import java.util.Optional;
 @NoArgsConstructor
 public class Member {
     @Id
-    @NotBlank
-    @Column(name = "id", nullable = false)
-    private String id;
+    @Column(name = "member_id", nullable = false)
+    private String memberId;
 
-    @NotBlank
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotBlank
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-
-    @NotBlank
-    @Email
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @NotBlank
+    @NotNull
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
@@ -72,9 +64,6 @@ public class Member {
     @Column(name = "level", nullable = false)
     private MemberLevel level;
 
-    @Column(name = "region")
-    private String region;
-
     @Column(name = "tos_agreement")
     private Boolean tosAgreement;
 
@@ -93,17 +82,20 @@ public class Member {
     private LocalDateTime updateAt;
 
 
-    public void update(MemberUpdateDto memberUpdateDto) {
+    public void update(MemberRequestDto.MemberUpdate memberUpdateDto) {
         Optional.ofNullable(memberUpdateDto.getName()).ifPresent(name -> this.name = name);
         Optional.ofNullable(memberUpdateDto.getBirthday()).ifPresent(birthday -> this.birthday = birthday);
         Optional.ofNullable(memberUpdateDto.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
         Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = gender);
         Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = status);
         Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = level);
-        Optional.ofNullable(memberUpdateDto.getRegion()).ifPresent(region -> this.region = region);
         Optional.ofNullable(memberUpdateDto.getTosAgreement()).ifPresent(tosAgreement -> this.tosAgreement = tosAgreement);
         Optional.ofNullable(memberUpdateDto.getPrivacyAgreement()).ifPresent(privacyAgreement -> this.privacyAgreement = privacyAgreement);
         Optional.ofNullable(memberUpdateDto.getMarketingAgreement()).ifPresent(marketingAgreement -> this.marketingAgreement = marketingAgreement);
+    }
+
+    public void updatePassword(String hashedPassword) {
+        this.password = hashedPassword;
     }
 
     public void delete() {

@@ -9,27 +9,29 @@ public interface MemberService {
     /**
      * Create
      */
-    String createMember(MemberCreateDto newMemberDto);
+    String createMember(MemberRequestDto.MemberCreate newMemberDto);
 
     /**
      * Read
      */
-    MemberResponseDto getMember(String id);
-    List<MemberResponseDto> getMembers();
-    List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto);
+    MemberResponseDto.MemberInfo getMember(String id);
+    List<MemberResponseDto.MemberInfo> getMembers();
+    List<MemberResponseDto.MemberInfo> searchMembers(MemberRequestDto.MemberSearchRequestParam searchRequestParamDto);
 
     /**
      * Update
      */
-    String updateMember(String id, MemberUpdateDto updateMemberDto);
+    String updateMember(String id, MemberRequestDto.MemberUpdate updateMemberDto);
+
+    String updatePassword(String id, MemberRequestDto.PasswordUpdate password);
 
     /**
      * Delete
      */
-    Void deleteMember(String id, String memo);
+    Void deleteMember(String id, MemberRequestDto.Withdraw withdrawDto);
 
     /**
      * Actions
      */
-    MemberCredentialDto getMemberCredential(String id);
+    MemberResponseDto.MemberCredential getMemberCredential(String id);
 }
