@@ -36,5 +36,13 @@ public class MemberCoupon {
     @Enumerated(EnumType.STRING)
     private MemberCouponStatus status;
 
+    private MemberCoupon(Member member, Coupon coupon) {
+        this.member = member;
+        this.coupon = coupon;
+        this.status = MemberCouponStatus.ACTIVE;
+    }
 
+    public static MemberCoupon createMemberCoupon(Member member, Coupon coupon) {
+        return new MemberCoupon(member, coupon);
+    }
 }

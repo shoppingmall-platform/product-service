@@ -14,7 +14,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CustomCouponRepositoryImpl implements CustomCouponRepository {
     private final JPAQueryFactory query;
-    QCoupon coupon = QCoupon.coupon;
+    private final QCoupon coupon = QCoupon.coupon;
 
     @Override
     public List<Coupon> searchCoupon(CouponRequestDto.CouponSearch couponSearchDto) {

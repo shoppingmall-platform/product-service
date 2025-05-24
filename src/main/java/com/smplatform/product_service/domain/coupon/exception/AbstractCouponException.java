@@ -1,11 +1,9 @@
 package com.smplatform.product_service.domain.coupon.exception;
 
-import org.springframework.http.HttpStatus;
+import com.smplatform.product_service.exception.AbstractApiException;
 
-public abstract class AbstractCouponException extends RuntimeException {
+public abstract class AbstractCouponException extends AbstractApiException {
     protected AbstractCouponException(String message) {
         super(message);
     }
-
-    public abstract HttpStatus getHttpStatus();
 }
