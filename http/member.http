@@ -3,7 +3,7 @@ GET http://localhost:8080/v1/members
 
 ### GET member
 GET http://localhost:8080/v1/members/me
-X-USER-ID: jle
+X-MEMBER-ID: jle
 
 ### 회원가입
 POST  http://localhost:8080/v1/members
@@ -24,7 +24,7 @@ Content-Type: application/json
 ### 회원정보 수정
 POST  http://localhost:8080/v1/members/me/update
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "name": "test-user",
@@ -39,7 +39,7 @@ X-USER-ID: test@test.com
 ### 비밀번호 수정
 POST  http://localhost:8080/v1/members/me/update/auth
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "oldPassword": "test",
@@ -50,7 +50,7 @@ X-USER-ID: test@test.com
 ### 회원탈퇴
 POST http://localhost:8080/v1/members/me/withdraw
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "memo":"사용하지 않음"

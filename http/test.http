@@ -24,7 +24,7 @@ GET localhost:8080/v1/categories
 ### 2. 제품 등록 ({옵션-상품옵션 테이블 자동등록}, {태그-기존태그 존재시 only 상품태그 저장, 기존태그 부재시 태그 테이블 & 상품 태그 테이블 저장}, {썸네일-자동 등록})
 POST http://localhost:8080/v1/products
 Content-Type: application/json
-X-USER-ID: test
+X-MEMBER-ID: test
 ROLE: ADMIN
 
 {
@@ -89,7 +89,7 @@ GET localhost:8080/v1/discounts
 ### 5. (할인 포함) 제품 등록
 POST http://localhost:8080/v1/products
 Content-Type: application/json
-X-USER-ID: test
+X-MEMBER-ID: test
 ROLE: ADMIN
 
 {
