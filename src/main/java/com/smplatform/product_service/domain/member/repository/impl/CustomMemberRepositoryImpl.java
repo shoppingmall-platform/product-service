@@ -2,7 +2,7 @@ package com.smplatform.product_service.domain.member.repository.impl;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.smplatform.product_service.domain.member.dto.MemberSearchRequestParamDto;
+import com.smplatform.product_service.domain.member.dto.MemberRequestDto;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.enums.Gender;
 import com.smplatform.product_service.domain.member.enums.MemberLevel;
@@ -21,7 +21,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Member> searchMember(MemberSearchRequestParamDto searchRequestParamDto) {
+    public List<Member> searchMember(MemberRequestDto.MemberSearchRequestParam searchRequestParamDto) {
         return queryFactory
                 .selectFrom(member)
                 .where(
@@ -40,7 +40,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     }
 
     private BooleanExpression emailContains(String email) {
-        return email != null ? member.email.contains(email) : null;
+        return email != null ? member.memberId.contains(email) : null;
     }
 
     private BooleanExpression levelEq(MemberLevel level) {
