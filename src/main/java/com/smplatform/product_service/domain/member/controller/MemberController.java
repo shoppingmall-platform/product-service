@@ -29,7 +29,7 @@ public class MemberController {
 
     @GetMapping("/me")
     @Operation(summary = "member 조회", description = "해당 아이디의 사용자 정보 조회")
-    public ResponseEntity<MemberResponseDto.MemberInfo> getMember(@RequestHeader(name = "X-USER-ID") String id) {
+    public ResponseEntity<MemberResponseDto.MemberInfo> getMember(@RequestHeader(name = "X-MEMBER-ID") String id) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getMember(id));
     }
 
@@ -48,7 +48,7 @@ public class MemberController {
     @PostMapping("/me/update")
     @Operation(summary = "member 정보 수정", description = "사용자 정보 수정")
     public ResponseEntity<String> updateMember(
-            @RequestHeader(name = "X-USER-ID") String id,
+            @RequestHeader(name = "X-MEMBER-ID") String id,
             @RequestBody @Valid final MemberRequestDto.MemberUpdate updateMember
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(id, updateMember));
@@ -57,7 +57,7 @@ public class MemberController {
     @PostMapping("/me/update/auth")
     @Operation(summary = "member 정보 수정", description = "사용자 비밀번호 수정")
     public ResponseEntity<String> updatePassword(
-            @RequestHeader(name = "X-USER-ID") String id,
+            @RequestHeader(name = "X-MEMBER-ID") String id,
             @RequestBody @Valid final MemberRequestDto.PasswordUpdate updatePassword
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updatePassword(id, updatePassword));
@@ -66,7 +66,7 @@ public class MemberController {
     @PostMapping("/me/withdraw")
     @Operation(summary = "member 탈퇴", description = "사용자 탈퇴 상태로 변경")
     public ResponseEntity<Void> deleteMember(
-            @RequestHeader(name = "X-USER-ID") String id,
+            @RequestHeader(name = "X-MEMBER-ID") String id,
             @RequestBody MemberRequestDto.Withdraw withdrawDto
     ) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(memberService.deleteMember(id, withdrawDto));

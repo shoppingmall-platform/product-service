@@ -18,12 +18,12 @@ public class MemberCouponController {
     private final MemberCouponService memberCouponService;
 
     @PostMapping("/coupons/issue")
-    public ResponseEntity<MemberCouponResponseDto.CouponIssue> issueCoupon(@RequestHeader("X-USER-ID") String memberId, @RequestBody @Valid MemberCouponRequestDto.CouponIssue couponIssueDto) {
+    public ResponseEntity<MemberCouponResponseDto.CouponIssue> issueCoupon(@RequestHeader("X-MEMBER-ID") String memberId, @RequestBody @Valid MemberCouponRequestDto.CouponIssue couponIssueDto) {
         return ResponseEntity.status(201).body(memberCouponService.issueCoupon(memberId, couponIssueDto)) ;
     }
 
     @GetMapping("/members/me/coupons")
-    public ResponseEntity<List<MemberCouponResponseDto.MemberCouponInfo>> getCoupons(@RequestHeader("X-USER-ID") String memberId) {
+    public ResponseEntity<List<MemberCouponResponseDto.MemberCouponInfo>> getCoupons(@RequestHeader("X-MEMBER-ID") String memberId) {
         return ResponseEntity.ok(memberCouponService.getCoupons(memberId)) ;
     }
 
