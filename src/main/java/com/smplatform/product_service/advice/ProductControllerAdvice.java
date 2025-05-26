@@ -7,6 +7,7 @@ import com.smplatform.product_service.domain.product.exception.ThumbnailNotFound
 import com.smplatform.product_service.exception.AbstractApiException;
 import com.smplatform.product_service.exception.DiscountNotFoundException;
 import com.smplatform.product_service.exception.ProductStateNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 @ControllerAdvice
 public class ProductControllerAdvice {
@@ -48,7 +50,6 @@ public class ProductControllerAdvice {
     }
 
 
-
     /**
      * // 도메인 이외의 서버 예외처리
      */
@@ -56,6 +57,7 @@ public class ProductControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
+        log.error("Unhandled exception caught", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 

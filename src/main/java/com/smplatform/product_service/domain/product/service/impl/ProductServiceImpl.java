@@ -83,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
     public String saveProduct(ProductRequestDto.ProductSave productDto) {
         // 상품 저장
         Product product = productRepository.save(productDto.toEntity());
+
         productCategoryMappingService.save(productDto.getCategoryId(), product.getId());
 
         // 상품옵션 저장
