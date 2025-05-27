@@ -1,13 +1,14 @@
 package com.smplatform.product_service.domain.cart.service.impl;
 
 import com.smplatform.product_service.domain.cart.dto.CartItemRequestDto;
-import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.entity.CartItem;
 import com.smplatform.product_service.domain.cart.exception.CartItemNotFoundException;
 import com.smplatform.product_service.domain.cart.exception.CartItemOptionAlreadyExistsException;
+import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
+import com.smplatform.product_service.domain.cart.entity.CartItem;
 import com.smplatform.product_service.domain.cart.repository.CartItemRepository;
+import com.smplatform.product_service.domain.cart.repository.CustomCartItemRepository;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
-import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
@@ -20,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class CartItemServiceImpl implements CartItemService {
             ProductOption productOption = productOptionRepository.findById(itemDto.getProductOptionId())
                     .orElseThrow(() -> new ProductOptionNotFoundException(itemDto.getProductOptionId()));
 
-            // 이미 존재하는 상품옵션이면 수량 +1
+            // 이미 존재하는 상품옵션이면 수량 + 추가한 수량
             Optional<CartItem> optionalCartItem = cartItemRepository.findByMemberAndProductOption(member, productOption);
             if (optionalCartItem.isPresent()) {
                 CartItem cartItem = optionalCartItem.get();
@@ -64,16 +65,31 @@ public class CartItemServiceImpl implements CartItemService {
     public String updateCartItems(String memberId, List<CartItemRequestDto.CartUpdate> requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
+        // 장바구니 존재여부
+        List<Long> cartItemIds      = requestDto.stream()
+                .map(CartItemRequestDto.CartUpdate::getCartItemId)
+                .toList();
+        Map<Long,CartItem> cartItemMap = cartItemRepository.findByMemberAndCartItemIdIn(member, cartItemIds)
+                .stream().collect(Collectors.toMap(CartItem::getCartItemId, Function.identity()));
+        if (cartItemMap.size() != cartItemIds.size()) {
+            throw new CartItemNotFoundException("존재하지 않는 장바구니 상품이 포함되어 있습니다. cartItemId : ");
+        }
+
+        // 상품 옵션 존재여부
+        List<Long> productOptionIds = requestDto.stream()
+                .map(CartItemRequestDto.CartUpdate::getProductOptionId)
+                .toList();
+        Map<Long, ProductOption> optionMap = productOptionRepository
+                .findAllById(productOptionIds)
+                .stream()
+                .collect(Collectors.toMap(ProductOption::getProductOptionId, Function.identity()));
+        if (optionMap.size() != productOptionIds.size()) {
+            throw new ProductOptionNotFoundException("존재하지 않는 상품옵션이 포함되어 있습니다.");
+        }
+
         for (CartItemRequestDto.CartUpdate item : requestDto) {
-            CartItem cartItem = cartItemRepository.findById(item.getCartItemId())
-                    .orElseThrow(() -> new CartItemNotFoundException(item.getCartItemId()));
-
-            ProductOption productOption = productOptionRepository.findById(item.getProductOptionId())
-                    .orElseThrow(() -> new ProductOptionNotFoundException(item.getProductOptionId()));
-
-            if (cartItemRepository.findByMemberAndProductOption(member, productOption).isPresent()) {
-                throw new CartItemOptionAlreadyExistsException(item.getProductOptionId());
-            }
+            CartItem cartItem = cartItemMap.get(item.getCartItemId());
+            ProductOption productOption = optionMap.get(item.getProductOptionId());
             cartItem.updateOption(productOption, item.getQuantity());
         }
 
@@ -83,8 +99,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public Void deleteCartItems(String memberId, List<CartItemRequestDto.CartDelete> requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
-
-        cartItemRepository.deleteAllByIdInBatch(requestDto.stream().map(CartItemRequestDto.CartDelete::getCartItemId).toList());
+        cartItemRepository.deleteAllByMemberAndCartItemIdIn(member.getMemberId(), requestDto.stream().map(CartItemRequestDto.CartDelete::getCartItemId).toList());
         return null;
     }
 
