@@ -25,9 +25,9 @@ public class CartItemController {
     }
 
     @GetMapping
-    @Operation(summary = "장바구니 조회", description = "장바구니는 기본으로 1회원 1장바구니. 해당 api 는 장바구니에 제품을 추가하기위한 api.")
+    @Operation(summary = "장바구니 조회", description = "장바구니는 기본으로 1회원 1장바구니. 해당 api 는 로그인된 회원의 장바구니조회를 위한 api.")
     public ResponseEntity<CartItemResponseDto.CartGet> getCartItems(@RequestHeader(name = "X-MEMBER-ID") String memberId) {
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(cartItemService.getCartItems(memberId));
     }
 
     @PostMapping("/option-update")
