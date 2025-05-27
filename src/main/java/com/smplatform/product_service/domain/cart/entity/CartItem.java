@@ -31,4 +31,8 @@ public class CartItem {
         this.productOption = productOption;
         this.quantity = quantity;
     }
+
+    public static CartItem createCartItem(Member member, ProductOption productOption, int quantity) {
+        return new CartItem(member, productOption, quantity);
+    }
 }
