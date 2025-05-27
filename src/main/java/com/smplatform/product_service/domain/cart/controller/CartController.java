@@ -18,7 +18,7 @@ public class CartController {
     @Operation(summary = "장바구니에 제품 추가", description = "장바구니는 기본으로 1회원 1장바구니. 해당 api 는 장바구니에 제품을 추가하기위한 api.")
     public ResponseEntity<String> addCartItem(@RequestHeader(name = "X-MEMBER-ID") String memberId,
                                           @RequestBody CartRequestDto.CartAdd requestDto) {
-        return null;
+        return ResponseEntity.status(201).body(cartService.addCartItems(memberId, requestDto)) ;
     }
 
     @GetMapping
