@@ -1,5 +1,5 @@
 ### 1. 카테고리 생성 (상품은 반드시 카테고리가 있어야 등록 가능)
-POST http://localhost:8081/product/v1/categories
+POST http://localhost:8080/v1/categories
 content-type:application/json
 
 {
@@ -189,7 +189,7 @@ X-MEMBER-ID: asdf
 
 
 ### 7-1. 단일 제품 조회
-POST localhost:8080/v1/products/1
+GET localhost:8080/v1/products/2
 X-MEMBER-ID: asdf
 
 
