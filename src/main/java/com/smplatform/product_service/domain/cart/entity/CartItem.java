@@ -4,6 +4,7 @@ import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.product.entity.ProductOption;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
         uniqueConstraints = @UniqueConstraint(name="uq_cart_member_option", columnNames = {"member_id", "product_option_id"})
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CartItem {
     @Id
     @Column(name = "cart_item_id")
