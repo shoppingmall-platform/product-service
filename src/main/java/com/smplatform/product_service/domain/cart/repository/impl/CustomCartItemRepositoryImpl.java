@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.entity.QCartItem;
 import com.smplatform.product_service.domain.cart.repository.CustomCartItemRepository;
+import com.smplatform.product_service.domain.member.entity.Member;
+import com.smplatform.product_service.domain.member.entity.QMember;
 import com.smplatform.product_service.domain.product.entity.QProduct;
 import com.smplatform.product_service.domain.product.entity.QProductOption;
 import com.smplatform.product_service.domain.product.entity.QProductOptionDetail;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomCartItemRepositoryImpl implements CustomCartItemRepository {
     private final JPAQueryFactory jpaQueryFactory;
+
 
     @Override
     public List<CartItemResponseDto.CartItemFlatDto> findAllByMemberId(String memberId) {
@@ -45,5 +48,16 @@ public class CustomCartItemRepositoryImpl implements CustomCartItemRepository {
                 .leftJoin(productOptionDetail).on(productOptionDetail.productOption.eq(productOption))
                 .where(cartItem.member.memberId.eq(memberId))
                 .fetch();
+    }
+
+    @Override
+    public void deleteAllByMemberAndCartItemIdIn(String memberId, List<Long> list) {
+        QCartItem cartItem = QCartItem.cartItem;
+
+        jpaQueryFactory
+                .delete(cartItem)
+                .where(cartItem.member.memberId.eq(memberId)
+                        .and(cartItem.cartItemId.in(list)))
+                .execute();
     }
 }
