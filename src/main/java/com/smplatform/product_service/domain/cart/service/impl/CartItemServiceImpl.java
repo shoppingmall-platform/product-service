@@ -99,18 +99,7 @@ public class CartItemServiceImpl implements CartItemService {
         List<CartItemResponseDto.CartItemFlatDto> allCartItemsByMemberId = cartItemRepository.findAllByMemberId(member.getMemberId());
         log.error("페치 결과 : {}", allCartItemsByMemberId);
 
-        return new CartItemResponseDto.CartGet(allCartItemsByMemberId.stream().map(dto -> {
-            CartItemResponseDto.ProductOptionDetailGet productOptionDetailGet = CartItemResponseDto.ProductOptionDetailGet.builder()
-                    .productOptionType(dto.getProductOptionType())
-                    .productOptionDetailName(dto.getProductOptionDetailName())
-                    .build();
-            CartItemResponseDto.ProductOptionGet productOptionGet = CartItemResponseDto.ProductOptionGet.builder()
-                    .productOptionId(dto.getProductOptionId())
-                    .productOptionName(dto.getProductOptionName())
-                    .stockQuantity(dto.getStockQuantity())
-                    .additionalPrice(dto.getAdditionalPrice())
-                    .build();
 
-        }).toList());
+        return null;
     }
 }
