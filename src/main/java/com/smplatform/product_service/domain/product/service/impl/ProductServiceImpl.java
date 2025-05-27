@@ -1,5 +1,6 @@
 package com.smplatform.product_service.domain.product.service.impl;
 
+import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.product.dto.ProductImageResponseDto;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
@@ -82,7 +83,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public String saveProduct(ProductRequestDto.ProductSave productDto) {
         // 상품 저장
-        Product product = productRepository.save(productDto.toEntity());
+        Product productDtoEntity = productDto.toEntity();
+        Discount discount = discountRepository.findById(productDto.getDiscountId()).orElse(null);
+        productDtoEntity.setDiscount(discount);
+
+        Product product = productRepository.save(productDtoEntity);
 
         productCategoryMappingService.save(productDto.getCategoryId(), product.getId());
 

@@ -9,6 +9,7 @@ import com.smplatform.product_service.domain.cart.entity.CartItem;
 import com.smplatform.product_service.domain.cart.repository.CartItemRepository;
 import com.smplatform.product_service.domain.cart.repository.CustomCartItemRepository;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
+import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.time.LocalDateTime;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -125,6 +128,7 @@ public class CartItemServiceImpl implements CartItemService {
                                                             .productId(f.getProductId())
                                                             .name(f.getName())
                                                             .price(f.getPrice())
+                                                            .thumbnailPath(f.getThumbnailPath())
                                                             .productOptions(new ArrayList<>())
                                                             .build()
                                             )
