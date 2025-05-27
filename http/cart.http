@@ -1,2 +1,154 @@
-### GET request to example server
-GET http://localhost:8080/v1/members/cart
+# 테스트 카테고리 및 상품 세팅
+### - 대분류 카테고리 생성
+POST http://localhost:8080/v1/categories
+content-type:application/json
+
+{
+  "categoryName": "test1",
+  "categoryLevel": 1
+}
+
+### - 중분류 카테고리 생성
+POST localhost:8080/v1/categories
+content-type:application/json
+
+{
+  "parentCategoryId": 1,
+  "categoryName": "child category1",
+  "categoryLevel": 2
+}
+
+### - 소분류 카테고리 생성
+POST localhost:8080/v1/categories
+content-type:application/json
+
+{
+  "parentCategoryId": 2,
+  "categoryName": "child category1",
+  "categoryLevel": 3
+}
+
+### - 제품 등록
+POST http://localhost:8080/v1/products
+Content-Type: application/json
+X-MEMBER-ID: test
+ROLE: ADMIN
+
+{
+  "name": "Product Name1",
+  "description": "description.",
+  "categoryId": 3,
+  "price": 15000,
+  "summaryDescription": "summary description.",
+  "simpleDescription": "simple description.",
+  "productOptions": [
+    {
+      "productOptionName": "option1",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 3333
+    },
+    {
+      "productOptionName": "option2",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "white"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 3333
+    },
+    {
+      "productOptionName": "option3",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "brown"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 3333
+    }
+  ],
+  "thumbnail": "/thm/path",
+  "productImages": {
+    "paths": [
+      "/path/1",
+      "/path/2",
+      "/path/3"
+    ]
+  },
+  "tags": [
+    {
+      "tagName": "진짜 멋진거"
+    }
+  ]
+}
+
+### 장바구니에 상품 추가
+POST http://localhost:8080/v1/members/cart
+Content-Type: application/json
+X-MEMBER-ID: jle
+
+[
+  {
+    "productOptionId": 1,
+    "quantity": 1
+  },
+  {
+    "productOptionId": 2,
+    "quantity": 2
+  }
+]
+
+### 장바구니에 존재하는 상품옵션 추가
+POST http://localhost:8080/v1/members/cart
+Content-Type: application/json
+X-MEMBER-ID: jle
+
+[
+  {
+    "productOptionId": 1,
+    "quantity": 5
+  }
+]
+
+### 장바구니상품 옵션 변경
+POST http://localhost:8080/v1/members/cart/option-update
+Content-Type: application/json
+X-MEMBER-ID: jle
+
+[
+  {
+    "cartItemId": 1,
+    "productOptionId": 3,
+    "quantity": 1
+  }
+]
+

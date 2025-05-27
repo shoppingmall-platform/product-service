@@ -5,8 +5,11 @@ import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/v1/members/cart")
 @RestController
@@ -17,8 +20,8 @@ public class CartItemController {
     @PostMapping
     @Operation(summary = "장바구니에 제품 추가", description = "장바구니는 기본으로 1회원 1장바구니. 해당 api 는 장바구니에 제품을 추가하기위한 api.")
     public ResponseEntity<String> addCartItem(@RequestHeader(name = "X-MEMBER-ID") String memberId,
-                                          @RequestBody CartItemRequestDto.CartAdd requestDto) {
-        return ResponseEntity.status(201).body(cartItemService.addCartItems(memberId, requestDto)) ;
+                                          @RequestBody List<CartItemRequestDto.CartAdd> requestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartItemService.addCartItems(memberId, requestDto)) ;
     }
 
     @GetMapping
@@ -30,8 +33,8 @@ public class CartItemController {
     @PostMapping("/option-update")
     @Operation(summary = "장바구니 수정", description = "장바구니 제품 옵션 수정을 위한 api")
     public ResponseEntity<String> updateCartItem(@RequestHeader(name = "X-MEMBER-ID") String memberId,
-                                             @RequestBody CartItemRequestDto.CartUpdate requestDto) {
-        return null;
+                                             @RequestBody List<CartItemRequestDto.CartUpdate> requestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(cartItemService.updateCartItems(memberId, requestDto));
     }
 
     @PostMapping("/delete")

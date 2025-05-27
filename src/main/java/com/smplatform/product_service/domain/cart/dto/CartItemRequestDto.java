@@ -8,18 +8,14 @@ public class CartItemRequestDto {
 
     @Getter
     public static class CartAdd {
-        private List<CartItemDto> items;
-
-        @Getter
-        private static class CartItemDto {
-            private Long productOptionId;
-            private Integer quantity;
-        }
+        private Long productOptionId;
+        private Integer quantity;
     }
 
     @Getter
     public static class CartUpdate {
-        private Integer cartId;
+        private Long cartItemId;
+        private Long productOptionId;
         private Integer quantity;
     }
 

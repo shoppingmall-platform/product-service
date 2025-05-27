@@ -7,5 +7,8 @@ public abstract class AbstractApiException extends RuntimeException {
         super(message);
     }
 
+    protected AbstractApiException() {
+    }
+
     public abstract HttpStatus getHttpStatus();
 }
