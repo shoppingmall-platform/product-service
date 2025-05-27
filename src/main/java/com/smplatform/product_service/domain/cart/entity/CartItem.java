@@ -7,7 +7,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cartItems")
+@Table(name = "cartItems",
+        uniqueConstraints = @UniqueConstraint(name="uq_cart_member_option", columnNames = {"member_id", "product_option_id"})
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartItem {
     @Id
@@ -15,11 +17,11 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartItemId;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
 
@@ -34,5 +36,14 @@ public class CartItem {
 
     public static CartItem createCartItem(Member member, ProductOption productOption, int quantity) {
         return new CartItem(member, productOption, quantity);
+    }
+
+    public void updateOption(ProductOption productOption, int quantity) {
+        this.productOption = productOption;
+        this.quantity = quantity;
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity+=quantity;
     }
 }
