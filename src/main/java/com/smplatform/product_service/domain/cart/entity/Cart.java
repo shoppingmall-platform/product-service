@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 @Table(name = "carts")
 public class Cart {
     @Id
-    @Column(name = "cart_id")
+    @Column(name = "cart_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long cartItemId;
 
     @OneToOne
     @JoinColumn(name = "member_id")

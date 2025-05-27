@@ -15,4 +15,9 @@ public class CartRequestDto {
         private Integer cartId;
         private Integer quantity;
     }
+
+    @Getter
+    public static class CartDelete {
+        private Integer cartId;
+    }
 }
