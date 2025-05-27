@@ -1,14 +1,13 @@
 package com.smplatform.product_service.domain.cart.service.impl;
 
 import com.smplatform.product_service.domain.cart.dto.CartItemRequestDto;
+import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.entity.CartItem;
 import com.smplatform.product_service.domain.cart.exception.CartItemNotFoundException;
 import com.smplatform.product_service.domain.cart.exception.CartItemOptionAlreadyExistsException;
-import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
-import com.smplatform.product_service.domain.cart.entity.CartItem;
 import com.smplatform.product_service.domain.cart.repository.CartItemRepository;
-import com.smplatform.product_service.domain.cart.repository.CustomCartItemRepository;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
+import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
@@ -21,11 +20,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -98,8 +94,85 @@ public class CartItemServiceImpl implements CartItemService {
                 .orElseThrow(() -> new MemberNotFoundException(String.format("멤버 %s 를 찾을 수 없습니다", memberId)));
         List<CartItemResponseDto.CartItemFlatDto> allCartItemsByMemberId = cartItemRepository.findAllByMemberId(member.getMemberId());
         log.error("페치 결과 : {}", allCartItemsByMemberId);
+        Map<Long, CartItemResponseDto.CartItemGet> cartMap = new LinkedHashMap<>();
+        LocalDateTime now = LocalDateTime.now();
 
+        for (CartItemResponseDto.CartItemFlatDto f : allCartItemsByMemberId) {
+            CartItemResponseDto.CartItemGet cartItemGet = cartMap.computeIfAbsent(f.getCartItemId(), id ->
+                    CartItemResponseDto.CartItemGet.builder()
+                            .cartItemId(id)
+                            .quantity(f.getQuantity())
+                            .productOptionInfo(
+                                    CartItemResponseDto.ProductOptionInfo.builder()
+                                            .productOptionId(f.getProductOptionId())
+                                            .productInfo(
+                                                    CartItemResponseDto.ProductInfo.builder()
+                                                            .productId(f.getProductId())
+                                                            .name(f.getName())
+                                                            .price(f.getPrice())
+                                                            .productOptions(new ArrayList<>())
+                                                            .build()
+                                            )
+                                            .build()
+                            )
+                            .build());
 
-        return null;
+            CartItemResponseDto.ProductInfo productInfo = cartItemGet.getProductOptionInfo().getProductInfo();
+
+            CartItemResponseDto.ProductOptionGet productOptionGet = productInfo.getProductOptions().stream()
+                    .filter(o -> o.getProductOptionId().equals(f.getProductOptionId()))
+                    .findFirst()
+                    .orElseGet(() -> {
+                        CartItemResponseDto.ProductOptionGet o = CartItemResponseDto.ProductOptionGet.builder()
+                                .productOptionId(f.getProductOptionId())
+                                .productOptionName(f.getProductOptionName())
+                                .stockQuantity(f.getStockQuantity())
+                                .additionalPrice(f.getAdditionalPrice())
+                                .productOptionDetails(new ArrayList<>())
+                                .build();
+                        productInfo.getProductOptions().add(o);
+                        return o;
+                    });
+
+            /* ────── 3) 옵션Detail ────── */
+            if (f.getProductOptionType() != null) {
+                productOptionGet.getProductOptionDetails().add(
+                        CartItemResponseDto.ProductOptionDetailGet.builder()
+                                .productOptionType(f.getProductOptionType())
+                                .productOptionDetailName(f.getProductOptionDetailName())
+                                .build());
+            }
+
+            /* ────── 4) 할인 계산 (ProductInfo 한 번만) ────── */
+            if (productInfo.getDiscountedPrice() == null) {            // 아직 계산 안했을 때만
+                int discounted = calculateDiscountedPrice(
+                        f.getPrice(),
+                        f.getDiscountType(),
+                        f.getDiscountValue(),
+                        f.getDiscountStartDate(),
+                        f.getDiscountEndDate(),
+                        now);
+                productInfo.setDiscountedPrice(discounted);
+            }
+        }
+
+        return new CartItemResponseDto.CartGet(new ArrayList<>(cartMap.values()));
+    }
+
+    private int calculateDiscountedPrice(int price,
+                                         Discount.Type type,
+                                         Integer value,
+                                         LocalDateTime start,
+                                         LocalDateTime end,
+                                         LocalDateTime now) {
+
+        if (type == null || value == null) return price;
+        if (start == null || end == null || now.isBefore(start) || now.isAfter(end))
+            return price;
+
+        return switch (type) {
+            case RATE -> price - (price * value / 100);
+            case AMOUNT -> price - value;
+        };
     }
 }
