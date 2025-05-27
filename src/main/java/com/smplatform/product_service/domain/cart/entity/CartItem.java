@@ -17,11 +17,11 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartItemId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
 

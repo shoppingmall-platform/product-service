@@ -74,4 +74,12 @@ public class CartItemServiceImpl implements CartItemService {
 
         return "success";
     }
+
+    @Override
+    public Void deleteCartItems(String memberId, List<CartItemRequestDto.CartDelete> requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+
+        cartItemRepository.deleteAllByIdInBatch(requestDto.stream().map(CartItemRequestDto.CartDelete::getCartItemId).toList());
+        return null;
+    }
 }

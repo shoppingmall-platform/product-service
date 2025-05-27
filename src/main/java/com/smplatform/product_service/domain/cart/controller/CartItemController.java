@@ -37,11 +37,18 @@ public class CartItemController {
         return ResponseEntity.status(HttpStatus.OK).body(cartItemService.updateCartItems(memberId, requestDto));
     }
 
+    @PostMapping("/items/delete")
+    @Operation(summary = "장바구니 선택 삭제", description = "장바구니 제품 삭제를 위한 api. 선택한 상품 제거. db에서 제거됨")
+    public ResponseEntity<Void> deleteSelectCartItems(@RequestHeader(name = "X-MEMBER-ID") String memberId,
+                                             @RequestBody List<CartItemRequestDto.CartDelete> requestDto) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(cartItemService.deleteCartItems(memberId, requestDto)) ;
+    }
+
     @PostMapping("/delete")
-    @Operation(summary = "장바구니 삭제", description = "장바구니 제품 삭제를 위한 api db에서 제거됨")
-    public ResponseEntity<String> deleteCartItems(@RequestHeader(name = "X-MEMBER-ID") String memberId,
-                                             @RequestBody CartItemRequestDto.CartDelete requestDto) {
-        return null;
+    @Operation(summary = "장바구니 전체 삭제", description = "장바구니 제품 삭제를 위한 api. 해당 회원의 장바구니 상품 전체 삭제. db에서 제거됨")
+    public ResponseEntity<Void> deleteAllCartItems(@RequestHeader(name = "X-MEMBER-ID") String memberId,
+                                                @RequestBody List<CartItemRequestDto.CartDelete> requestDto) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(cartItemService.deleteCartItems(memberId, requestDto)) ;
     }
 
 }

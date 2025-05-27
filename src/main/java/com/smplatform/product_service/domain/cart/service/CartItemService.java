@@ -8,4 +8,6 @@ public interface CartItemService {
     String addCartItems(String memberId, List<CartItemRequestDto.CartAdd> requestDto);
 
     String updateCartItems(String memberId, List<CartItemRequestDto.CartUpdate> requestDto);
+
+    Void deleteCartItems(String memberId, List<CartItemRequestDto.CartDelete> requestDto);
 }

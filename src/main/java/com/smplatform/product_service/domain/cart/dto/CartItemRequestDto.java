@@ -21,6 +21,6 @@ public class CartItemRequestDto {
 
     @Getter
     public static class CartDelete {
-        private Integer cartId;
+        private Long cartItemId;
     }
 }
