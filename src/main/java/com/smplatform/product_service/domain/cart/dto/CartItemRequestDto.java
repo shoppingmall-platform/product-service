@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CartRequestDto {
+public class CartItemRequestDto {
 
     @Getter
     public static class CartAdd {

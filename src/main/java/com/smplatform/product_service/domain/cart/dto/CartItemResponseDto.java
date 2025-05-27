@@ -4,10 +4,10 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CartResponseDto {
+public class CartItemResponseDto {
     @Getter
     public static class CartGet {
-        private List<CartResponseDto.CartItem> cartItems;
+        private List<CartItemResponseDto.CartItem> cartItems;
     }
 
     @Getter
