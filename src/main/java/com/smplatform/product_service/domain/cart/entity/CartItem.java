@@ -5,8 +5,8 @@ import com.smplatform.product_service.domain.product.entity.ProductOption;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "carts")
-public class Cart {
+@Table(name = "cartItems")
+public class CartItem {
     @Id
     @Column(name = "cart_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
