@@ -28,6 +28,25 @@ content-type:application/json
   "categoryLevel": 3
 }
 
+### 3. 할인 저장
+POST localhost:8080/v1/discounts
+content-type: application/json
+X-MEMBER-ID: asdf
+ROLE: ADMIN
+
+{
+  "discountName": "test discount 1",
+  "discountType": "할인율",
+  "discountValue": 20,
+  "discountStartDate": "2025-02-22T00:00:00.000Z",
+  "discountEndDate": "2025-02-23T00:00:00.000Z",
+  "applyType": 2,
+  "ids": [3]
+}
+
+### 4. 할인 조회
+GET localhost:8080/v1/discounts
+
 ### - 제품 등록
 POST http://localhost:8080/v1/products
 Content-Type: application/json
@@ -111,6 +130,86 @@ ROLE: ADMIN
   ]
 }
 
+### 5. (할인 포함) 제품 등록
+POST http://localhost:8080/v1/products
+Content-Type: application/json
+X-MEMBER-ID: test
+ROLE: ADMIN
+
+{
+  "name": "Product Name2",
+  "description": "description.",
+  "categoryId": 1,
+  "price": 139900,
+  "discountId": 1,
+  "summaryDescription": "할인 포함된 제품입니다.",
+  "simpleDescription": "할인 포함",
+  "productOptions": [
+    {
+      "productOptionName": "black/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "black/M",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "black"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "M"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 0
+    },
+    {
+      "productOptionName": "white/L",
+      "productOptionDetails": [
+        {
+          "productOptionType": "color",
+          "productOptionDetailName": "white"
+        },
+        {
+          "productOptionType": "size",
+          "productOptionDetailName": "L"
+        }
+      ],
+      "stockQuantity": 10,
+      "additionalPrice": 1000
+    }
+  ],
+  "thumbnail": "/thm/path",
+  "productImages": {
+    "paths": [
+      "/path/1",
+      "/path/2",
+      "/path/3"
+    ]
+  },
+  "tags": [
+    {
+      "tagName": "진짜 멋진거"
+    },
+    {
+      "tagName": "진짜 chill한거"
+    }
+  ]
+}
+
+
 ### 장바구니에 상품 추가
 POST http://localhost:8080/v1/members/cart
 Content-Type: application/json
@@ -176,3 +275,7 @@ X-MEMBER-ID: jle
     "quantity": 4
   }
 ]
+
+### 장바구니 조회
+GET http://localhost:8080/v1/members/cart
+X-MEMBER-ID: jle

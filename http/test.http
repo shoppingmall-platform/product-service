@@ -196,11 +196,11 @@ X-MEMBER-ID: asdf
 ### 7-2. 사용자용 제품 검색 (페이지네이션)
 POST http://localhost:8080/v1/0/products
 Content-Type: application/json
-
-{
-  "minimumPrice": 1000,
-  "maximumPrice": 16000
-}
+#
+#{
+#  "minimumPrice": 1000,
+#  "maximumPrice": 16000
+#}
 
 
 
