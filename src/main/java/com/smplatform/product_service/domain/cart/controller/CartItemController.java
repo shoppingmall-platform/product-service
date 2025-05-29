@@ -4,6 +4,7 @@ import com.smplatform.product_service.domain.cart.dto.CartItemRequestDto;
 import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/v1/members/cart")
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "CartItem", description = "CartItem management APIs")
 public class CartItemController {
     private final CartItemService cartItemService;
 
