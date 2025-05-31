@@ -1,6 +1,7 @@
 package com.smplatform.product_service.domain.product.repository;
 
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
+import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.Product;
 import com.smplatform.product_service.domain.product.entity.ProductCategoryMapping;
 import org.springframework.data.domain.Page;
@@ -14,5 +15,5 @@ public interface CustomProductRepository {
 
     Page<Product> searchUserProducts(int categoryId, ProductRequestDto.UserProductSearchCondition condition, Pageable pageable);
 
-    Page<Product> findAllByCategoryIds(List<ProductCategoryMapping> productCategoryMappings);
+    List<ProductResponseDto.ProductOptionGet> findProductOptionsWithDetails(Long productId);
 }

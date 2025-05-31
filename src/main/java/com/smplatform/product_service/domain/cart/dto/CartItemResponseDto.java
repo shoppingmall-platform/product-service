@@ -1,6 +1,7 @@
 package com.smplatform.product_service.domain.cart.dto;
 
 import com.smplatform.product_service.domain.discount.entity.Discount;
+import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,8 @@ public class CartItemResponseDto {
         private Integer price;
         @Setter
         private Integer discountedPrice;
-        private List<CartItemResponseDto.ProductOptionGet> productOptions;
+        @Setter
+        private List<ProductResponseDto.ProductOptionGet> productOptions;
         private String thumbnailPath;
     }
 

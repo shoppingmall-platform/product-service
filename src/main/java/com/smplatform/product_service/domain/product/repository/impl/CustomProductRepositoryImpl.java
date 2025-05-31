@@ -1,12 +1,14 @@
 package com.smplatform.product_service.domain.product.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smplatform.product_service.domain.discount.entity.QDiscount;
 import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
+import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.*;
 import com.smplatform.product_service.domain.product.repository.CustomProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -83,9 +85,40 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     }
 
     @Override
-    public Page<Product> findAllByCategoryIds(List<ProductCategoryMapping> productCategoryMappings) {
+    public List<ProductResponseDto.ProductOptionGet> findProductOptionsWithDetails(Long productId) {
+        QProductOption po = QProductOption.productOption;
+        QProductOptionDetail pod = QProductOptionDetail.productOptionDetail;
 
-        return null;
+        List<Tuple> tuples = jpaQueryFactory
+                .select(po, pod)
+                .from(po)
+                .leftJoin(pod).on(pod.productOption.eq(po))
+                .where(po.product.id.eq(productId))
+                .fetch();
+
+        Map<Long, ProductResponseDto.ProductOptionGet> optionMap = new LinkedHashMap<>();
+
+        for (Tuple t : tuples) {
+            ProductOption productOption = t.get(po);
+            if (productOption == null) continue;
+            ProductOptionDetail productOptionDetail = t.get(pod);
+
+            ProductResponseDto.ProductOptionGet productOptionGet = optionMap.computeIfAbsent(
+                    productOption.getProductOptionId(),
+                    key -> ProductResponseDto.ProductOptionGet.of(productOption)
+            );
+
+            if (!Objects.isNull(productOptionDetail)) {
+                if (Objects.isNull(productOptionGet.getProductOptionDetails())) {
+                    productOptionGet.setProductOptionDetails(new ArrayList<>());
+                }
+                productOptionGet.getProductOptionDetails().add(
+                        ProductResponseDto.GetProductOptionDetail.of(productOptionDetail)
+                );
+            }
+
+        }
+        return new ArrayList<>(optionMap.values());
     }
 
     private Predicate buildCondition(QProduct product, QTag tag, QDiscount discount,

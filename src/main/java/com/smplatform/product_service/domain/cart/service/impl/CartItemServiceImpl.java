@@ -1,29 +1,28 @@
 package com.smplatform.product_service.domain.cart.service.impl;
 
 import com.smplatform.product_service.domain.cart.dto.CartItemRequestDto;
-import com.smplatform.product_service.domain.cart.entity.CartItem;
-import com.smplatform.product_service.domain.cart.exception.CartItemNotFoundException;
-import com.smplatform.product_service.domain.cart.exception.CartItemOptionAlreadyExistsException;
 import com.smplatform.product_service.domain.cart.dto.CartItemResponseDto;
 import com.smplatform.product_service.domain.cart.entity.CartItem;
+import com.smplatform.product_service.domain.cart.exception.CartItemNotFoundException;
 import com.smplatform.product_service.domain.cart.repository.CartItemRepository;
-import com.smplatform.product_service.domain.cart.repository.CustomCartItemRepository;
 import com.smplatform.product_service.domain.cart.service.CartItemService;
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import com.smplatform.product_service.domain.member.entity.Member;
 import com.smplatform.product_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
+import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.ProductOption;
 import com.smplatform.product_service.domain.product.exception.ProductOptionNotFoundException;
 import com.smplatform.product_service.domain.product.repository.ProductOptionDetailRepository;
 import com.smplatform.product_service.domain.product.repository.ProductOptionRepository;
+import com.smplatform.product_service.domain.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
 import java.time.LocalDateTime;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
     private final ProductOptionRepository productOptionRepository;
-    private final ProductOptionDetailRepository productOptionDetailRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public String addCartItems(String memberId, List<CartItemRequestDto.CartAdd> requestDto) {
@@ -69,10 +68,10 @@ public class CartItemServiceImpl implements CartItemService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
         // 장바구니 존재여부
-        List<Long> cartItemIds      = requestDto.stream()
+        List<Long> cartItemIds = requestDto.stream()
                 .map(CartItemRequestDto.CartUpdate::getCartItemId)
                 .toList();
-        Map<Long,CartItem> cartItemMap = cartItemRepository.findByMemberAndCartItemIdIn(member, cartItemIds)
+        Map<Long, CartItem> cartItemMap = cartItemRepository.findByMemberAndCartItemIdIn(member, cartItemIds)
                 .stream().collect(Collectors.toMap(CartItem::getCartItemId, Function.identity()));
         if (cartItemMap.size() != cartItemIds.size()) {
             throw new CartItemNotFoundException("존재하지 않는 장바구니 상품이 포함되어 있습니다. cartItemId : ");
@@ -138,29 +137,32 @@ public class CartItemServiceImpl implements CartItemService {
 
             CartItemResponseDto.ProductInfo productInfo = cartItemGet.getProductOptionInfo().getProductInfo();
 
-            CartItemResponseDto.ProductOptionGet productOptionGet = productInfo.getProductOptions().stream()
-                    .filter(o -> o.getProductOptionId().equals(f.getProductOptionId()))
-                    .findFirst()
-                    .orElseGet(() -> {
-                        CartItemResponseDto.ProductOptionGet o = CartItemResponseDto.ProductOptionGet.builder()
-                                .productOptionId(f.getProductOptionId())
-                                .productOptionName(f.getProductOptionName())
-                                .stockQuantity(f.getStockQuantity())
-                                .additionalPrice(f.getAdditionalPrice())
-                                .productOptionDetails(new ArrayList<>())
-                                .build();
-                        productInfo.getProductOptions().add(o);
-                        return o;
-                    });
+//            CartItemResponseDto.ProductOptionGet productOptionGet = productInfo.getProductOptions().stream()
+//                    .filter(o -> o.getProductOptionId().equals(f.getProductOptionId()))
+//                    .findFirst()
+//                    .orElseGet(() -> {
+//                        CartItemResponseDto.ProductOptionGet o = CartItemResponseDto.ProductOptionGet.builder()
+//                                .productOptionId(f.getProductOptionId())
+//                                .productOptionName(f.getProductOptionName())
+//                                .stockQuantity(f.getStockQuantity())
+//                                .additionalPrice(f.getAdditionalPrice())
+//                                .productOptionDetails(new ArrayList<>())
+//                                .build();
+//                        productInfo.getProductOptions().add(o);
+//                        return o;
+//                    });
 
             /* ────── 3) 옵션Detail ────── */
-            if (f.getProductOptionType() != null) {
-                productOptionGet.getProductOptionDetails().add(
-                        CartItemResponseDto.ProductOptionDetailGet.builder()
-                                .productOptionType(f.getProductOptionType())
-                                .productOptionDetailName(f.getProductOptionDetailName())
-                                .build());
-            }
+//            if (f.getProductOptionType() != null) {
+//                productOptionGet.getProductOptionDetails().add(
+//                        CartItemResponseDto.ProductOptionDetailGet.builder()
+//                                .productOptionType(f.getProductOptionType())
+//                                .productOptionDetailName(f.getProductOptionDetailName())
+//                                .build());
+//            }
+
+            List<ProductResponseDto.ProductOptionGet> productOptions = productRepository.findProductOptionsWithDetails(f.getProductId());
+            productInfo.setProductOptions(productOptions);
 
             /* ────── 4) 할인 계산 (ProductInfo 한 번만) ────── */
             if (productInfo.getDiscountedPrice() == null) {            // 아직 계산 안했을 때만
