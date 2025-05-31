@@ -24,14 +24,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public List<CategoryResponseDto.CategoryInfo> getCategoryList() {
-        return categoryRepository.findAll().stream().map(c-> CategoryResponseDto.CategoryInfo.of(c)).collect(Collectors.toList());
+        return categoryRepository.findAll().stream().map(c -> CategoryResponseDto.CategoryInfo.of(c)).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Category> getCategoryListWithAllParent(int categoryId) {
         List<Category> result = new ArrayList<>();
-        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         result.add(category);
         if (category.getCategoryLevel() > 1) {
             Category parentCategory = category.getParentCategory();
@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public CategoryResponseDto.CategoryInfo getCategoryById(int categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         return CategoryResponseDto.CategoryInfo.of(category);
     }
@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     public int saveCategory(CategoryRequestDto.CreateCategory body) {
         Category category = body.toEntity();
         if (body.getParentCategoryId() != null) {
-            Category parentCategory = categoryRepository.findById(body.getParentCategoryId()).orElseThrow(()-> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
+            Category parentCategory = categoryRepository.findById(body.getParentCategoryId()).orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : " + body.getParentCategoryId()));
             category.setParentCategory(parentCategory);
         }
         checkCategoryValidity(category);
@@ -68,9 +68,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(CategoryRequestDto.UpdateCategory body) {
         Category category = categoryRepository.findById(body.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException(body.getCategoryId()));
 
-        Category parentCategory = body.getParentCategoryId() == null? null :
+        Category parentCategory = body.getParentCategoryId() == null ? null :
                 categoryRepository.findById(body.getParentCategoryId())
-                        .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : "+body.getParentCategoryId()));
+                        .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 부모 Category Id 입니다 : " + body.getParentCategoryId()));
 
         category.update(body.getCategoryName(), body.getCategoryLevel(), parentCategory);
         checkCategoryValidity(category);
@@ -90,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
         int level = category.getCategoryLevel();
         Category parentCategory = category.getParentCategory();
 
-        if (level <0 || level > 3) {
+        if (level < 0 || level > 3) {
             throw new InvalidCategoryLevelException("level 범위 : 1~3 (1=대, 2=중, 3=소). level: " + level);
         }
 
@@ -103,7 +103,6 @@ public class CategoryServiceImpl implements CategoryService {
             throw new InvalidCategoryLevelException("부모 카테고리 값이 필요합니다.");
         }
     }
-
 
 
 }

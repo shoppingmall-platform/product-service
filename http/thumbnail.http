@@ -10,7 +10,7 @@ Content-Type: application/json
 ### Save Product - Thumbnails Test
 POST http://localhost:8080/v1/products
 Content-Type: application/json
-X-USER-ID: test
+X-MEMBER-ID: test
 ROLE: ADMIN
 
 {

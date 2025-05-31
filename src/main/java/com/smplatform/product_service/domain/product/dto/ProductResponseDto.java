@@ -74,6 +74,7 @@ public class ProductResponseDto {
     @Setter
     @Builder
     public static class ProductOptionGet {
+        private Long productOptionId;
         private String productOptionName;
         private List<ProductResponseDto.GetProductOptionDetail> productOptionDetails;
         private int stockQuantity;
@@ -81,6 +82,7 @@ public class ProductResponseDto {
 
         public static ProductOptionGet of(ProductOption productOption) {
             return ProductOptionGet.builder()
+                    .productOptionId(productOption.getProductOptionId())
                     .productOptionName(productOption.getProductOptionName())
                     .stockQuantity(productOption.getStockQuantity())
                     .additionalPrice(productOption.getAdditionalPrice())

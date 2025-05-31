@@ -17,6 +17,7 @@ public class ProductRequestDto {
         private String name;
         private String description;
         private int categoryId;
+        private int discountId;
         private int price;
         private String summaryDescription;
         private String simpleDescription;

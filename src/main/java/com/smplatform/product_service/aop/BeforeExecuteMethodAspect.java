@@ -23,7 +23,7 @@ public class BeforeExecuteMethodAspect {
         String role = request.getHeader("ROLE");
 
         if (userId == null && !role.equals("ADMIN")) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("관리자 전용입니다.");
         }
 
     }

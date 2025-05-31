@@ -1,6 +1,8 @@
 package com.smplatform.product_service.domain.product.repository;
 
 import com.smplatform.product_service.domain.product.entity.ProductOption;
+import com.smplatform.product_service.domain.product.entity.ProductOptionDetail;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
