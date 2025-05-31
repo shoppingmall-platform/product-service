@@ -204,7 +204,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto.ProductGet> getProducts(ProductRequestDto.AdminProductSearchCondition condition,
                                                            Pageable pageable) {
-        if (Objects.isNull(condition) || condition.isConditionEmpty() || Objects.isNull(condition.getCategoryId())) {
+        if (Objects.isNull(condition) || condition.isConditionEmpty()) {
             return productRepository.findAll(pageable).stream()
                     .map(ProductResponseDto.ProductGet::of)
                     .toList();

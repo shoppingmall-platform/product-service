@@ -10,6 +10,7 @@ import com.smplatform.product_service.domain.product.dto.ProductRequestDto;
 import com.smplatform.product_service.domain.product.entity.*;
 import com.smplatform.product_service.domain.product.repository.CustomProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CustomProductRepositoryImpl implements CustomProductRepository {
 
