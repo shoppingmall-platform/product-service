@@ -54,6 +54,10 @@ public class AddressServiceImpl implements AddressService {
         if (!address.getMember().getMemberId().equals(memberId)) {
             throw new UnauthorizedException("본인이 아닌 경우 수정할 수 없습니다.");
         }
+        if (Boolean.TRUE.equals(address.getIsDefault())) {
+            addressRepository.findByMember_MemberIdAndIsDefault(memberId, true)
+                    .ifPresent(existingDefault -> existingDefault.setIsDefault(false));
+        }
         address.update(requestDto);
         return address.getAddressId();
     }

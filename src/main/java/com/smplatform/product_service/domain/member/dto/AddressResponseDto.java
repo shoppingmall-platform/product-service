@@ -23,7 +23,7 @@ public class AddressResponseDto {
                     .addressId(address.getAddressId())
                     .alias(address.getAlias())
                     .zipcode(address.getZipcode())
-                    .address1(address.getDetailAddress())
+                    .address1(address.getDefaultAddress())
                     .address2(address.getDetailAddress())
                     .receiverName(address.getReceiverName())
                     .phoneNumber(address.getPhoneNumber())
