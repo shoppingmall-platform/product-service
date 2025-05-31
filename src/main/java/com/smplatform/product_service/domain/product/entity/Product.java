@@ -69,4 +69,9 @@ public class Product {
         return Objects.nonNull(discount) && discount.isValidDiscount() ?
                 discount.calculateDiscountedPrice(price) : price;
     }
+
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
