@@ -3,7 +3,7 @@ GET http://localhost:8080/v1/members
 
 ### GET member
 GET http://localhost:8080/v1/members/me
-X-USER-ID: test@test.com
+X-MEMBER-ID: jle
 
 ### 회원가입
 POST  http://localhost:8080/v1/members
@@ -24,7 +24,7 @@ Content-Type: application/json
 ### 회원정보 수정
 POST  http://localhost:8080/v1/members/me/update
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "name": "test-user",
@@ -39,7 +39,7 @@ X-USER-ID: test@test.com
 ### 비밀번호 수정
 POST  http://localhost:8080/v1/members/me/update/auth
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "oldPassword": "test",
@@ -48,10 +48,87 @@ X-USER-ID: test@test.com
 
 
 ### 회원탈퇴
-POST  http://localhost:8080/v1/members/me/withdraw
+POST http://localhost:8080/v1/members/me/withdraw
 Content-Type: application/json
-X-USER-ID: test@test.com
+X-MEMBER-ID: test@test.com
 
 {
   "memo":"사용하지 않음"
 }
+
+### 1. 배송지 1 등록 (기본 아님)
+POST http://localhost:8080/v1/address
+Content-Type: application/json
+X-MEMBER-ID: test@test.com
+
+{
+  "alias": "집",
+  "zipcode": "12345",
+  "address1": "서울시 강남구",
+  "address2": "101동 202호",
+  "receiverName": "홍길동",
+  "phoneNumber": "010-1111-2222",
+  "isDefault": 0
+}
+
+### 2. 배송지 2 등록 (기본 아님)
+POST http://localhost:8080/v1/address
+Content-Type: application/json
+X-MEMBER-ID: test@test.com
+
+{
+  "alias": "회사",
+  "zipcode": "54321",
+  "address1": "경기도 성남시 분당구 대왕판교로 645번길 16",
+  "address2": "B동 11층",
+  "receiverName": "이몽룡",
+  "phoneNumber": "010-3333-4444",
+  "isDefault": 0
+}
+
+### 3. 배송지 3 등록 (기본 배송지로 설정)
+POST http://localhost:8080/v1/address
+Content-Type: application/json
+X-MEMBER-ID: test@test.com
+
+{
+  "alias": "부모님댁",
+  "zipcode": "67890",
+  "address1": "서울시 서초구",
+  "address2": "303호",
+  "receiverName": "성춘향",
+  "phoneNumber": "010-5555-6666",
+  "isDefault": 1
+}
+
+### 3-1. 배송지 4 등록 (새 기본 배송지로 설정)
+POST http://localhost:8080/v1/address
+Content-Type: application/json
+X-MEMBER-ID: test@test.com
+
+{
+  "alias": "친구집",
+  "zipcode": "67890",
+  "address1": "제주도 애월 36-2",
+  "address2": "101호",
+  "receiverName": "폭삭속",
+  "phoneNumber": "010-9999-6456",
+  "isDefault": 1
+}
+
+### 4. 전체 배송지 조회 (기본 배송지가 정확히 1개인지 확인)
+GET http://localhost:8080/v1/address
+X-MEMBER-ID: test@test.com
+
+### 5. 기본 배송지 삭제 (예: addressId = 3 → 실제 응답에서 ID 확인해서 대입)
+POST http://localhost:8080/v1/delete-address
+Content-Type: application/json
+X-MEMBER-ID: test@test.com
+
+{
+  "addressId": 4
+}
+
+### 6. 전체 배송지 조회 (기본 배송지가 삭제되었는지 확인)
+GET http://localhost:8080/v1/address
+X-MEMBER-ID: test@test.com

@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", unique = true)
     private String name;
 
     @Column(name = "product_description", columnDefinition = "TEXT")
@@ -68,5 +68,10 @@ public class Product {
     public int getDiscountedPrice() {
         return Objects.nonNull(discount) && discount.isValidDiscount() ?
                 discount.calculateDiscountedPrice(price) : price;
+    }
+
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 }

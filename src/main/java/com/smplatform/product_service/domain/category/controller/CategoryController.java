@@ -1,5 +1,6 @@
 package com.smplatform.product_service.domain.category.controller;
 
+import com.smplatform.product_service.annotation.AdminOnly;
 import com.smplatform.product_service.domain.category.dto.CategoryRequestDto;
 import com.smplatform.product_service.domain.category.dto.CategoryResponseDto;
 import com.smplatform.product_service.domain.category.service.CategoryService;
@@ -31,21 +32,24 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
+    @AdminOnly
     @PostMapping
-    @Operation(summary = "카테고리 등록", description = "level : positive number")
+    @Operation(summary = "카테고리 등록", description = "level : positive number 관리자 api")
     public ResponseEntity<Integer> createCategory(@Valid @RequestBody CategoryRequestDto.CreateCategory body) {
         return ResponseEntity.status(201).body(categoryService.saveCategory(body));
     }
 
+    @AdminOnly
     @PostMapping("/update-category")
-    @Operation(summary = "카테도리 수정", description = "")
+    @Operation(summary = "카테고리 수정", description = "관리자 api")
     public ResponseEntity<String> updateCategory(@Valid @RequestBody CategoryRequestDto.UpdateCategory body) {
         categoryService.updateCategory(body);
         return ResponseEntity.ok("update successful");
     }
 
+    @AdminOnly
     @PostMapping("/delete-category")
-    @Operation(summary = "카테도리 삭제", description = "")
+    @Operation(summary = "카테고리 삭제", description = "관리자 api")
     public ResponseEntity<String> deleteCategory(@Valid @RequestBody CategoryRequestDto.DeleteCategory body) {
         categoryService.deleteCategory(body.getCategoryId());
         return ResponseEntity.status(204).build();
