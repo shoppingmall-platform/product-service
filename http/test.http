@@ -32,7 +32,7 @@ X-MEMBER-ID: test
 ROLE: ADMIN
 
 {
-  "name": "Product Name3",
+  "name": "니트1",
   "description": "description.",
   "categoryId": 1,
   "price": 15000,
@@ -97,7 +97,7 @@ X-MEMBER-ID: test
 ROLE: ADMIN
 
 {
-  "name": "Product Name2",
+  "name": "바지1",
   "description": "description.",
   "categoryId": 1,
   "price": 139900,
@@ -179,10 +179,11 @@ ROLE: ADMIN
 ### 6-1. 관리자용 제품 검색 (페이지네이션)
 POST http://localhost:8080/v1/products/read
 Content-Type: application/json
+X-MEMBER-ID: asdf
 ROLE: ADMIN
 
 {
-  "discountName": "test discount 1"
+  "keyword": "바지1"
 }
 
 ### 7. 사용자용 카테고리별 제품 조회 (페이지네이션) 사용자용 api는 반드시 카테고리 아이디가 pathVariable로 들어가야함
@@ -200,11 +201,10 @@ X-MEMBER-ID: asdf
 ### 7-2. 사용자용 제품 검색 (페이지네이션)
 POST http://localhost:8080/v1/0/products
 Content-Type: application/json
-#
-#{
-#  "minimumPrice": 1000,
-#  "maximumPrice": 16000
-#}
+
+{
+  "keyword": "니트1"
+}
 
 
 
