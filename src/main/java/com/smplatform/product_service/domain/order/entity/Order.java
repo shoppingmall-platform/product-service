@@ -10,18 +10,22 @@ import java.time.LocalDateTime;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long orderNo;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+
     @Column(name = "total_price")
     private Integer totalPrice;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    @Column(name = "main_product_id")
+    private Long mainProductId;
 }
