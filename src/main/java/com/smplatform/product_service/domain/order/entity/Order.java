@@ -2,15 +2,20 @@ package com.smplatform.product_service.domain.order.entity;
 
 import com.smplatform.product_service.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderNo;
+    private Long orderId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -26,6 +31,11 @@ public class Order {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @Column(name = "main_product_id")
-    private Long mainProductId;
+    @Column(name = "order_title")
+    private String orderTitle;
+
+    @PrePersist
+    public void setOrderDate() {
+        this.orderDate = LocalDateTime.now();
+    }
 }

@@ -12,9 +12,4 @@ public interface ProductRepository extends JpaRepository<Product, Long>, CustomP
     @EntityGraph(attributePaths = {"discount"})
     Page<Product> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"discount", "category", "productTags"})
-    Page<Product> findAllByCategoryCategoryId(int categoryId, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"ProductCategoryMapping"})
-    Page<Product> findProductsByIdIn(List<Long> ids, Pageable pageable);
 }

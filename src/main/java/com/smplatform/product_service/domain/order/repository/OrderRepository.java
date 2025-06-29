@@ -1,7 +1,7 @@
 package com.smplatform.product_service.domain.order.repository;
 
-import org.springframework.core.annotation.Order;
+import com.smplatform.product_service.domain.order.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, CustomOrderRepository {
 }

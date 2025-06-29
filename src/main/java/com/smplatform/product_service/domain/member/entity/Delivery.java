@@ -13,13 +13,16 @@ public class Delivery {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
-
     private String deliveryCode;
 
     private String deliveryCompany;
 
     private Integer deliveryFee;
+
+    private Integer postalCode;
+
+    private String address1;
+    private String address2;
+    private String receiverName;
+    private String phoneNumber;
 }

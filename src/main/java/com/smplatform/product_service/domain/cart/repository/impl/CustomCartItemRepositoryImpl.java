@@ -41,7 +41,7 @@ public class CustomCartItemRepositoryImpl implements CustomCartItemRepository {
                         productOptionDetail.productOptionType,
                         productOptionDetail.productOptionDetailName,
 
-                        product.id,
+                        product.productId,
                         product.name,
                         product.price,
                         product.thumbnailPath,

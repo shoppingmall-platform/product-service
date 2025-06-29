@@ -29,7 +29,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         if (productId == null) {
             productImages = productImageRepository.findAll();
         } else {
-            productImages = productImageRepository.findAllByProduct_Id(productId);
+            productImages = productImageRepository.findAllByProductProductId(productId);
         }
         return productImages.stream()
                 .map(ProductImageResponseDto.ProductImageInfo::of)

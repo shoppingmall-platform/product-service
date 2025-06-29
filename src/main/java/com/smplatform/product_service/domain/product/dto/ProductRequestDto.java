@@ -28,7 +28,7 @@ public class ProductRequestDto {
 
         public Product toEntity() {
             return Product.builder()
-                    .id(0)
+                    .productId(0)
                     .name(this.getName())
                     .description(this.getDescription())
                     .price(this.getPrice())

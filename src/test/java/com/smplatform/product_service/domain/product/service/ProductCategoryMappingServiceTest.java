@@ -4,7 +4,6 @@ import com.smplatform.product_service.domain.category.entity.Category;
 import com.smplatform.product_service.domain.category.repository.CategoryRepository;
 import com.smplatform.product_service.domain.product.dto.ProductResponseDto;
 import com.smplatform.product_service.domain.product.entity.Product;
-import com.smplatform.product_service.domain.product.entity.ProductCategoryMapping;
 import com.smplatform.product_service.domain.product.repository.ProductCategoryMappingRepository;
 import com.smplatform.product_service.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +46,9 @@ class ProductCategoryMappingServiceTest {
         Product btmCategoryProduct = Product.builder().name("검정나시").price(30000).build();
         productRepository.saveAll(List.of(topCategoryProduct, midCategoryProduct, btmCategoryProduct));
 
-        productCategoryMappingService.save(topCategory.getCategoryId(), topCategoryProduct.getId());
-        productCategoryMappingService.save(midCategory.getCategoryId(), midCategoryProduct.getId());
-        productCategoryMappingService.save(btmCategory.getCategoryId(), btmCategoryProduct.getId());
+        productCategoryMappingService.save(topCategory.getCategoryId(), topCategoryProduct.getProductId());
+        productCategoryMappingService.save(midCategory.getCategoryId(), midCategoryProduct.getProductId());
+        productCategoryMappingService.save(btmCategory.getCategoryId(), btmCategoryProduct.getProductId());
 
         // when
         List<ProductResponseDto.ProductGet> resultTop = productCategoryMappingService.getProductsByCategoryId(topCategory.getCategoryId());    // 모든 상품

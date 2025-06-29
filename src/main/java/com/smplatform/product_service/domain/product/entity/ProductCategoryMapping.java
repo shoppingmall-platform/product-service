@@ -24,12 +24,12 @@ public class ProductCategoryMapping {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public ProductCategoryMapping (int categoryId, long product) {
+    public ProductCategoryMapping(int categoryId, long product) {
         this.category = Category.builder()
                 .categoryId(categoryId)
                 .build();
         this.product = Product.builder()
-                .id(product)
+                .productId(product)
                 .build();
     }
 }
