@@ -2,8 +2,12 @@ package com.smplatform.product_service.domain.member.entity;
 
 import com.smplatform.product_service.domain.order.entity.Order;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
