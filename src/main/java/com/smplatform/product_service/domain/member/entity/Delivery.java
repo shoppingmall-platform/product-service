@@ -13,17 +13,13 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryId;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-
     private String deliveryCode;
 
     private String deliveryCompany;
 
     private Integer deliveryFee;
 
-    private Integer postalCode;
+    private String postalCode;
 
     private String address1;
     private String address2;
