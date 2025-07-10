@@ -3,11 +3,13 @@ package com.smplatform.product_service.domain.order.entity;
 import com.smplatform.product_service.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 @Table(name = "orders")
 @AllArgsConstructor

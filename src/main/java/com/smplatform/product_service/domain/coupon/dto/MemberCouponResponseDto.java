@@ -1,7 +1,6 @@
 package com.smplatform.product_service.domain.coupon.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.smplatform.product_service.domain.coupon.entity.Coupon;
 import com.smplatform.product_service.domain.coupon.entity.MemberCoupon;
 import lombok.Getter;
 
@@ -39,6 +38,7 @@ public class MemberCouponResponseDto {
         private LocalDate couponEndDate;
         private String comment;
         private String status;
+        private Long couponId;
 
         @QueryProjection
         public MemberCouponInfo(Long memberCouponId,
@@ -52,7 +52,8 @@ public class MemberCouponResponseDto {
                                 LocalDate couponStartDate,
                                 LocalDate couponEndDate,
                                 String comment,
-                                String status) {
+                                String status,
+                                Long couponId) {
             this.memberCouponId = memberCouponId;
             this.couponIssueCode = couponIssueCode;
             this.couponName = couponName;
@@ -65,6 +66,7 @@ public class MemberCouponResponseDto {
             this.couponEndDate = couponEndDate;
             this.comment = comment;
             this.status = status;
+            this.couponId = couponId;
         }
 
     }

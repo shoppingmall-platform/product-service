@@ -3,9 +3,11 @@ package com.smplatform.product_service.domain.order.entity;
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "order_products")
+@AllArgsConstructor
 @Getter
 public class OrderProduct {
     @Id
@@ -16,7 +18,7 @@ public class OrderProduct {
     private Order order;
     private Integer quantity;
     @Column(name = "order_price")
-    private Long orderPrice;
+    private Integer orderPrice;
     @Column(name = "order_product_status")
     private OrderProductStatus orderProductStatus;
     @Column(name = "product_id")
