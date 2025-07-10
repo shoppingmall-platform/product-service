@@ -1,14 +1,17 @@
 package com.smplatform.product_service.domain.order.entity;
 
 import com.smplatform.product_service.domain.discount.entity.Discount;
+import com.smplatform.product_service.domain.member.entity.Delivery;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "order_products")
 @AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,10 @@ public class OrderProduct {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+    @ManyToOne
+    @JoinColumn(name = "delivery_id")
+    private Delivery deliveryId;
+
     private Integer quantity;
     @Column(name = "order_price")
     private Integer orderPrice;

@@ -73,6 +73,7 @@ public class Discount {
         if (now.isBefore(discountStartDate) || now.isAfter(discountEndDate)) {
             return false;
         }
+        System.out.println("이고시실행되는가?111");
         return true;
     }
 
@@ -80,6 +81,8 @@ public class Discount {
         if (originalPrice <= 0) {
             throw new IllegalArgumentException("Original must not be smaller than 0");
         }
+
+        System.out.println("이고시실행되는가?222");
         int discountedPrice = 0;
         switch (discountType) {
             // 15 / 100 = 0.15 * 1000

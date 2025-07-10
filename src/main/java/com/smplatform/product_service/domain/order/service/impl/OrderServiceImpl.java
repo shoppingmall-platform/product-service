@@ -5,12 +5,10 @@ import com.smplatform.product_service.domain.coupon.dto.MemberCouponResponseDto;
 import com.smplatform.product_service.domain.coupon.entity.Coupon;
 import com.smplatform.product_service.domain.coupon.exception.CouponNotFoundException;
 import com.smplatform.product_service.domain.coupon.repository.CouponRepository;
-import com.smplatform.product_service.domain.coupon.repository.MemberCouponRepository;
 import com.smplatform.product_service.domain.coupon.service.MemberCouponService;
 import com.smplatform.product_service.domain.discount.repository.DiscountRepository;
 import com.smplatform.product_service.domain.member.entity.Delivery;
 import com.smplatform.product_service.domain.member.entity.Member;
-import com.smplatform.product_service.domain.member.repository.AddressRepository;
 import com.smplatform.product_service.domain.member.repository.DeliveryRepository;
 import com.smplatform.product_service.domain.member.repository.MemberRepository;
 import com.smplatform.product_service.domain.order.dto.OrderRequestDto;
@@ -77,9 +75,10 @@ public class OrderServiceImpl implements OrderService {
                     * requestDtoMap.get(unit.getProductOptionId()).getQuantity());
 
             if (!Objects.isNull(unit.getDiscountId())) {
-                int unitPrice = productRepository.findById(unit.getProductId())
+                int unitPrice = productRepository.findByProductId(unit.getProductId())
                         .orElseThrow(() -> new ProductNotFoundException("product not found"))
                         .getDiscountedPrice() + unit.getAdditionalPrice();
+                System.out.println("이거슨 unit price : " + unitPrice);
                 unit.setUnitTotalPrice(unitPrice);
                 discountedTotalPrice.addAndGet(unitPrice * requestDtoMap.get(unit.getProductOptionId()).getQuantity());
             } else {
@@ -97,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 사용자 쿠폰 및 포인트 불러오기, 쿠폰 및 포인트 적용 가능한지 검증
         // todo additionalDiscount가 요청오는대로 할인하고있음. 수정 필수(사용가능한 할인인지, 쿠포은 완료)
-        if (requestDto.getOrderDiscount().getCouponId() != null || requestDto.getOrderDiscount().getPoints() != null) {
+        if (requestDto.getOrderDiscount() != null && (requestDto.getOrderDiscount().getCouponId() != null || requestDto.getOrderDiscount().getPoints() != null)) {
             if (!memberCouponService.getCoupons(memberId).stream()
                     .map(MemberCouponResponseDto.MemberCouponInfo::getCouponId).toList()
                     .contains(requestDto.getOrderDiscount().getCouponId())) {
@@ -117,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
         // 실제 가격 계산 및 검증
         int finalPrice = discountedTotalPrice.get() - couponDiscount - pointDiscount + requestDto.getOrderDetail().getShippingFee();
 
+        System.out.println("이거시 진짜 최종 가격 : " + finalPrice);
         if (requestDto.getOrderDetail().getFinalAmount() != finalPrice) {
             throw new IllegalArgumentException("주문 가격이 일치하지 않습니다");
         }
@@ -130,11 +130,12 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // 할인 및 배송 엔티티 저장
-        Order order = orderRepository.save(new Order(null, member, null, finalPrice, OrderStatus.PROGRESSING, orderTitle));
-        deliveryRepository.save(
+        Order order = orderRepository.save(
+                new Order(null, member, null, finalPrice, OrderStatus.PROGRESSING, orderTitle)
+        );
+        Delivery delivery = deliveryRepository.save(
                 new Delivery(
                         0L,
-                        order,
                         null,
                         null,
                         null,
@@ -155,6 +156,7 @@ public class OrderServiceImpl implements OrderService {
                     new OrderProduct(
                             null,
                             order,
+                            delivery,
                             orderItem.getQuantity(),
                             savedDtoMap.get(orderItem.getProductOptionId()).getUnitTotalPrice(),
                             OrderProductStatus.PAYMENT_PENDING,
@@ -163,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
                             savedDtoMap.get(orderItem.getProductOptionId()).getProductOptionName(),
                             savedDtoMap.get(orderItem.getProductOptionId()).getName(),
                             savedDtoMap.get(orderItem.getProductOptionId()).getDiscountId(),
-                            savedDtoMap.get(orderItem.getProductOptionId()).getDicountType(),
+                            savedDtoMap.get(orderItem.getProductOptionId()).getDiscountType(),
                             savedDtoMap.get(orderItem.getProductOptionId()).getDiscountValue()
                     )
             );
