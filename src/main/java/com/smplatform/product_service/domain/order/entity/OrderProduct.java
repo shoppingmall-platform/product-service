@@ -2,21 +2,23 @@ package com.smplatform.product_service.domain.order.entity;
 
 import com.smplatform.product_service.domain.discount.entity.Discount;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "order_products")
+@Getter
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderProductId;
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order orderId;
+    private Order order;
     private Integer quantity;
     @Column(name = "order_price")
     private Long orderPrice;
     @Column(name = "order_product_status")
-    private String orderProductStatus;
+    private OrderProductStatus orderProductStatus;
     @Column(name = "product_id")
     private Long productId;
     @Column(name = "product_option_id")
@@ -25,9 +27,9 @@ public class OrderProduct {
     private String productOptionName;
     @Column(name = "product_name")
     private String productName;
-    @Column(name = "disocunt_id")
+    @Column(name = "discount_id")
     private Long discountId;
-    @Column(name = "disocunt_type")
+    @Column(name = "discount_type")
     private Discount.Type discountType;
     @Column(name = "disocunt_value")
     private Integer discountValue;
