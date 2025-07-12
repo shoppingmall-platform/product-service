@@ -332,6 +332,8 @@ X-MEMBER-ID: test-member-123
 }
 
 
+###
+
 ### 제품 생성
 POST localhost:8080/v1/product
 content-type: application/json
