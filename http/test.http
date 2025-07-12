@@ -80,8 +80,8 @@ ROLE: ADMIN
   "discountName": "test discount 1",
   "discountType": "할인율",
   "discountValue": 20,
-  "discountStartDate": "2025-02-22T00:00:00.000Z",
-  "discountEndDate": "2025-02-23T00:00:00.000Z",
+  "discountStartDate": "2025-07-01T00:00:00.000Z",
+  "discountEndDate": "2025-07-29T00:00:00.000Z",
   "applyType": 2,
   "ids": [3]
 }
@@ -292,6 +292,43 @@ ROLE: ADMIN
 
 {
   "optionTypeId": 1
+}
+
+### 11. 주문 저장
+POST http://localhost:8080/v1/orders
+Content-Type: application/json
+X-MEMBER-ID: test-member-123
+
+{
+  "addressInfo": {
+    "address1": "서울특별시 강남구 테헤란로 123",
+    "address2": "101동 202호",
+    "postalCode": "06233",
+    "receiver": "홍길동",
+    "phoneNumber": "01012345678",
+    "email": "hong@test.com"
+  },
+  "items": [
+    {
+      "productId": 1,
+      "productOptionId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "productOptionId": 2,
+      "quantity": 1
+    }
+  ],
+  "paymentMethod": "CARD",
+  "orderDetail": {
+    "originalTotal": 176566,
+    "discountedTotal": 27980,
+    "productDiscount": 27980,
+    "additionalDiscount": 0,
+    "shippingFee": 0,
+    "finalAmount": 148586
+  }
 }
 
 

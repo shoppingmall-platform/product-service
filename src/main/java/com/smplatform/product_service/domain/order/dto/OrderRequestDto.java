@@ -16,8 +16,9 @@ public class OrderRequestDto {
 
     @Getter
     public static class OrderAddress {
-        private Long addressId;
-        private String address;
+        private String address1;
+        private String address2;
+        private String postalCode;
         private String receiver;
         private String phoneNumber;
         private String email;
@@ -26,6 +27,7 @@ public class OrderRequestDto {
     @Getter
     public static class OrderItem {
         private Long cartItemId;
+        private Long productId;
         private Long productOptionId;
         private int quantity;
     }
@@ -40,7 +42,7 @@ public class OrderRequestDto {
     public static class OrderDetail {
         private int originalTotal;
         private int discountedTotal;
-        private int productDisocunt;
+        private int productDiscount;
         private int additionalDiscount;
         private int shippingFee;
         private int finalAmount;

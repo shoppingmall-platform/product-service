@@ -82,4 +82,32 @@ public class Coupon {
                 && (couponEndAt   == null || !LocalDate.now().isAfter(couponEndAt));
     }
 
+    public int calculateDiscountedPrice(int originalPrice) {
+        // 최소 주문 금액 조건 확인
+        if (originalPrice < minOrderPrice) {
+            return 0;
+        }
+
+        int discount;
+
+        switch (couponType) {
+            case FIXED:
+                discount = discountAmount;
+                break;
+            case PERCENT:
+                discount = (int) (originalPrice * (discountAmount / 100.0));
+                break;
+            default:
+                throw new IllegalStateException("Unknown coupon type: " + couponType);
+        }
+
+        // 최대 할인 금액이 설정되어 있다면 적용
+        if (maxDiscountPrice > 0 && discount > maxDiscountPrice) {
+            discount = maxDiscountPrice;
+        }
+
+        // 원래 금액보다 할인 금액이 클 경우 방지
+        return Math.min(discount, originalPrice);
+    }
+
 }
