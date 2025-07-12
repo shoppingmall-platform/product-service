@@ -23,7 +23,7 @@ public class OrderSearchServiceImpl implements OrderSearchService {
     private final OrderRepository orderRepository;
 
     @Override
-    public Page<OrderSearchResponseDto.MemberOrder> getMemberOrders(String memberId, OrderSearchRequestDto.MemberOrdersSearch request) {
+    public OrderSearchResponseDto.MemberOrdersGet getMemberOrders(String memberId, OrderSearchRequestDto.MemberOrdersSearch request) {
         // PageableDto로 Pageable 객체 생성
         Pageable pageable = PageRequest.of(
                 request.getPageable().getPage(),
@@ -42,6 +42,12 @@ public class OrderSearchServiceImpl implements OrderSearchService {
                 orderProductMap.getOrDefault(order, List.of()).stream().map(OrderSearchResponseDto.OrderProductDto::of).toList()
         ));
 
-        return resultPage;
+        return new OrderSearchResponseDto.MemberOrdersGet(
+                resultPage.getContent(),
+                resultPage.getNumber(),
+                resultPage.getSize(),
+                resultPage.getTotalElements(),
+                resultPage.getTotalPages()
+        );
     }
 }

@@ -19,7 +19,7 @@ public class OrderSearchResponseDto {
         private List<MemberOrder> content;
         private int page;
         private int size;
-        private int totalElements;
+        private long totalElements;
         private int totalPages;
     }
 
