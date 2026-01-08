@@ -63,7 +63,7 @@ jobs:
             export BACKEND_SERVER_PORT=${{ secrets.BACKEND_SERVER_PORT }}
             export MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
             export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-            export PAYMENT_TOSS_API = ${{ secrets.PAYMENT_TOSS_API }}
+            export PAYMENT_TOSS_API=${{ secrets.PAYMENT_TOSS_API }}
             
             cd docker-compose
             git config credential.helper store
