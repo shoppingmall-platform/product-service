@@ -41,4 +41,6 @@ public class InitData {
         memberRepository.save(member);
 
     }
+
+    //todo 기본 카테고리 및 상품 등록
 }
