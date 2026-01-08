@@ -93,7 +93,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
                 .select(po, pod)
                 .from(po)
                 .leftJoin(pod).on(pod.productOption.eq(po))
-                .where(po.product.id.eq(productId))
+                .where(po.product.productId.eq(productId))
                 .fetch();
 
         Map<Long, ProductResponseDto.ProductOptionGet> optionMap = new LinkedHashMap<>();

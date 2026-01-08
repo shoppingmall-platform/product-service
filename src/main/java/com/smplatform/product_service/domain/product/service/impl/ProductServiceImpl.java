@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(String.format("product { %d } not found", productId)));
 
-        List<ProductOption> productOptions = productOptionRepository.findAllByProduct_Id(productId);
+        List<ProductOption> productOptions = productOptionRepository.findAllByProductProductId(productId);
 
         List<ProductResponseDto.ProductOptionGet> productOptionDtos = productOptions.stream()
                 .map(productOption -> {
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.save(productDtoEntity);
 
-        productCategoryMappingService.save(productDto.getCategoryId(), product.getId());
+        productCategoryMappingService.save(productDto.getCategoryId(), product.getProductId());
 
         // 상품옵션 저장
         List<ProductRequestDto.ProductOptionSave> productOptionDtos = productDto.getProductOptions();
@@ -116,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 상품이미지 저장
         productImageService.saveProductImages(
-                product.getId(),
+                product.getProductId(),
                 productDto.getProductImages().getPaths()
         );
 
@@ -132,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        return String.valueOf(product.getId());
+        return String.valueOf(product.getProductId());
     }
 
 
@@ -163,12 +163,12 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getProductImagePaths().getPaths()
         );
 
-        return String.valueOf(productRepository.save(product).getId());
+        return String.valueOf(productRepository.save(product).getProductId());
     }
 
     private void updateProductImage(Product product, List<String> paths) {
         List<ProductImageResponseDto.ProductImageInfo> originalProductImageInfoList =
-                productImageService.getProductProductImageList(product.getId());
+                productImageService.getProductProductImageList(product.getProductId());
 
         // 삭제된 항목 제거
         List<Long> toDeleteIds = originalProductImageInfoList.stream()
@@ -190,7 +190,7 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
 
         if (!toAdd.isEmpty()) {
-            productImageService.saveProductImages(product.getId(), toAdd);
+            productImageService.saveProductImages(product.getProductId(), toAdd);
         }
     }
 
@@ -214,7 +214,7 @@ public class ProductServiceImpl implements ProductService {
 
             for (Product product : products) {
                 ProductResponseDto.ProductGet productDto = ProductResponseDto.ProductGet.of(product);
-                productDto.setProductImagePaths(productImageService.getProductProductImageList(product.getId()));
+                productDto.setProductImagePaths(productImageService.getProductProductImageList(product.getProductId()));
                 resultProducts.add(productDto);
             }
             return resultProducts;

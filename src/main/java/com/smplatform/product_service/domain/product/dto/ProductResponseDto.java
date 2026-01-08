@@ -42,7 +42,7 @@ public class ProductResponseDto {
 
         public Product toEntity() {
             return Product.builder()
-                    .id(0)
+                    .productId(0)
                     .name(this.getName())
                     .description(this.getDescription())
                     .isDeleted(this.isDeleted())
@@ -53,7 +53,7 @@ public class ProductResponseDto {
 
         public static ProductGet of(Product product) {
             return ProductGet.builder()
-                    .productId(product.getId())
+                    .productId(product.getProductId())
                     .name(product.getName())
                     .description(product.getDescription())
                     .isDeleted(product.isDeleted())
@@ -119,7 +119,7 @@ public class ProductResponseDto {
 
         public static ProductGetForUsers of(Product product) {
             ProductGetForUsers productDto = ProductGetForUsers.builder()
-                    .productId(product.getId())
+                    .productId(product.getProductId())
                     .productName(product.getName())
                     .price(product.getPrice())
                     .discountedPrice(product.getDiscountedPrice())
@@ -170,7 +170,7 @@ public class ProductResponseDto {
             return new ProductResponseDto.ProductCategoryMappingGet(
                     productCategoryMapping.getProductCategoryMappingId(),
                     productCategoryMapping.getCategory().getCategoryId(),
-                    productCategoryMapping.getProduct().getId()
+                    productCategoryMapping.getProduct().getProductId()
             );
         }
     }

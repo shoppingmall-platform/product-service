@@ -12,6 +12,10 @@ spring:
       ddl-auto: update
     open-in-view: false
 
+toss:
+  api:
+    secret: ${PAYMENT_TOSS_API}
+
 server:
   port: ${BACKEND_SERVER_PORT}
   shutdown: graceful

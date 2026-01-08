@@ -32,7 +32,8 @@ public class CustomMemberCouponRepositoryImpl implements CustomMemberCouponRepos
                         c.couponStartAt,
                         c.couponEndAt,
                         c.comment,
-                        mc.status.stringValue()))
+                        mc.status.stringValue(),
+                        c.couponId))
                 .from(mc)
                 .join(mc.coupon, c)
                 .where(mc.member.memberId.eq(memberId))

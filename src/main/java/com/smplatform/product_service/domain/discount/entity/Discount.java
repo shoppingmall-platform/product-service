@@ -80,6 +80,7 @@ public class Discount {
         if (originalPrice <= 0) {
             throw new IllegalArgumentException("Original must not be smaller than 0");
         }
+
         int discountedPrice = 0;
         switch (discountType) {
             // 15 / 100 = 0.15 * 1000
