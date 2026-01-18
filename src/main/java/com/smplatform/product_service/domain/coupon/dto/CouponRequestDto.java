@@ -1,12 +1,15 @@
 package com.smplatform.product_service.domain.coupon.dto;
 
+import com.smplatform.product_service.domain.coupon.entity.CouponApplyType;
 import com.smplatform.product_service.domain.coupon.entity.CouponType;
+import com.smplatform.product_service.domain.coupon.entity.IssueTargetType;
 import com.smplatform.product_service.domain.coupon.entity.IssueType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class CouponRequestDto {
 
@@ -25,6 +28,10 @@ public class CouponRequestDto {
         @NotNull
         private IssueType issueType;
         private String couponIssueCode;
+        private IssueTargetType issueTargetType;
+        private List<String> issueTargetMemberIds;
+        private CouponApplyType applyType;
+        private List<Long> applyTargetIds;
         private String comment;
     }
 

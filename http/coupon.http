@@ -13,7 +13,31 @@ ROLE: ADMIN
   "couponStartDate": "2025-04-02",
   "couponEndDate": "2028-04-05",
   "issueType": "AUTO",
+  "issueTargetType": "ALL",
+  "applyType": "ALL_PRODUCTS",
   "couponIssueCode": "",
+  "comment": ""
+}
+
+### 쿠폰생성(자동발급 + 특정회원)
+POST http://localhost:8080/v1/coupons
+Content-Type: application/json
+X-MEMBER-ID: jle
+ROLE: ADMIN
+
+{
+  "couponName": "특정회원 10% 쿠폰",
+  "couponType": "RATE",
+  "amount": 10,
+  "minOrderPrice": 0,
+  "maxDiscountPrice": 0,
+  "couponStartDate": "2025-04-02",
+  "couponEndDate": "2026-04-05",
+  "issueType": "AUTO",
+  "issueTargetType": "MEMBERS",
+  "issueTargetMemberIds": ["member1", "member2"],
+  "applyType": "CATEGORY",
+  "applyTargetIds": [1, 2],
   "comment": ""
 }
 
@@ -32,6 +56,9 @@ ROLE: ADMIN
   "couponStartDate": "2025-05-02",
   "couponEndDate": "2025-05-05",
   "issueType": "CODE",
+  "issueTargetType": "ALL",
+  "applyType": "PRODUCT",
+  "applyTargetIds": [1001, 1002],
   "couponIssueCode": "TESTCOUPON",
   "comment": ""
 }

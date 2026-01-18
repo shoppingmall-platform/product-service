@@ -56,6 +56,12 @@ public class Coupon {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
+    private CouponIssuePolicy issuePolicy;
+
+    @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
+    private CouponApplyPolicy applyPolicy;
+
     private Coupon(CouponRequestDto.CouponCreate couponCreateDto) {
         this.couponName = couponCreateDto.getCouponName();
         this.couponType = couponCreateDto.getCouponType();

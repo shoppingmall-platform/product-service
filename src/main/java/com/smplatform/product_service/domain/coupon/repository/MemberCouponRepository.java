@@ -4,4 +4,5 @@ import com.smplatform.product_service.domain.coupon.entity.MemberCoupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long>, CustomMemberCouponRepository {
+    boolean existsByMemberIdAndCouponCouponId(String memberId, Long couponId);
 }
