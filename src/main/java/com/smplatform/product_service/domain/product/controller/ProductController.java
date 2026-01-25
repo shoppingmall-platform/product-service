@@ -90,9 +90,8 @@ public class ProductController {
      *
      * @return
      */
-    @AdminOnly
     @GetMapping("/products/tags")
-    @Operation(summary = "태그 조회", description = "관리자 api")
+    @Operation(summary = "태그 조회")
     public ResponseEntity<List<ProductResponseDto.GetTag>> getProductsTags() {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsTags());
     }
